@@ -4,15 +4,15 @@ compatibility_flags = ["nodejs_compat", "no_handle_cross_request_promise_resolut
 
 [assets]
 html_handling = "force-trailing-slash"
-# No `not_found_handling`: with "404-page", Cloudflare answers browser navigations to
-# on-demand routes (e.g. /contact/) with the 404 page without ever invoking the Worker.
-# Unmatched paths fall through to the Worker, which serves Astro's 404 page.
 
 [observability]
 enabled = true
 
-# Custom domain — uncomment and set your own domain. Without it the Worker is served
-# on its workers.dev subdomain.
-# [[routes]]
-# pattern = "githubzhinan.homes"
-# custom_domain = true
+[[routes]]
+pattern = "githubzhinan.homes/*"
+zone_name = "githubzhinan.homes"
+
+[[routes]]
+pattern = "githubzhinan.homes"
+zone_name = "githubzhinan.homes"
+

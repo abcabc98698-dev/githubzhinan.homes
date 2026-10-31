@@ -23,7 +23,7 @@
     "dev": "pnpm --filter @astro-v7/starter dev",
     "dev:starter": "pnpm --filter @astro-v7/starter dev",
     "dev:blog": "pnpm --filter @astro-v7/blog dev",
-    "build": "pnpm build:starter && pnpm build:blog",
+    "build": "pnpm build:starter && pnpm build:blog && node scripts/prepare-dist.mjs",
     "build:starter": "pnpm --filter @astro-v7/starter build",
     "build:blog": "pnpm --filter @astro-v7/blog build",
     "preview": "pnpm --filter @astro-v7/starter preview",

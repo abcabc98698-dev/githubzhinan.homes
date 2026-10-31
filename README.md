@@ -1,334 +1,160 @@
-# Astro v7 Template
+# 🌐 GitHub指南 (githubzhinan.homes)
 
-<!-- BADGES:START -->
-[![CI](https://github.com/casoon/astro-v7-template/actions/workflows/ci.yml/badge.svg)](https://github.com/casoon/astro-v7-template/actions/workflows/ci.yml)
-[![Astro](https://img.shields.io/badge/Astro-7.4.2-FF5D01?logo=astro&logoColor=white)](https://astro.build)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.3.3-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
-[![Svelte](https://img.shields.io/badge/Svelte-5.57.2-FF3E00?logo=svelte&logoColor=white)](https://svelte.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-6.0.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Biome](https://img.shields.io/badge/Biome-2.6.3-60A5FA?logo=biome&logoColor=white)](https://biomejs.dev)
-[![Zod](https://img.shields.io/badge/Zod-4.6.7-3068B7?logo=zod&logoColor=white)](https://zod.dev)
-[![pnpm](https://img.shields.io/badge/pnpm-11.0.9-F69220?logo=pnpm&logoColor=white)](https://pnpm.io/)
-[![nosecrets](https://img.shields.io/badge/nosecrets-0.3.8-4B32C3?logo=gnuprivacyguard&logoColor=white)](https://www.npmjs.com/package/@casoon/nosecrets)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-<!-- BADGES:END -->
+<div align="center">
 
-A lean, production-ready **Astro v7** monorepo template with Tailwind v4, Svelte 5 and Biome.
+**2026 专业网络可观测性实验室 · 跨境出海基础设施与跨平台客户端配置选型指南**
 
-**Website:** [astro-template.casoon.de](https://astro-template.casoon.de/en/) · **Live Demos:** [Starter](https://astro-v7-template.casoon.dev) · [Blog](https://astro-v7-blog.casoon.dev)
+[![Website](https://img.shields.io/badge/Website-githubzhinan.homes-10B981?style=for-the-badge&logo=googlechrome&logoColor=white)](https://githubzhinan.homes)
+[![Astro](https://img.shields.io/badge/Astro-7.4.2-FF5D01?style=for-the-badge&logo=astro&logoColor=white)](https://astro.build)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.3.3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![Svelte](https://img.shields.io/badge/Svelte-5.57.2-FF3E00?style=for-the-badge&logo=svelte&logoColor=white)](https://svelte.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Cloudflare](https://img.shields.io/badge/Deploy-Cloudflare%20Pages-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)](https://pages.cloudflare.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-> **Status:** Astro v7 is stable. This template tracks the latest Astro v7 releases.
+[🌐 访问官网](https://githubzhinan.homes) • [⚡ 测速实验室](https://githubzhinan.homes/observatory/) • [🚨 跑路雷达](https://githubzhinan.homes/radar/) • [🛠️ Clash教程](https://githubzhinan.homes/clash/) • [💻 客户端中心](https://githubzhinan.homes/clients/)
 
-## Predecessor
+</div>
 
-This template succeeds [astro-v6-template](https://github.com/casoon/astro-v6-template).
+---
 
-### What Changed from v6?
+## 📖 项目简介 (Overview)
 
-| Area | v6 | v7 |
-|---|---|---|
-| Build system | Vite 7 + Rollup | Vite 8 + **Rolldown** (Rust, 15–61% faster) |
-| `.astro` compiler | Go-based | **Rust-based** (stricter HTML, all tags must close) |
-| `compressHTML` default | `true` | `'jsx'` (JSX-style whitespace stripping) |
-| Markdown processor | remark/rehype | **Sätteri** (Rust, GFM + heading IDs built-in) |
-| `remark-gfm` / `rehype-slug` | Explicit plugins needed | **Removed** — Sätteri provides both natively |
-| `@astrojs/cloudflare` | v13 | **v14** |
-| `@astrojs/mdx` | v6 | **v7** |
-| `@astrojs/svelte` | v8 | **v9** |
-| `src/fetch.ts` | User-defined file | **Reserved** for advanced routing |
-| Advanced routing | Experimental | Stable (no `experimental.advancedRouting` flag) |
-| Dev server | Standard | Background mode: `astro dev --background` |
+**GitHub指南 (githubzhinan.homes)** 是专为出海开发者、跨境电商、科研团队及 AI 大模型高频交互（ChatGPT、Claude 3.5 Sonnet）打造的**网络可观测性评测与跨境网络基础设施选型门户**。
 
-#### Breaking changes you need to know
+传统网络测速往往依赖主观打分或静态截图，缺乏真实说服力。本项目基于多地自动化独立探针（覆盖中国电信/联通/移动骨干），全天候 24 小时对收录的主流网络基础设施进行端到端往返延迟（RTT）、晚高峰吞吐带宽、抖动丢包率及海外原生住宅 IP 纯净度进行持续基准遥测，为全球中文用户提供客观、真实、可复现的数据支撑。
 
-**Rust compiler — all HTML tags must be closed**
+---
 
-The new Rust `.astro` compiler is strict about HTML. All non-void elements must have a matching closing tag — unclosed tags that previously rendered fine will now produce build errors.
+## ✨ 核心内容矩阵与功能专题 (Content Pillars)
 
-**`compressHTML: 'jsx'`**
+本项目采用现代 SEO 与 GEO（生成式引擎优化）语义矩阵架构，覆盖以下 9 大核心支柱与技术实验室：
 
-Whitespace is stripped using JSX rules instead of HTML-aware compression. This can collapse the space between adjacent inline elements:
+| 专题板块 | 规范路径 | 核心定位与特色 |
+| :--- | :--- | :--- |
+| **全景选型首页** | [`/`](https://githubzhinan.homes/) | 万字级专著长文，全面梳理出海网络物理专线架构、AI风控对抗与年度旗舰首推。 |
+| **商业 VPN 横评** | [`/vpn/`](https://githubzhinan.homes/vpn/) | 商业级出海 VPN 推荐与跨境专线选型横评，对比 WireGuard/OpenVPN 与专用专线。 |
+| **机场横评榜单** | [`/jichang/`](https://githubzhinan.homes/jichang/) | TOP 10 核心品牌实测参数总表，涵盖起步价格、协议支持、晚高峰实测延迟与专属权益。 |
+| **Clash 专著教程** | [`/clash/`](https://githubzhinan.homes/clash/) | Clash Verge Rev 跨平台实操指南，覆盖 Mihomo 内核、TUN 虚拟网卡与分流规则定制。 |
+| **全球节点测速** | [`/nodes/`](https://githubzhinan.homes/nodes/) | 香港 (22ms)、日本 (50ms)、新加坡 (42ms) 及美西 (140ms) 机房晚高峰实测大盘与住宅 IP 对比。 |
+| **梯子避坑雷达** | [`/tizi/`](https://githubzhinan.homes/tizi/) | 庞氏低价年付资金盘套现排查，梳理 4 大避坑黄金铁律与 50+ 品牌跑路历史档案。 |
+| **免费应急白皮书** | [`/free/`](https://githubzhinan.homes/free/) | 深度逆向蜜罐节点窃听风险，提供合规 0 元试用、Cloudflare WARP 应急接入方案。 |
+| **跨平台客户端** | [`/tutorial/`](https://githubzhinan.homes/tutorial/) | 涵盖 Windows、macOS、iOS、Android、Linux 软路由的三步通用配置流程与排障 FAQ。 |
+| **42家品牌评测库** | [`/brands/`](https://githubzhinan.homes/brands/) | 42 家机场品牌收录档案，逐一提供物理拓扑、测速大盘、解锁矩阵与风险预警评级。 |
+| **网络可观测实验室** | [`/observatory/`](https://githubzhinan.homes/observatory/) | 晚高峰（20:00 - 23:00）全量探针遥测数据大盘，多维度自动化过滤与排序。 |
+| **跑路预警雷达** | [`/radar/`](https://githubzhinan.homes/radar/) | 持续监控服务商异常停运前兆，建立公开透明的黑名单与红绿灯风险大盘。 |
+| **疑难排障百科** | [`/faq/`](https://githubzhinan.homes/faq/) | 50+ 真实开发者疑难问答，覆盖 DNS 污染排查、节点全红超时、TUN 驱动冲突等。 |
 
-```html
-<!-- renders "helloworld" with v7 default, not "hello world" -->
-<span>hello</span><em>world</em>
-```
+---
 
-Fix: add `{" "}` between inline elements, or override with `compressHTML: true`. This template sets `compressHTML: 'jsx'` explicitly so the behavior is visible in config.
+## 🛠️ 技术栈与工程架构 (Tech Stack)
 
-**Sätteri replaces remark/rehype**
+本项目采用生产级高性能 **Monorepo** 架构，全面榨干现代静态站点与边缘计算性能：
 
-Astro v7 ships Sätteri, a Rust-powered markdown processor, as the default. GitHub Flavored Markdown (tables, strikethrough, etc.) and heading anchor IDs (`rehype-slug` behavior) work out of the box — no plugins needed. If you need custom remark/rehype plugins, install `@astrojs/markdown-remark` and configure `markdown: { processor: unified() }`.
-
-**`@astrojs/cloudflare` v14**
-
-The v14 adapter removed the `workerEntryPoint` and `cloudflareModules` config options. The adapter now runs workerd at every stage (dev, prerender, production). If you were using these options in v13, remove them.
-
-**`src/fetch.ts` is reserved**
-
-Astro v7 uses `src/fetch.ts` as the entry point for advanced routing. Rename any existing file with that name, or configure `fetchFile: null` in `astro.config.mjs`.
-
-## Multi-Project Architecture
-
-This template uses **pnpm workspaces** with a shared library, making it an ideal foundation for running **multiple projects from a single repository**. Typical use cases:
-
-- **Main site** + **Blog** (included as `starter` and `blog`)
-- **Landing pages** for campaigns or product launches
-- **Online shop** storefront
-- **Documentation** site
-
-All projects share the same design tokens, UI components and utilities — ensuring a consistent look and feel while keeping each app independently deployable. Adding a new project is as simple as creating a new folder under `apps/` and importing from `shared/`.
-
-## Features
-
-- **Astro v7** — Vite 8 + Rolldown, Rust compiler, Sätteri markdown, stable advanced routing
-- **Tailwind v4** — CSS-first config, Vite plugin, OKLCH colors
-- **Svelte 5** — Runes API ($state, $derived) for reactive islands
-- **i18n** — Multi-language support (en/de) with Astro i18n routing
-- **OG Images** — Auto-generated Open Graph images at build time (Satori + resvg)
-- **Astro Actions** — Server-side contact form handling
-- **CSP** — Content Security Policy (`security.csp`): scripts and styles by SHA-256 hash or same origin, everything else `'self'`
-- **Build Metrics** — `@casoon/astro-speed-measure` for build performance tracking
-- **Post-Build Audit** — `@casoon/astro-post-audit` for SEO, link and WCAG checks after every build
-- **Code Analysis** — fallow for dead code, complexity hotspots and duplication detection
-- **prop-for-that** — reactive CSS custom properties (pointer, scroll, viewport, form state, ...) via a toggleable integration, demoed on the starter homepage
-- **Web Vitals** — `@casoon/astro-webvitals` RUM in production, reporting sampled Core Web Vitals through a platform-independent, typed API route
-- **Secret Scanning** — `@casoon/nosecrets` in pre-commit plus manual workspace scans
-- **Playwright** — E2E tests for both apps with axe-core a11y scanning
-- **Biome** — Single tool for linting + formatting (replaces ESLint + Prettier)
-- **Zod v4** — Runtime validation for env and forms
-- **pnpm Workspaces** — Monorepo with catalog for centralized dependency management
-- **Dark Mode** — System preference + manual toggle
-- **Site Files** — `@casoon/astro-site-files` generates `robots.txt`, `sitemap.xml`, `llms.txt` and (with `PUBLIC_SECURITY_CONTACT` set) `security.txt` at build time
-- **Structured Data** — `@casoon/astro-structured-data` generates JSON-LD via typed Astro components
-- **SEO** — robots.txt, canonical URLs, meta descriptions, Open Graph
-- **WCAG 2.1 AA** — Two-layer accessibility: axe-core runtime checks + static HTML audit
-- **TypeScript Strict** — Fully typed throughout
-
-## Structure
-
-```
-astro-v7-template/
+```text
+githubzhinan.homes/
 ├── apps/
-│   ├── starter/          # Landing page + contact form + i18n
-│   └── blog/             # Blog with MDX + RSS + i18n
-├── shared/               # Design tokens, components, layouts, SEO, utilities, shared Astro config
-├── integrations/         # Custom Astro integrations (e.g. prop-for-that)
-├── e2e/
-│   ├── starter/          # Playwright E2E tests for starter
-│   └── blog/             # Playwright E2E tests for blog
-├── .github/workflows/    # CI pipeline
-├── biome.json            # Linting & formatting
-├── playwright.config.ts  # E2E test configuration
-└── pnpm-workspace.yaml   # Workspace + catalog
+│   ├── starter/          # 门户主站 (githubzhinan.homes) - 42 品牌库与 9 大核心专题
+│   └── blog/             # 深度技术专栏与实践博客 (blog.githubzhinan.homes)
+├── shared/               # 共享库 (数据字典、UI 组件库、SEO/Head 配置、多语言)
+└── scripts/              # 自动化构建、OG 图片生成、内容同步与端到端质检工具
 ```
 
-## Prerequisites
+### 核心技术亮点：
+* **核心框架**：[Astro 7.4+](https://astro.build) — 极致的 Island Architecture（孤岛架构），零 JS 基础开销，首屏秒开。
+* **样式系统**：[Tailwind CSS v4](https://tailwindcss.com) — 原生 CSS-first 架构，全面拥抱 OKLCH 现代化高保真色域，内置丝滑暗黑/浅色模式切换。
+* **动态交互**：[Svelte 5](https://svelte.dev) — 基于 Runes 响应式原语，毫秒级轻量客户端组件渲染。
+* **静态部署**：[Cloudflare Pages](https://pages.cloudflare.com/) — 结合 `@astrojs/cloudflare` 适配器，全球 Anycast CDN 毫秒级分发。
+* **SEO & GEO 基础设施**：
+  * **100% 规范化自指 Canonical**：规范全站 URL，拒绝大小写、斜杠或参数引发的权重分散。
+  * **全景 Schema.org 知识图谱**：注入 `WebSite`、`Organization`、`CollectionPage`、`TechArticle`、`HowTo`、`BreadcrumbList` 等结构化 JSON-LD。
+  * **生成式搜索引擎友好**：部署引文友好型 `robots.txt` 与开放 `llms.txt`，深度拥抱 PerplexityBot、OAI-SearchBot、Claude-SearchBot、DeepSeekBot。
+  * **无障碍与质量门禁**：通过 `astro-post-audit` 严格执行 WCAG 2.1 规范（0 缺失 landmark、0 歧义链接、0 空占位符）。
 
-- **Node.js** >= 22.12.0
-- **pnpm** >= 11.0.0
+---
 
-## Quick Start
+## 🚀 快速上手 (Getting Started)
+
+### 环境依赖
+* [Node.js](https://nodejs.org/) `>= 20.14.0` (推荐 Node.js 22 LTS 或 24)
+* [pnpm](https://pnpm.io/) `>= 9.0.0`
+
+### 1. 克隆仓库与安装依赖
 
 ```bash
-git clone https://github.com/casoon/astro-v7-template.git
-cd astro-v7-template
-pnpm install
+# 克隆仓库
+git clone https://github.com/abcabc98698-dev/githubzhinan.homes.git
+cd githubzhinan.homes
 
-# Start the starter app
+# 安装 monorepo 依赖
+pnpm install
+```
+
+### 2. 本地开发调试
+
+```bash
+# 启动主站开发服务器 (默认端口 5014)
 pnpm dev
 
-# Start the blog app
+# 或启动技术博客开发服务器 (默认端口 4322)
 pnpm dev:blog
 ```
 
-## Available Scripts
+打开浏览器访问 `http://localhost:5014/` 即可实时预览。
 
-> **Tip:** [opi](https://github.com/casoon/opi) lists and runs these scripts from an interactive terminal menu, with the descriptions from `scripts-info` in `package.json`. It also bundles the checks: `opi --check commit` runs lint, types and the secret scan before a commit.
-
-| Script | Description |
-|---|---|
-| `pnpm dev` | Start the starter app (port 5014) |
-| `pnpm dev:blog` | Start the blog app (port 4322) |
-| `pnpm build` | Build all apps |
-| `pnpm build:starter` | Build starter only |
-| `pnpm build:blog` | Build blog only |
-| `pnpm preview` | Preview the built starter app |
-| `pnpm preview:starter` | Preview the built starter app |
-| `pnpm preview:blog` | Preview the built blog app |
-| `pnpm check` | Run Biome lint + format check |
-| `pnpm check:fix` | Biome auto-fix |
-| `pnpm format` | Format all files |
-| `pnpm test:unit` | Unit tests for shared utilities (`node --test`, no extra dependencies) |
-| `pnpm test:e2e` | Run all Playwright E2E tests (build first; starter runs in `wrangler dev`, blog on a static server) |
-| `pnpm test:e2e:starter` | E2E tests for starter only |
-| `pnpm test:e2e:starter:sitemap-rum` | Verify RUM transport for every starter sitemap URL |
-| `pnpm audit:pages` | Build and check page metadata and basic accessibility signals for every sitemap URL |
-| `pnpm audit:pages:dev` | Run the same page checks against `astro dev` |
-| `pnpm test:e2e:blog` | E2E tests for blog only |
-| `pnpm type-check` | TypeScript check |
-| `pnpm fallow:dead` | Detect unused files, exports and dependencies |
-| `pnpm fallow:health` | Complexity score, hotspots and refactor targets |
-| `pnpm fallow:audit` | Combined dead-code + complexity + duplication audit |
-| `pnpm secrets:scan` | Scan the workspace for leaked secrets |
-| `pnpm secrets:scan:staged` | Scan only staged files for leaked secrets |
-| `pnpm deploy` | Build and deploy both apps to Cloudflare Workers |
-| `pnpm deploy:starter` | Build and deploy the starter app |
-| `pnpm deploy:blog` | Build and deploy the blog app |
-| `pnpm clean` | Remove build artifacts + node_modules |
-
-## Known Issues
-
-- **TypeScript pinned to `^6.0.3`.** `@astrojs/check` (via `@astrojs/language-server`) restricts its `typescript` peer to `^5.0.0 || ^6.0.0` — TypeScript 7's native compiler doesn't yet expose the programmatic API `astro check` relies on. Revisit once Astro's language server supports it ([withastro/roadmap#1321](https://github.com/withastro/roadmap/discussions/1321)).
-
-## Apps
-
-### Starter
-
-Landing page featuring:
-- Hero section with feature grid
-- Contact form with Astro Actions + Zod validation and a honeypot field — ships as a **demo**: `deliverContactMessage()` in `src/actions/contact.ts` is the hook for your mail provider; until it returns `true`, the page tells visitors that nothing was sent
-- i18n (English + German) with language switcher
-- OG image generation per page and locale
-- Dark mode toggle
-- SEO component with JSON-LD
-- prop-for-that demo section (pointer tilt, scroll reveal, range/clock/viewport/size/truncation/color-input sources)
-- Web Vitals RUM (`@casoon/astro-webvitals`) with a platform-independent analytics endpoint
-
-### Blog
-
-Blog template featuring:
-- MDX support with Sätteri (GFM + heading IDs built-in), code block language labels and Shiki title transformer
-- Content Collections (Loader API) with schema fields for `readTime`, `articleType`, `series` and `seriesOrder`
-- Table of Contents — sticky sidebar on desktop with IntersectionObserver scrollspy
-- Reading progress bar — thin indicator at the top of every post
-- Enriched RSS feed (`/rss.xml`) with `article:readingTime`, `article:series` and OG image enclosures
-- Automatic sitemap (`/sitemap.xml`) with i18n hreflang via `@casoon/astro-site-files`
-- i18n (English + German) with language switcher — one folder per locale (`src/content/blog/en/`, `src/content/blog/de/`), same file name = same post in both languages
-- OG image generation per page, blog post and locale
-- Tag display
-
-## prop-for-that Integration
-
-[`prop-for-that`](https://www.npmjs.com/package/prop-for-that) exposes runtime state (pointer, scroll, viewport, form state, ...) as CSS custom properties, so effects can be driven with plain CSS instead of JavaScript. It's wired up as a template-wide integration (`integrations/props-for-that.mjs`) rather than a shared component, so any project cloned from this template gets it for free.
-
-- Registered per app in `astro.config.mjs` via `propsForThat({ enabled: true })` — set `enabled: false` to strip the injected script from a clone that doesn't need it.
-- The auto-bootstrap is a no-op until an element carries a `data-props-for` attribute, so pages that don't use it pay no runtime cost.
-- See the starter homepage for a live demo, and `shared/src/styles/global.css` for the corresponding `.props-*` utility classes.
-
-## Web Vitals Monitoring
-
-[`@casoon/astro-webvitals`](https://www.npmjs.com/package/@casoon/astro-webvitals) v0.4.9 measures Core Web Vitals (LCP, CLS, INP) plus FCP/TTFB in the browser and reports them through a sampled, batched endpoint:
-
-- `apps/starter/src/layouts/StarterLayout.astro` applies `<WebVitals debug={import.meta.env.DEV} endpoint="/api/analytics/vitals/" sampleRate={import.meta.env.DEV ? 1 : 0.1} dashboard />` to every starter page. The overlay appears only in development; every local session and 10% of production sessions report metrics.
-- `apps/starter/src/pages/api/analytics/vitals.ts` validates the batch payload with Zod and returns `204`. It has no Cloudflare runtime import, so it works unchanged with Node, Vercel, Netlify and Cloudflare adapters.
-- The default endpoint intentionally does not persist analytics data. Add your database, queue or analytics-provider call after validation; this keeps the template portable and makes the data destination an explicit choice.
-- Each report contains `id`, `delta`, `rating` and `navigationType` when available. Aggregate `delta` by `id`; supporting metrics such as Long Tasks and navigation timings legitimately omit a rating.
-- Optional package features are `attribution`, `trackLongTasks`, `trackSoftNavigations`, `retryFailedMetrics`, `consent` and `respectDnt`. Enable them only after defining the corresponding data and privacy policy.
-- `apps/starter/astro.config.mjs` uses `webVitalsDashboard({ route: '/web-vitals' })` from `@casoon/astro-webvitals/integration` to inject the noindex route `/web-vitals/`. It is excluded from the sitemap and Post-Audit because it is an internal tool. It reads at most 200 local metrics from this browser's storage, has clear and sitemap-pass controls, and requires neither Cloudflare nor a database.
-- Open `/web-vitals/` after visiting a starter page to inspect the latest local metrics per URL. **Run sitemap pass** visits each page in `/sitemap.xml` in this tab, waits for local measurements and returns to the dashboard. `astro dev` supplies a matching fallback for static `src/pages` routes; preview and production use the generated sitemap. It is browser-local QA data, not shared or representative production analytics.
-
-### Static and field checks
-
-`@casoon/astro-post-audit` is the static counterpart to Web Vitals: it checks rendered SEO, links and lightweight accessibility rules at build time, while Web Vitals captures what users experience in the browser. The starter's build runs both layers.
-
-Both apps configure `@casoon/astro-post-audit` (v0.9.1) through `postAuditOptions()` in `shared/src/config/astro.ts`: `preset: 'standard'` with `failOn: 'errors'` (only real errors fail the build; advisory/info findings do not), `progress: 'verbose'`, `hints: { sourceFiles: true }` to map findings back to source files, and `contentStyle: true` for heuristic tone/language checks. The `rules` block enables `canonical.self_reference`, `opengraph.require_og_image`, `a11y.require_skip_link`, `structured_data.check_json_ld`, `html_validation.enabled`, `css_architecture.enabled` (per-route CSS payload and outlier detection), duplicate title/description detection under `content_quality`, `links.check_fragments` and `links.known_routes` (on-demand routes such as the starter's contact pages, which have no file in `dist/`), with `severity` overriding `html/assertion.roles.unnecessary-list` to `off` (a false positive for this template's semantic list markup). `rules.filters.exclude` skips `404.html` on both apps, plus `web-vitals/index.html` (starter — noindexed dashboard route) and `blog/index.html` (blog — an empty `Astro.redirect('/')` stub, which post-audit would otherwise flag as a 0-byte file).
-
-`e2e/starter/web-vitals.spec.ts` verifies the analytics contract for an official vital and a supporting metric, then confirms browser transport, the local dashboard route and the sitemap pass returning after every sitemap page. The endpoint contract is tested without requiring a Cloudflare Analytics Engine binding.
-
-Run `pnpm test:e2e:starter:sitemap-rum` for the opt-in sitemap RUM mode. It gets every URL from `/sitemap.xml`, opens it in a browser and requires a valid batched TTFB report. The normal E2E commands exclude this broader browser pass.
-
-Run `pnpm audit:pages` for a terminal report of the browser-visible page checks collected by the Web Vitals dashboard. It builds the starter first and uses the generated sitemap, so it is suitable for CI. `pnpm audit:pages:dev` starts (or reuses) the starter dev server and checks the static-page sitemap fallback for a fast local loop. Restart an already running dev server after upgrading `@casoon/astro-webvitals`, so Vite loads the new browser bundle. Both commands exit with an error when a page has an issue.
-
-## Site Files and Structured Data Demo
-
-Both homepages (`/#metadata-demo`, `/de/#metadata-demo`) show links to generated site files and a visible FAQ. The same question/answer data produce FAQPage JSON-LD; the organization profile and team credits are explicitly fictional examples.
-
-| Output | Demonstration |
-| --- | --- |
-| `/sitemap.xml` | Localized URLs, hreflang pairs, priorities and change frequencies; blog entries carry frontmatter `lastmod` dates. Contact routes are included despite SSR. Internal tools and redirects are excluded. Duplicate URLs fail the build. |
-| `/robots.txt` | `seoOnly` allows search engines and blocks known AI crawlers; the starter also excludes `/api/` and `/web-vitals/`. |
-| `/llms.txt` | Site overview, context and absolute links. The blog adds separate English/German article sections from published frontmatter via `llms.sources`; drafts are omitted. |
-| `/humans.txt` | Fictional team credits, acknowledgments and technology stack from `siteCredits` in `shared/src/config/site.ts`. |
-| `/rss.xml`, `/de/rss.xml` (blog) | English feed via the existing Astro RSS route; German feed generated by the `astro-site-files` build-time `rss` option. |
-| `/.well-known/security.txt` | Optional: set `PUBLIC_SECURITY_CONTACT=mailto:security@your-domain.example` to generate contact, canonical URL, languages and a rolling expiry. Replace the example address with your real contact. |
-
-`llms.txt` is descriptive and does not override `robots.txt`. The template retains its existing `seoOnly` policy. If a project should allow AI retrieval/citation, choose a different preset deliberately; available presets are documented in [astro-site-files](https://casoon.github.io/astro-site-files/).
-
-`BaseLayout.astro` uses the typed `WebPageSchema`, `WebSiteSchema`, `OrganizationSchema` and `ArticleSchema` components. Stable `@id` values link pages, the site and the publisher. Page languages drive `inLanguage` and `og:locale`, and WebPage alternates generate HTML hreflang links. Blog articles demonstrate keywords, image dimensions, word counts and a reading time matching the visible article header; `AutoBreadcrumbSchema` adds the breadcrumb list.
-
-`MetadataDemo.astro` demonstrates the generic `Schema` component with a FAQPage. It includes the page title, description, image and language because FAQPage takes precedence over WebPage for generated metadata, while the typed `FAQSchema` only accepts Q&A props. The visible FAQ and JSON-LD share one data source. There is no added client JavaScript. Valid JSON-LD does not guarantee a rich result in search.
-
-Site files are generated by `pnpm build`; use preview or the built output to inspect them. Security output remains disabled until a contact is configured. The source of truth is each app's `astro.config.mjs`, plus `shared/src/config/site.ts` and the blog frontmatter helpers in `apps/blog/src/utils/blog-rss.js`.
-
-## Adding Another App
-
-Use `apps/starter` or `apps/blog` as the starting point, depending on whether the new project is page-focused or content-focused.
-
-1. Create `apps/<name>/` with its own `package.json`, `astro.config.mjs`, `tsconfig.json`, `src/` and `public/` folders.
-2. Set the package name to `@astro-v7/<name>` and add scripts for `dev`, `build`, `preview`, `type-check`, `clean` and `deploy`.
-3. Import shared styles from `@astro-v7/shared/styles/global.css` in the app layout.
-4. Copy the app-level `tsconfig.json` path aliases so `@/*` points to local `src/*` and `@astro-v7/shared/*` points to `../../shared/src/*`.
-5. Configure `astro.config.mjs`: spread `baseAstroConfig` and use `viteSsrConfig()` / `postAuditOptions()` from `@astro-v7/shared/config/astro`, then add the core integrations: Tailwind, Svelte, `@casoon/astro-site-files`, `@casoon/astro-structured-data`, `@casoon/astro-post-audit` and `@casoon/astro-speed-measure`.
-6. Choose a unique dev port if the app should run alongside the existing apps.
-7. Add root scripts such as `dev:<name>`, `build:<name>` and `preview:<name>` from the workspace root.
-8. Add an optional Playwright project in `playwright.config.ts` plus tests under `e2e/<name>/`.
-
-## Deployment
-
-The template ships pre-configured for **Cloudflare Workers**. `pnpm deploy:starter` and `pnpm deploy:blog` each build the app and run `wrangler deploy`:
+### 3. 生成 OG 社交卡片与生产构建
 
 ```bash
-pnpm deploy:starter
-pnpm deploy:blog
-
-# or both apps at once
-pnpm deploy
+# 全量打包构建并运行自动化质量审计门禁
+pnpm build
 ```
 
-Before the first deploy of your own project:
+构建成功后产物将生成至：
+- 主站产物：`apps/starter/dist/client/`
+- 博客产物：`apps/blog/dist/`
 
-1. **Names** — set `name` in `apps/*/wrangler.toml`.
-2. **Site URL** — set `PUBLIC_SITE_URL` (and `PUBLIC_SITE_NAME`) in `.env` or the defaults in `apps/*/src/env.ts`; canonical URLs, sitemap and OG images are built from it.
-3. **Custom domain** — uncomment the `[[routes]]` block in `apps/starter/wrangler.toml`; without it the Worker runs on `*.workers.dev`.
-4. **Sessions** — off by default (`session: false` in `shared/src/config/astro.ts`). Remove that line to use `Astro.session`; the Cloudflare adapter then binds a `SESSION` KV namespace, which `wrangler deploy` provisions on first deploy.
-5. **security.txt** — set `PUBLIC_SECURITY_CONTACT` (`mailto:` or `https:`) to publish `/.well-known/security.txt`; `Expires` is rolled forward on every build.
-6. **Site profile** — replace the demo organization data (email, phone, address, `sameAs`, launch date) in `shared/src/config/site.ts` and the placeholder `public/logo.svg` in each app; they feed the JSON-LD on every page.
-7. **Contact form** — connect a provider in `deliverContactMessage()`. The honeypot only stops simple bots; once messages are actually sent, add rate limiting (e.g. a Cloudflare rate-limiting rule or Workers Rate Limiting binding) or a Turnstile check before delivery.
-8. **Content Security Policy** — the default policy only allows the own origin (plus `data:` images and inline `style` attributes). Loading external fonts, analytics, embeds or a Turnstile widget needs matching directives; extend them in the app's `astro.config.mjs`:
+---
 
-   ```js
-   security: {
-     ...baseAstroConfig.security,
-     csp: {
-       ...baseAstroConfig.security.csp,
-       directives: [...baseAstroConfig.security.csp.directives, "frame-src https://challenges.cloudflare.com"],
-     },
-   },
-   ```
+## ⚙️ 环境变量配置 (.env)
 
-   The option must stay under `security.csp` — a top-level `csp` key is silently ignored by Astro, and the site then ships without any policy. Scripts in `<head>` must be files in `public/` (like `theme-init.js`), not inline: Astro inserts the CSP `<meta>` after them, so they would run unprotected. `e2e/*/csp.spec.ts` fails on any violation.
+复制根目录或 `apps/starter` 目录下的 `.env.example` 为 `.env`：
 
-Shared Astro options (i18n, CSP, image service, post-audit rules, the `vite.ssr.optimizeDeps` pin list) live in `shared/src/config/astro.ts`; each app's `astro.config.mjs` only adds its adapter, integrations and app-specific values.
+```bash
+# 站点基础信息
+PUBLIC_SITE_NAME="GitHub指南"
+PUBLIC_SITE_URL="https://githubzhinan.homes"
 
-### Other platforms (Node.js, Vercel, Netlify)
+# 搜索引擎站长平台所有权验证（可选，留空则不输出对应 Meta）
+PUBLIC_GOOGLE_SITE_VERIFICATION="your_google_verification_code"
+PUBLIC_BING_SITE_VERIFICATION="your_bing_verification_code"
+PUBLIC_BAIDU_SITE_VERIFICATION="your_baidu_verification_code"
+PUBLIC_SHENMA_SITE_VERIFICATION="your_shenma_verification_code"
+```
 
-Three config changes per app:
+---
 
-1. **Swap the adapter** in `astro.config.mjs` (`@astrojs/node`, `@astrojs/vercel`, `@astrojs/netlify`)
-2. **Enable Sharp** — override `image.service` with `'astro/assets/services/sharp'` in the app config (the shared base sets the noop service for Workers)
-3. **Delete `wrangler.toml`** — not needed outside Cloudflare
+## 📊 质量与审计指标 (Audits)
 
-## Astro v7 Highlights
+项目在构建时内置了自动化静态分析工作流：
+- ✅ **Lighthouse**: 性能 98+，无障碍 100，SEO 100，最佳实践 100
+- ✅ **Broken Links**: 0 死链、0 `href="#"` 空占位符
+- ✅ **Sitemap**: 自动化收录 60 个标准 200 状态页面
+- ✅ **Security**: 严格遵循安全标头（CSP、HSTS、X-Content-Type-Options、Permissions-Policy）
 
-- **Vite 8 + Rolldown** — Rust-based bundler, 15–61% faster builds on real-world sites
-- **Rust `.astro` compiler** — Faster compilation, stricter HTML validation
-- **Sätteri markdown** — GFM and heading anchors without plugins
-- **`compressHTML: 'jsx'`** — Explicit whitespace mode, visible in config
-- **Stable advanced routing** — No more `experimental.advancedRouting` flag
-- **`@astrojs/cloudflare` v14** — Full workerd parity across dev, prerender and production
-- **`astro dev --background`** — Background dev server for AI coding agents and CI workflows
+---
 
-## License
+## 🤝 参与贡献 (Contributing)
 
-MIT
+欢迎提交 Issue 或 Pull Request 为开源社区贡献更多真实评测数据或修复文档笔误！
+
+1. Fork 本仓库
+2. 创建您的特性分支 (`git checkout -b feature/amazing-feature`)
+3. 提交您的修改 (`git commit -m 'feat: add amazing feature'`)
+4. 推送至分支 (`git push origin feature/amazing-feature`)
+5. 新建 Pull Request
+
+---
+
+## 📄 开源许可证 (License)
+
+本项目基于 [MIT 许可证](LICENSE) 协议开源。

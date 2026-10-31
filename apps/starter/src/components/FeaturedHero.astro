@@ -1,0 +1,133 @@
+---
+import SpeedTestPanel from './SpeedTestPanel.astro';
+import ServiceMatrix from './ServiceMatrix.astro';
+import type { Brand } from '@astro-v7/shared/data/brands';
+
+export interface Props {
+  brand: Brand;
+}
+
+const { brand } = Astro.props;
+---
+
+<div class="relative overflow-hidden rounded-3xl border-2 border-emerald-500/30 bg-gradient-to-b from-emerald-500/5 via-[var(--color-surface)] to-[var(--color-surface)] dark:from-emerald-950/20 p-6 md:p-10 shadow-xl backdrop-blur-xl">
+  <!-- Top Flagship Badge & Rank Bar -->
+  <div class="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-border/60">
+    <div class="flex items-center gap-3">
+      <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 text-xs font-bold uppercase tracking-wider">
+        <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        👑 2026 年度综合旗舰推荐 · TOP 1
+      </span>
+      <span class="text-xs font-mono px-2.5 py-1 rounded bg-bg-secondary text-text-secondary border border-border">
+        运营超 6 年 · 稳定长青
+      </span>
+    </div>
+    <div class="flex items-center gap-2 text-xs font-mono text-text-secondary">
+      <span>单节点极速: <strong class="text-emerald-600 dark:text-emerald-400 font-bold text-sm">2.5 Gbps</strong></span>
+      <span class="opacity-40">|</span>
+      <span>双专线架构: <strong class="text-text font-semibold">IEPL + 内网专线</strong></span>
+    </div>
+  </div>
+
+  <!-- Hero Content Grid (Items aligned to top) -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-8">
+    <!-- Left Column: Copy & Actions (7 cols) -->
+    <div class="lg:col-span-7">
+      <div class="flex items-baseline gap-3 mb-3">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-text tracking-tight">
+          {brand.name}
+        </h2>
+        <span class="text-sm font-mono text-text-secondary">GuangSu Cloud</span>
+      </div>
+
+      <p class="text-text-secondary leading-relaxed text-base mb-6">
+        光速云属于运营时间较长的综合型专线机场，核心架构采用 <strong class="text-text font-semibold">IEPL 专线与企业级内网双专线</strong>，搭配最新 VLESS 协议。同时提供官方自研全平台客户端，并无缝支持 Clash、Shadowrocket 等主流通用订阅导入，实现全天候极速晚高峰与跨境 AI 流畅使用。
+      </p>
+
+      <!-- Key Plans Highlights -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-6">
+        <!-- Snooker 147 Lifetime -->
+        <div class="p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/5 hover:border-emerald-500/50 transition-colors">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">🎱 致敬斯诺克 147 永久套餐</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 font-bold">永久不过期</span>
+          </div>
+          <div class="text-xl font-bold text-text mb-1">
+            ¥147 <span class="text-xs font-normal text-text-secondary">一次性付费</span>
+          </div>
+          <p class="text-xs text-text-secondary font-mono leading-relaxed">
+            247GB 永不过期 · 单节点最高 2.5Gbps · 不限设备
+          </p>
+        </div>
+
+        <!-- Lightweight Annual -->
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40 hover:border-text-secondary/40 transition-colors">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold text-text">🌱 轻量入门版</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-bg-secondary text-text-secondary">年付折算</span>
+          </div>
+          <div class="text-xl font-bold text-text mb-1">
+            ¥99 <span class="text-xs font-normal text-text-secondary">/ 年 (折合 ~¥8.25/月)</span>
+          </div>
+          <p class="text-xs text-text-secondary font-mono leading-relaxed">
+            69GB/月 · 原生稳定节点 · 不限设备同时在线
+          </p>
+        </div>
+      </div>
+
+      <!-- Promo Code Banner -->
+      <div class="flex flex-wrap items-center gap-3 p-3.5 rounded-xl border border-border/80 bg-bg-secondary/60 mb-6">
+        <span class="text-xs font-mono text-text-secondary">专属新客优惠码:</span>
+        <div class="flex items-center gap-2">
+          <code id="promo-code-box" class="font-mono font-bold text-emerald-600 dark:text-emerald-400 px-3 py-1 rounded bg-surface border border-emerald-500/30 text-sm">
+            {brand.discountCode}
+          </code>
+          <button
+            type="button"
+            id="copy-code-btn"
+            data-copy-code={brand.discountCode}
+            class="text-xs font-semibold px-3 py-1 rounded bg-emerald-600 hover:bg-emerald-700 text-white transition-colors cursor-pointer"
+          >
+            一键复制
+          </button>
+        </div>
+        <span class="text-xs text-text-secondary">（注册结算时输入享专属折抵）</span>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap items-center gap-4">
+        <a
+          href={brand.affUrl}
+          target="_blank"
+          rel="nofollow sponsored noopener"
+          aria-label="立即前往光速云官网注册"
+          class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-lg shadow-emerald-600/20 transition-all transform hover:-translate-y-0.5 no-underline"
+        >
+          <span>立即前往光速云官网注册</span>
+          <span>→</span>
+        </a>
+
+        <a
+          href={`/brands/${brand.slug}/`}
+          class="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl border border-border bg-surface hover:bg-bg-secondary text-text font-semibold text-sm transition-all no-underline"
+        >
+          <span>查看光速云完整实测评测报告</span>
+        </a>
+      </div>
+
+      <p class="text-[11px] text-text-secondary/80 font-mono mt-3">
+        * 含合作推广链接，通过链接注册可享专属优惠码，不影响实际支付价格。
+      </p>
+    </div>
+
+    <!-- Right Column: Speed Test Telemetry Panel (5 cols) -->
+    <div class="lg:col-span-5">
+      <SpeedTestPanel brandName={brand.name} speedTests={brand.speedTests} testDate={brand.lastVerifiedDate} />
+    </div>
+  </div>
+
+  <!-- Full-width Bottom Section: Service Availability Matrix -->
+  <div class="pt-6 border-t border-border/80">
+    <ServiceMatrix brandName={brand.name} unlocks={brand.unlocks} columns={3} />
+  </div>
+</div>

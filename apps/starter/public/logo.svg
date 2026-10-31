@@ -1,1 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Logo"><rect width="512" height="512" rx="96" fill="#0b6e99"/><text x="256" y="330" font-family="Inter, system-ui, sans-serif" font-size="240" font-weight="800" fill="#fff" text-anchor="middle">A7</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="GitHub指南 Logo">
+  <defs>
+    <linearGradient id="gh-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="50%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="gh-accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#60a5fa"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="url(#gh-bg)"/>
+  <!-- GitHub Silhouette Mark -->
+  <path fill="#ffffff" fill-rule="evenodd" clip-rule="evenodd" d="M256 100c-86.2 0-156 69.8-156 156 0 68.9 44.7 127.4 106.7 148 7.8 1.4 10.7-3.4 10.7-7.5 0-3.7-.1-13.5-.2-26.6-43.4 9.4-52.6-20.9-52.6-20.9-7.1-18-17.3-22.8-17.3-22.8-14.2-9.7 1.1-9.5 1.1-9.5 15.7 1.1 23.9 16.1 23.9 16.1 13.9 23.8 36.5 17 45.4 13 1.4-10.1 5.5-17 9.9-20.9-34.6-3.9-71-17.3-71-77.1 0-17 6.1-31 16.1-41.9-1.6-3.9-7-19.8 1.5-41.4 0 0 13.1-4.2 43 16 12.5-3.5 25.8-5.2 39.1-5.3 13.3.1 26.6 1.8 39.1 5.3 29.9-20.2 42.9-16 42.9-16 8.6 21.6 3.2 37.5 1.6 41.4 10.1 10.9 16.1 24.8 16.1 41.9 0 59.9-36.5 73.1-71.3 77 5.6 4.9 10.6 14.4 10.6 29 0 21-.2 37.9-.2 43 0 4.2 2.8 9.1 10.8 7.5 62-20.7 106.6-79.1 106.6-148 0-86.2-69.8-156-156-156z"/>
+  <!-- Guide Compass Star Indicator -->
+  <polygon points="360,110 375,145 410,160 375,175 360,210 345,175 310,160 345,145" fill="url(#gh-accent)"/>
+</svg>

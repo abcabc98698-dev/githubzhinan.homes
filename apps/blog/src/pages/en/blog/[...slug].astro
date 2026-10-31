@@ -1,0 +1,10 @@
+---
+import PostPage from '@/components/PostPage.astro';
+import { type BlogPost, getBlogPostStaticPaths } from '@/utils/blog-posts';
+
+export const getStaticPaths = () => getBlogPostStaticPaths('en');
+
+const { post }: { post: BlogPost } = Astro.props;
+---
+
+<PostPage locale="en" post={post} />

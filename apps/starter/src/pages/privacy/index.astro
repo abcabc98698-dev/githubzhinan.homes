@@ -1,0 +1,130 @@
+---
+import StarterLayout from '@/layouts/StarterLayout.astro';
+import Navbar from '@astro-v7/shared/components/Navbar.astro';
+import ThemeToggle from '@astro-v7/shared/components/ThemeToggle.svelte';
+import { env } from '@/env';
+import '@/styles/app.css';
+
+const pageTitle = '隐私政策与数据保护声明 - GitHub指南';
+const pageDescription = 'GitHub指南 (githubzhinan.homes) 隐私政策与数据保护声明：详述本站对访客无日志原则、Cookie 使用边界、第三方商业链接安全防护及用户数据权利规范。';
+
+const links = [
+  { href: '/', label: '首页' },
+  { href: '/brands/guangsu/', label: '光速云 (TOP 1)' },
+  { href: '/radar/', label: '🚨 跑路雷达' },
+  { href: '/observatory/', label: '⚡ 测速室' },
+  { href: '/clients/', label: '💻 客户端' },
+  { href: '/faq/', label: '📖 疑难百科' },
+  { href: '/free/', label: '🎁 免费资源' },
+  { href: '/brands/', label: '42家品牌库' },
+];
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://githubzhinan.homes/privacy/#webpage',
+      'url': 'https://githubzhinan.homes/privacy/',
+      'name': pageTitle,
+      'description': pageDescription,
+      'isPartOf': { '@id': 'https://githubzhinan.homes/#website' },
+      'inLanguage': 'zh-CN',
+      'datePublished': '2026-10-19',
+      'dateModified': '2026-10-31',
+    }
+  ]
+};
+---
+
+<StarterLayout
+  title={pageTitle}
+  description={pageDescription}
+  structuredData={structuredData}
+>
+  <Navbar
+    slot="header"
+    siteName={env.PUBLIC_SITE_NAME || 'GitHub指南'}
+    homeUrl="/"
+    links={links}
+    currentPath="/privacy/"
+  >
+    <ThemeToggle client:load />
+  </Navbar>
+
+  <div class="min-h-screen bg-bg text-text py-12 px-4 sm:px-6">
+    <article class="mx-auto max-w-4xl">
+      <!-- Breadcrumb -->
+      <nav aria-label="Breadcrumb" class="mb-6 flex items-center gap-2 text-xs text-text-secondary font-mono">
+        <a href="/" class="hover:text-text no-underline">首页</a>
+        <span>/</span>
+        <span class="text-text font-semibold">隐私政策</span>
+      </nav>
+
+      <!-- Header -->
+      <header class="border-b border-border pb-8 mb-10">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-mono font-semibold mb-4 border border-emerald-500/20">
+          <span>PRIVACY POLICY & ZERO-LOG COMMITMENT</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-black tracking-tight text-text mb-4">
+          隐私政策与数据保护声明
+        </h1>
+        <p class="text-text-secondary text-base leading-relaxed">
+          生效日期：2026年10月19日 · 最近修订：2026年10月31日
+        </p>
+      </header>
+
+      <!-- Content -->
+      <div class="space-y-8 text-sm text-text-secondary leading-relaxed font-sans">
+        <section>
+          <h2 class="text-xl font-bold text-text mb-3">一、 无日志原则 (Zero-Log Policy)</h2>
+          <p class="mb-3">
+            GitHub指南 (githubzhinan.homes) 作为专注于开源技术与跨境网络可观测性的静态技术网站，坚决捍卫互联网用户的个人隐私。
+          </p>
+          <p>
+            我们<strong>不要求用户注册个人账户</strong>、<strong>不收集任何访客的真实姓名、电话号码、支付银行卡或身份信息</strong>，亦<strong>绝不记录任何访客在使用代理软件时的访问目标、传输报文或搜索历史</strong>。
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-bold text-text mb-3">二、 本地存储 (Local Storage) 与 Cookie 使用边界</h2>
+          <p class="mb-3">
+            本站坚持最小化数据存储原则：
+          </p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li><strong>主题偏好记录</strong>：浏览器本地仅使用 <code>localStorage</code> 存储您的深色/浅色模式偏好设置（Key: <code>theme</code>），以避免页面刷新时出现闪烁。</li>
+            <li><strong>零第三方跨站追踪</strong>：本站未接入任何第三方行为画像广告 SDK，不使用侵入式的第三方追踪 Cookie。</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-bold text-text mb-3">三、 第三方外部商业链接与出站安全</h2>
+          <p class="mb-3">
+            本站包含指向第三方服务商官网的链接。所有出站链接均严格遵循行业合规标准包裹 <code>rel="nofollow sponsored noopener"</code> 属性：
+          </p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li><code>noopener</code> 属性能够防止外部目标页面通过 <code>window.opener</code> 篡改您当前浏览器标签页的内容，杜绝恶意钓鱼风险。</li>
+            <li>当您点击链接离开本站并进入第三方网站后，您的数据收集将遵循该第三方网站自身的隐私协议。我们强烈建议您在向任何第三方提交信息或支付前查阅其官方政策。</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-bold text-text mb-3">四、 传输安全与加密机制</h2>
+          <p>
+            全站强制启用 HTTPS 传输层安全协议（TLS 1.3）与 HSTS 严格传输安全机制，确保您与本站之间的所有静态页面请求均经过高强度端到端加密，杜绝中间人劫持与篡改注入。
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-bold text-text mb-3">五、 隐私条款修订与联络方式</h2>
+          <p>
+            随着法律法规演进与实验室技术升级，本政策可能适时更新。若您对个人数据安全或本政策条款有任何疑问，请通过官方安全信箱与我们联络：
+          </p>
+          <p class="mt-2 font-mono text-emerald-600 dark:text-emerald-400 font-semibold">
+            contact@githubzhinan.homes
+          </p>
+        </section>
+      </div>
+    </article>
+  </div>
+</StarterLayout>

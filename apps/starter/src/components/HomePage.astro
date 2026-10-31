@@ -1,14 +1,13 @@
 ---
-import Button from '@astro-v7/shared/components/Button.astro';
-import Card from '@astro-v7/shared/components/Card.astro';
-import MetadataDemo from '@astro-v7/shared/components/MetadataDemo.astro';
 import Navbar from '@astro-v7/shared/components/Navbar.astro';
 import ThemeToggle from '@astro-v7/shared/components/ThemeToggle.svelte';
 import type { Locale } from '@astro-v7/shared/utils/i18n';
-import { localePath } from '@astro-v7/shared/utils/i18n';
 import { env } from '@/env';
-import { t } from '@/i18n';
 import StarterLayout from '@/layouts/StarterLayout.astro';
+import { BRANDS, getFeaturedBrand, getTop10Brands } from '@astro-v7/shared/data/brands';
+import FeaturedHero from '@/components/FeaturedHero.astro';
+import BrandCard from '@/components/BrandCard.astro';
+import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
 import '@/styles/app.css';
 
 interface Props {
@@ -16,145 +15,263 @@ interface Props {
 }
 
 const { locale } = Astro.props;
-const tr = t(locale);
-const otherLocale: Locale = locale === 'en' ? 'de' : 'en';
-const ogImage = new URL(locale === 'de' ? '/og/de/home.png' : '/og/home.png', Astro.site).href;
+
+const featuredBrand = getFeaturedBrand(); // 光速云
+const top10Brands = getTop10Brands();
+const otherTopBrands = top10Brands.filter((b) => b.slug !== featuredBrand.slug).slice(0, 5);
+
+const homeTitle = locale === 'en'
+  ? '2026 Proxy Benchmark & Observability - GitHub Guide'
+  : 'GitHub指南 (githubzhinan.homes) - 2026机场推荐/IEPL专线测速/第三方客户端指南';
+
+const homeDescription = locale === 'en'
+  ? '2026 proxy benchmark lab: testing 42 providers including GuangSu Cloud with IEPL latency telemetry, AI streaming matrix and 6-platform client guides.'
+  : '2026专业网络可观测性选型实验室。全面实测光速云、微风网络等42家机场品牌，涵盖IEPL/IPLC物理专线晚高峰测速、ChatGPT/Claude解锁矩阵与全平台代理客户端下载配置。';
 
 const links = [
-  { href: localePath('/', locale), label: tr('nav.home') },
-  { href: localePath('/contact', locale), label: tr('nav.contact') },
+  { href: '/', label: '首页' },
+  { href: '/brands/', label: '品牌库' },
+  { href: '/brands/guangsu/', label: '光速云 (TOP 1)' },
+  { href: '/clients/', label: '客户端' },
+  { href: '/observatory/', label: '测速室' },
 ];
+
+const homeFaqs = [
+  {
+    q: '2026 年选购网络机场的核心指标有哪些？如何避免踩坑跑路？',
+    a: '首要看物理线路类型：优先选择运营 3 年以上、拥有真实 IEPL/IPLC 跨境内网专线的老牌机场（如光速云自 2020 年运营），专线不走公网 GFW，晚高峰极度稳定且防 QoS 封锁。其次，新手切忌一次性大额年付未知小作坊，建议优先选择月付或小额不限时套餐进行晚高峰测速验证。'
+  },
+  {
+    q: 'IEPL 专线、IPLC 专线与普通公网中转有何技术差异？',
+    a: '普通中转走公网隧道，敏感时期入口 IP 极易被墙或遭运营商限速；而 IEPL（国际以太网私有专线）与 IPLC（国际点对点专线）属于端到端二层物理内网传输，全程不经过公网网关，不仅抖动极低、零丢包，还能提供毫秒级的跨境内网互联。'
+  },
+  {
+    q: '为什么访问 ChatGPT、Claude 或 Netflix 经常遇到地域受限？',
+    a: 'OpenAI 与海外流媒体服务商会对数据中心机房 IP（如机房 ASN）进行极其严苛的风控封锁。本站推荐的优质品牌（如光速云、微风网络）均配备经过清洗的海外原生家庭住宅 IP 或商用原生落地，能够稳定防识别、防降级。'
+  },
+  {
+    q: '刚购买机场套餐，电脑和手机应该安装什么客户端？',
+    a: 'Windows / macOS 推荐使用现代开源的 Clash Verge Rev（内置 Mihomo 内核，支持 VLESS 与 TUN 虚拟网卡）；iOS 设备推荐在非大陆区 App Store 下载 Shadowrocket (小火箭)；Android 推荐 Sing-box 或 Clash Meta for Android。在机场后台一键复制订阅即可导入使用。'
+  }
+];
+
+const homeFaqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  'mainEntity': homeFaqs.map((faq) => ({
+    '@type': 'Question',
+    'name': faq.q,
+    'acceptedAnswer': {
+      '@type': 'Answer',
+      'text': faq.a,
+    },
+  })),
+};
 ---
 
-<StarterLayout title={tr('home.title')} description={tr('home.description')} lang={locale} siteName={env.PUBLIC_SITE_NAME} ogImage={ogImage}>
+<StarterLayout
+  title={homeTitle}
+  description={homeDescription}
+  lang={locale}
+  siteName={env.PUBLIC_SITE_NAME}
+>
+  <slot name="head" slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(homeFaqSchema)} />
+  </slot>
 
-  <Navbar slot="header" siteName="Astro v7" links={links}>
-    <a href={localePath('/', otherLocale)} class="text-xs font-medium text-text-secondary hover:text-text no-underline">{otherLocale.toUpperCase()}</a>
+  <Navbar slot="header" siteName={env.PUBLIC_SITE_NAME} links={links}>
     <ThemeToggle client:load />
   </Navbar>
 
-  <section class="mx-auto max-w-3xl px-6 py-16 text-center">
-    <h1 class="mb-4 text-[clamp(2rem,5vw,3.5rem)] font-extrabold leading-tight tracking-tight">{tr('home.title')}</h1>
-    <p class="mb-8 text-xl text-balance text-text-secondary">{tr('home.description')}</p>
-    <div class="flex flex-wrap justify-center gap-4">
-      <Button href="https://docs.astro.build" target="_blank" rel="noopener noreferrer">
-        {tr('home.cta.docs')}
-      </Button>
-      <Button href={localePath('/contact', locale)} variant="secondary">
-        {tr('home.cta.contact')}
-      </Button>
+  <!-- Hero Header -->
+  <div class="mx-auto max-w-6xl px-6 pt-12 pb-8 text-center">
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-xs font-mono font-semibold mb-6">
+      <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+      2026 网络可观测性实验室 · 42 家机场多维度遥测
     </div>
+
+    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-text tracking-tight max-w-4xl mx-auto leading-tight mb-6">
+      {locale === 'en' ? (
+        <>
+          Network Observability &<br class="hidden sm:inline" />
+          <span class="bg-gradient-to-r from-emerald-600 via-teal-500 to-sky-500 bg-clip-text text-transparent">
+            Global Proxy Infrastructure Guide
+          </span>
+        </>
+      ) : (
+        <>
+          专业网络可观测性评测与<br class="hidden sm:inline" />
+          <span class="bg-gradient-to-r from-emerald-600 via-teal-500 to-sky-500 bg-clip-text text-transparent">
+            跨境出海基础设施选型指南
+          </span>
+        </>
+      )}
+    </h1>
+
+    <p class="text-base sm:text-lg text-text-secondary max-w-2xl mx-auto leading-relaxed mb-8">
+      {locale === 'en'
+        ? 'Continuous benchmark monitoring of 42 proxy providers with IEPL dedicated lines, peak throughput, and AI unlock capability.'
+        : '基于真实独立探针，持续监控 42 家机场物理专线延迟、晚高峰吞吐与 ChatGPT/流媒体解锁可用性。搭配 6 大平台第三方客户端教程，助您畅联全球。'}
+    </p>
+
+    <!-- Quick CTA Buttons -->
+    <div class="flex flex-wrap items-center justify-center gap-3 text-sm font-mono">
+      <a
+        href="/brands/guangsu/"
+        class="px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-md shadow-emerald-600/20 transition-all no-underline"
+      >
+        👑 查看 TOP 1 主推：光速云
+      </a>
+      <a
+        href="/brands/"
+        class="px-5 py-3 rounded-xl border border-border bg-surface hover:bg-bg-secondary text-text font-semibold transition-all no-underline"
+      >
+        检索 42 家机场品牌库 →
+      </a>
+      <a
+        href="/clients/"
+        class="px-5 py-3 rounded-xl border border-border bg-surface hover:bg-bg-secondary text-text font-semibold transition-all no-underline"
+      >
+        💻 客户端下载配置
+      </a>
+    </div>
+  </div>
+
+  <!-- #1 Flagship Showcase (光速云) -->
+  <section class="mx-auto max-w-6xl px-6 py-6" aria-label="年度旗舰推荐">
+    <h2 class="sr-only">年度综合旗舰推荐：光速云</h2>
+    <FeaturedHero brand={featuredBrand} />
   </section>
 
-  <section class="mx-auto max-w-6xl px-6 pb-12">
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      <Card>
-        <h2 class="mb-2 text-xl font-bold">{tr('feature.astro.title')}</h2>
-        <p class="leading-relaxed text-text-secondary">{tr('feature.astro.desc')}</p>
-      </Card>
-      <Card>
-        <h2 class="mb-2 text-xl font-bold">{tr('feature.tailwind.title')}</h2>
-        <p class="leading-relaxed text-text-secondary">{tr('feature.tailwind.desc')}</p>
-      </Card>
-      <Card>
-        <h2 class="mb-2 text-xl font-bold">{tr('feature.svelte.title')}</h2>
-        <p class="leading-relaxed text-text-secondary">{tr('feature.svelte.desc')}</p>
-      </Card>
-      <Card>
-        <h2 class="mb-2 text-xl font-bold">{tr('feature.biome.title')}</h2>
-        <p class="leading-relaxed text-text-secondary">{tr('feature.biome.desc')}</p>
-      </Card>
-      <Card>
-        <h2 class="mb-2 text-xl font-bold">{tr('feature.zod.title')}</h2>
-        <p class="leading-relaxed text-text-secondary">{tr('feature.zod.desc')}</p>
-      </Card>
-      <Card>
-        <h2 class="mb-2 text-xl font-bold">{tr('feature.darkmode.title')}</h2>
-        <p class="leading-relaxed text-text-secondary">{tr('feature.darkmode.desc')}</p>
-      </Card>
-      <Card>
-        <h2 class="mb-2 text-xl font-bold">{tr('feature.webvitals.title')}</h2>
-        <p class="leading-relaxed text-text-secondary">{tr('feature.webvitals.desc')}</p>
-      </Card>
-    </div>
-  </section>
+  <!-- Top Tier Ladder Showcase -->
+  <section class="mx-auto max-w-6xl px-6 py-12">
+    <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-text tracking-tight flex items-center gap-2">
+          <span>🏆 2026 梯队优选推荐矩阵</span>
+        </h2>
+        <p class="text-sm text-text-secondary font-mono mt-1">
+          经过多轮晚高峰（20:00-23:00）测速与 IP 纯净度检测的优选梯队
+        </p>
+      </div>
 
-  <section class="mx-auto max-w-6xl px-6 pb-20">
-    <h2 class="mb-2 text-2xl font-bold">{tr('demo.title')}</h2>
-    <p class="mb-8 text-text-secondary">{tr('demo.description')}</p>
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      <div class="props-tilt rounded-xl border border-border bg-surface p-8" data-props-for="pointer-local">
-        <h3 class="mb-2 text-lg font-bold">{tr('demo.pointer.title')}</h3>
-        <p class="text-text-secondary">{tr('demo.pointer.desc')}</p>
-      </div>
-      <div class="rounded-xl border border-border bg-surface p-8" data-props-for="visibility">
-        <h3 class="mb-2 text-lg font-bold">{tr('demo.scroll.title')}</h3>
-        <p class="text-text-secondary">{tr('demo.scroll.desc')}</p>
-      </div>
-      <div class="rounded-xl border border-border bg-surface p-8">
-        <h3 class="mb-2 text-lg font-bold">{tr('demo.range.title')}</h3>
-        <p class="text-text-secondary">{tr('demo.range.desc')}</p>
-        <div data-props-for="range">
-          <input type="range" min="0" max="100" value="40" class="w-full" aria-label={tr('demo.range.title')} />
-          <div class="props-range-track"><div class="props-range-fill"></div></div>
-        </div>
-      </div>
-      <div class="rounded-xl border border-border bg-surface p-8" data-props-for="scroll-velocity">
-        <h3 class="mb-2 text-lg font-bold">{tr('demo.scrollvelocity.title')}</h3>
-        <p class="text-text-secondary">{tr('demo.scrollvelocity.desc')}</p>
-        <div class="props-scroll-meter"><div class="props-scroll-meter-fill"></div></div>
-      </div>
-      <div class="flex items-center gap-6 rounded-xl border border-border bg-surface p-8" data-props-for="clock">
-        <div class="props-clock-face" aria-hidden="true"><div class="props-clock-hand"></div></div>
+      <a href="/brands/" class="text-xs font-mono font-semibold text-emerald-600 dark:text-emerald-400 hover:underline">
+        查看完整 42 品牌清单与排序 →
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {otherTopBrands.map((brand) => (
+        <BrandCard brand={brand} />
+      ))}
+
+      <!-- Quick Browse Banner Card -->
+      <div class="flex flex-col justify-between rounded-2xl border-2 border-dashed border-border p-6 text-center hover:border-emerald-500/50 transition-colors bg-bg-secondary/20">
         <div>
-          <h3 class="mb-2 text-lg font-bold">{tr('demo.clock.title')}</h3>
-          <p class="text-text-secondary">{tr('demo.clock.desc')}</p>
+          <span class="text-3xl mb-3 block">🌐</span>
+          <h3 class="text-lg font-bold text-text mb-2">更多 36 家机场品牌</h3>
+          <p class="text-xs text-text-secondary leading-relaxed mb-4">
+            涵盖微风网络、暮光加速、大佬云、星岛梦、二猫云、无忧链接等主流品牌与历史归档。
+          </p>
         </div>
-      </div>
-      <div class="rounded-xl border border-border bg-surface p-8">
-        <h3 class="mb-2 text-lg font-bold">{tr('demo.random.title')}</h3>
-        <p class="text-text-secondary">{tr('demo.random.desc')}</p>
-        <div class="props-random-grid" aria-hidden="true">
-          {Array.from({ length: 12 }).map(() => (
-            <span class="props-random-dot" data-props-for="random" />
-          ))}
-        </div>
-      </div>
-      <div class="rounded-xl border border-border bg-surface p-8" data-props-for="viewport">
-        <h3 class="mb-2 text-lg font-bold">{tr('demo.viewport.title')}</h3>
-        <p class="text-text-secondary">{tr('demo.viewport.desc')}</p>
-        <p class="props-viewport-readout" aria-hidden="true"></p>
-      </div>
-      <div class="rounded-xl border border-border bg-surface p-8">
-        <h3 class="mb-2 text-lg font-bold">{tr('demo.size.title')}</h3>
-        <p class="text-text-secondary">{tr('demo.size.desc')}</p>
-        <div class="props-resize-box" data-props-for="size">
-          <span class="props-resize-readout" aria-hidden="true"></span>
-        </div>
-      </div>
-      <div class="rounded-xl border border-border bg-surface p-8">
-        <h3 class="mb-2 text-lg font-bold">{tr('demo.truncated.title')}</h3>
-        <p class="text-text-secondary">{tr('demo.truncated.desc')}</p>
-        <div class="props-truncate-demo">
-          <p class="props-truncate-text" data-props-for="truncated" data-props-to=".props-truncate-demo">{tr('demo.truncated.sample')}</p>
-          <span class="props-truncate-badge">{tr('demo.truncated.badge')}</span>
-        </div>
-      </div>
-      <div class="rounded-xl border border-border bg-surface p-8">
-        <h3 class="mb-2 text-lg font-bold">{tr('demo.color.title')}</h3>
-        <p class="text-text-secondary">{tr('demo.color.desc')}</p>
-        <div class="props-color-demo" data-props-for="color-input">
-          <input type="color" value="#2f7ed8" aria-label={tr('demo.color.title')} />
-          <div class="props-color-swatch" aria-hidden="true"></div>
-        </div>
+        <a
+          href="/brands/"
+          class="w-full py-2.5 px-4 rounded-xl bg-surface border border-border hover:bg-emerald-600 hover:text-white text-text font-semibold text-xs font-mono transition-colors no-underline block"
+        >
+          进入完整品牌库检索
+        </a>
       </div>
     </div>
   </section>
 
-  <MetadataDemo locale={locale} title={tr('home.title')} description={tr('home.description')} image={ogImage} security={!!env.PUBLIC_SECURITY_CONTACT} />
+  <!-- 6-Platform Clients Quick Guide -->
+  <section class="mx-auto max-w-6xl px-6 py-12">
+    <div class="rounded-3xl border border-border bg-gradient-to-b from-surface to-bg-secondary/30 p-8 sm:p-10 shadow-sm">
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-bold text-text tracking-tight">
+            💻 6 大平台官方开源客户端指南
+          </h2>
+          <p class="text-sm text-text-secondary mt-1">
+            Windows / macOS / iOS / Android / Linux / OpenWrt 软路由
+          </p>
+        </div>
+        <a
+          href="/clients/"
+          class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs font-mono transition-colors no-underline"
+        >
+          下载中心 & 教程 →
+        </a>
+      </div>
 
-  <footer slot="footer" class="border-t border-border px-6 py-8 text-center text-sm text-text-secondary">
-    <p>&copy; {new Date().getFullYear()} Astro v7 Starter. {tr('footer.built')} <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a>.</p>
-  </footer>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 font-mono text-center">
+        <a href="/clients/#platform-windows" class="p-3.5 rounded-xl border border-border bg-surface hover:border-blue-500/50 transition-all no-underline block">
+          <span class="text-2xl mb-1 block">🪟</span>
+          <span class="text-xs font-bold text-text block">Windows</span>
+          <span class="text-[10px] text-text-secondary">Clash Verge Rev</span>
+        </a>
 
+        <a href="/clients/#platform-macos" class="p-3.5 rounded-xl border border-border bg-surface hover:border-blue-500/50 transition-all no-underline block">
+          <span class="text-2xl mb-1 block">🍎</span>
+          <span class="text-xs font-bold text-text block">macOS</span>
+          <span class="text-[10px] text-text-secondary">Verge / Surge</span>
+        </a>
+
+        <a href="/clients/#platform-ios" class="p-3.5 rounded-xl border border-border bg-surface hover:border-blue-500/50 transition-all no-underline block">
+          <span class="text-2xl mb-1 block">📱</span>
+          <span class="text-xs font-bold text-text block">iOS</span>
+          <span class="text-[10px] text-text-secondary">Shadowrocket</span>
+        </a>
+
+        <a href="/clients/#platform-android" class="p-3.5 rounded-xl border border-border bg-surface hover:border-blue-500/50 transition-all no-underline block">
+          <span class="text-2xl mb-1 block">🤖</span>
+          <span class="text-xs font-bold text-text block">Android</span>
+          <span class="text-[10px] text-text-secondary">Sing-box</span>
+        </a>
+
+        <a href="/clients/#platform-linux" class="p-3.5 rounded-xl border border-border bg-surface hover:border-blue-500/50 transition-all no-underline block">
+          <span class="text-2xl mb-1 block">🐧</span>
+          <span class="text-xs font-bold text-text block">Linux</span>
+          <span class="text-[10px] text-text-secondary">v2rayA / Verge</span>
+        </a>
+
+        <a href="/clients/#platform-openwrt" class="p-3.5 rounded-xl border border-border bg-surface hover:border-blue-500/50 transition-all no-underline block">
+          <span class="text-2xl mb-1 block">🌐</span>
+          <span class="text-xs font-bold text-text block">OpenWrt</span>
+          <span class="text-[10px] text-text-secondary">OpenClash</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="mx-auto max-w-6xl px-6 py-12">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-10">
+      <h2 class="text-2xl sm:text-3xl font-bold text-text tracking-tight mb-2">
+        常见问题与技术答疑 (FAQ)
+      </h2>
+      <p class="text-sm text-text-secondary mb-8">
+        新手选型、物理专线防封锁及海外 AI/流媒体使用的关键解答
+      </p>
+
+      <div class="space-y-4">
+        {homeFaqs.map((faq, idx) => (
+          <details class="group rounded-xl border border-border bg-bg-secondary/40 p-5 transition-all">
+            <summary class="font-bold text-sm sm:text-base text-text cursor-pointer list-none flex items-center justify-between">
+              <span>{idx + 1}. {faq.q}</span>
+              <span class="text-text-secondary font-mono text-base transition-transform group-open:rotate-180">↓</span>
+            </summary>
+            <p class="text-xs sm:text-sm text-text-secondary leading-relaxed mt-3 pt-3 border-t border-border/60">
+              {faq.a}
+            </p>
+          </details>
+        ))}
+      </div>
+    </div>
+
+    <!-- Bottom Disclosure -->
+    <div class="mt-12">
+      <AffiliateDisclosure />
+    </div>
+  </section>
 </StarterLayout>

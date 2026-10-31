@@ -1,0 +1,231 @@
+---
+import StarterLayout from '@/layouts/StarterLayout.astro';
+import Navbar from '@astro-v7/shared/components/Navbar.astro';
+import ThemeToggle from '@astro-v7/shared/components/ThemeToggle.svelte';
+import { env } from '@/env';
+import { clientCategories } from '@astro-v7/shared/data/clients';
+import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
+import '@/styles/app.css';
+
+const title = '第三方代理客户端下载与全平台配置指南 (2026) - GitHub指南';
+const description = '覆盖 Windows、macOS、iOS、Android、Linux、OpenWrt 六大平台主流代理客户端（Clash Verge Rev、Shadowrocket、Sing-box、Surge、OpenClash 等）。提供官方开源下载地址、核心架构对比与新手导入教程。';
+
+const links = [
+  { href: '/', label: '首页' },
+  { href: '/brands/guangsu/', label: '光速云 (TOP 1)' },
+  { href: '/radar/', label: '🚨 跑路雷达' },
+  { href: '/observatory/', label: '⚡ 测速室' },
+  { href: '/clients/', label: '💻 客户端' },
+  { href: '/faq/', label: '📖 疑难百科' },
+  { href: '/free/', label: '🎁 免费资源' },
+  { href: '/brands/', label: '42家品牌库' },
+];
+
+const clientFaqs = [
+  {
+    q: '为什么各大机场都推荐使用 Clash Verge Rev 而不是旧版 Clash for Windows？',
+    a: 'Clash for Windows 早已于 2023 年底停止维护并不再更新内核。Clash Verge Rev 由活跃开源社区基于更强大的 Mihomo (Clash.Meta) 内核持续开发，不仅完全修复了安全漏洞，还原生支持 VLESS (Reality)、Hysteria 2、WireGuard 等新一代协议，并提供更完善的 TUN 虚拟网卡模式。'
+  },
+  {
+    q: 'iOS 设备如何在 App Store 下载 Shadowrocket (小火箭) 或 Loon？',
+    a: '由于政策限制，中国大陆区 App Store 无法搜索和下载此类代理软件。您需要准备一个非大陆区（如美区、日区、港区）的 Apple ID，登录 App Store 后搜索 Shadowrocket（约 $2.99 一次性购买）进行下载。'
+  },
+  {
+    q: 'TUN 虚拟网卡模式和系统代理（System Proxy）有什么区别？',
+    a: '系统代理仅对遵循系统环境变量的浏览器及少量常规软件生效；而 TUN 虚拟网卡模式会在系统层级创建虚拟网络接口，接管整台设备的所有 UDP/TCP 流量。如果要玩海外联机游戏、使用终端命令行或非代理协议软件，必须开启 TUN 模式。'
+  },
+  {
+    q: '如何将光速云或其他机场的订阅导入客户端？',
+    a: '登录机场官网后台，在「订阅中心」复制通用 Clash / Sing-box / V2Ray 订阅链接；打开客户端的「配置 / 订阅」界面，粘贴链接并点击更新。节点列表同步成功后，选择「规则分流」模式并连接低延迟香港或日本节点即可。'
+  }
+];
+
+const platformIcons: Record<string, string> = {
+  windows: '🪟',
+  macos: '🍎',
+  ios: '📱',
+  android: '🤖',
+  linux: '🐧',
+  openwrt: '🌐'
+};
+---
+
+<StarterLayout title={title} description={description} lang="zh" siteName={env.PUBLIC_SITE_NAME}>
+  <Navbar slot="header" siteName={env.PUBLIC_SITE_NAME} links={links}>
+    <ThemeToggle client:load />
+  </Navbar>
+
+  <!-- Header -->
+  <section class="mx-auto max-w-6xl px-6 pt-12 pb-8">
+    <div class="border-b border-border/80 pb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 text-xs font-mono font-semibold mb-3">
+        <span class="h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+        6 大平台覆盖 · 官方开源入口直达
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-text tracking-tight mb-3">
+        第三方代理客户端指南与官方下载
+      </h1>
+      <p class="text-base text-text-secondary max-w-3xl leading-relaxed">
+        提供 Windows、macOS、iOS、Android、Linux 以及 OpenWrt 软路由环境下的首选客户端清单。纯净无捆绑、直达官方 GitHub Release 与官方商店，拒绝第三方流氓打包。
+      </p>
+
+      <!-- Platform Quick Anchors -->
+      <div class="flex flex-wrap items-center gap-2 pt-6 font-mono text-xs">
+        {clientCategories.map((cat) => (
+          <a
+            href={`#platform-${cat.id}`}
+            class="px-3.5 py-1.5 rounded-lg border border-border bg-surface text-text-secondary hover:text-text hover:border-text-secondary transition-colors no-underline flex items-center gap-1.5"
+          >
+            <span>{platformIcons[cat.id] || '💻'}</span>
+            <span>{cat.platform}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Setup Step Banner -->
+  <section class="mx-auto max-w-6xl px-6 pb-12">
+    <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-6">
+      <h2 class="text-lg font-bold text-text mb-4 flex items-center gap-2">
+        <span class="text-emerald-500 font-bold">⚡</span>
+        <span>新手快速上手 3 步走</span>
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
+        <div class="p-3.5 rounded-xl border border-border/60 bg-surface">
+          <span class="text-emerald-600 dark:text-emerald-400 font-bold block mb-1">Step 1. 获取机场订阅</span>
+          <p class="text-text-secondary leading-relaxed">
+            前往推荐机场（如 <a href="/brands/guangsu/" class="text-emerald-600 dark:text-emerald-400 font-bold hover:underline">光速云</a>）注册账号，在控制台复制通用 Clash 或 Shadowrocket 订阅链接。
+          </p>
+        </div>
+        <div class="p-3.5 rounded-xl border border-border/60 bg-surface">
+          <span class="text-emerald-600 dark:text-emerald-400 font-bold block mb-1">Step 2. 安装对应客户端</span>
+          <p class="text-text-secondary leading-relaxed">
+            根据下方系统指引下载官方正版客户端（电脑首选 Clash Verge Rev，手机首选 Shadowrocket / Sing-box）。
+          </p>
+        </div>
+        <div class="p-3.5 rounded-xl border border-border/60 bg-surface">
+          <span class="text-emerald-600 dark:text-emerald-400 font-bold block mb-1">Step 3. 导入并启动代理</span>
+          <p class="text-text-secondary leading-relaxed">
+            将订阅链接粘贴至配置窗口更新节点，分流模式选择「Rule (规则分流)」，开启系统代理即可开箱畅游。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Platform Sections -->
+  <div class="mx-auto max-w-6xl px-6 space-y-16 pb-16">
+    {clientCategories.map((cat) => (
+      <section id={`platform-${cat.id}`} class="scroll-mt-24">
+        <!-- Platform Header -->
+        <div class="flex items-center gap-3 mb-2">
+          <span class="text-2xl">{platformIcons[cat.id] || '💻'}</span>
+          <h2 class="text-2xl font-bold text-text tracking-tight">
+            {cat.title}
+          </h2>
+        </div>
+        <p class="text-text-secondary text-sm mb-4 font-mono">
+          {cat.subtitle}
+        </p>
+
+        {cat.architectureNote && (
+          <div class="p-3.5 rounded-xl border border-amber-500/30 bg-amber-500/5 text-xs text-amber-800 dark:text-amber-300 font-mono mb-6 leading-relaxed">
+            ⚠️ 架构提醒: {cat.architectureNote}
+          </div>
+        )}
+
+        <!-- Client Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {cat.items.map((item) => (
+            <div class="flex flex-col justify-between rounded-2xl border border-border bg-surface p-5 hover:border-emerald-500/40 transition-all duration-200 shadow-sm">
+              <div>
+                <!-- Top Badge & Price -->
+                <div class="flex items-center justify-between gap-2 mb-3">
+                  {item.badge ? (
+                    <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+                      {item.badge}
+                    </span>
+                  ) : (
+                    <span class="text-xs font-mono text-text-secondary px-2 py-0.5 rounded bg-bg-secondary border border-border">
+                      通用软件
+                    </span>
+                  )}
+                  <span class="text-xs font-mono text-text-secondary">
+                    {item.pricing === 'Free' ? '开源免费' : (item.pricing === 'Paid' ? '付费购买' : '免费+高级版')}
+                  </span>
+                </div>
+
+                <!-- App Name -->
+                <h3 class="text-lg font-bold text-text mb-1">
+                  {item.name}
+                </h3>
+                <span class="text-xs font-mono text-text-secondary block mb-3">
+                  内核核心: <strong class="text-text font-semibold">{item.core}</strong>
+                </span>
+
+                <!-- Features -->
+                <p class="text-xs text-text-secondary leading-relaxed mb-3">
+                  {item.features}
+                </p>
+
+                <!-- Target Users -->
+                <div class="text-[11px] font-mono p-2 rounded-lg bg-bg-secondary/60 text-text-secondary mb-4 border border-border/50">
+                  <span class="text-text font-semibold">适宜场景:</span> {item.targetUsers}
+                </div>
+
+                {item.notes && (
+                  <p class="text-[11px] text-text-secondary/80 italic mb-4">
+                    * {item.notes}
+                  </p>
+                )}
+              </div>
+
+              <!-- Download Button -->
+              <div class="pt-3 border-t border-border/60">
+                <a
+                  href={item.url}
+                  target="_blank"
+                  rel="nofollow noopener noreferrer"
+                  aria-label={`直达 ${item.name} 官方下载 (${item.urlType})`}
+                  class="flex items-center justify-center gap-1.5 w-full py-2.5 px-3 rounded-xl bg-bg-secondary hover:bg-emerald-600 hover:text-white text-text font-semibold text-xs font-mono transition-colors border border-border no-underline"
+                >
+                  <span>直达 {item.name} 官方下载</span>
+                  <span>↗</span>
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+  </div>
+
+  <!-- Client FAQs -->
+  <section class="mx-auto max-w-6xl px-6 pb-16">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+      <h2 class="text-2xl font-bold text-text tracking-tight mb-6">
+        客户端常见问题与故障排查
+      </h2>
+
+      <div class="space-y-4">
+        {clientFaqs.map((faq, idx) => (
+          <details class="group rounded-xl border border-border bg-bg-secondary/40 p-5 transition-all">
+            <summary class="font-bold text-sm text-text cursor-pointer list-none flex items-center justify-between">
+              <span>{idx + 1}. {faq.q}</span>
+              <span class="text-text-secondary font-mono text-base transition-transform group-open:rotate-180">↓</span>
+            </summary>
+            <p class="text-xs text-text-secondary leading-relaxed mt-3 pt-3 border-t border-border/60">
+              {faq.a}
+            </p>
+          </details>
+        ))}
+      </div>
+    </div>
+
+    <!-- Bottom Disclosure -->
+    <div class="mt-12">
+      <AffiliateDisclosure />
+    </div>
+  </section>
+</StarterLayout>

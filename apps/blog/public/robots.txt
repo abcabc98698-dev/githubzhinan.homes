@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /web-vitals/
+
+Sitemap: https://githubzhinan.homes/sitemap.xml

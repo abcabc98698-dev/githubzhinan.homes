@@ -23,12 +23,12 @@ interface Props {
 
 const { locale, post } = Astro.props;
 const tr = t(locale);
-const otherLocale: Locale = locale === 'en' ? 'de' : 'en';
-const dateLocale = locale === 'de' ? 'de-DE' : 'en-US';
+const otherLocale: Locale = locale === 'zh' ? 'en' : 'zh';
+const dateLocale = locale === 'en' ? 'en-US' : 'zh-CN';
 
 const { title, description } = post.data;
 const slug = getPostSlug(post);
-const ogImage = new URL(`/og/${locale === 'de' ? 'de/' : ''}blog/${slug}.png`, Astro.site).href;
+const ogImage = new URL(`/og/${locale === 'en' ? 'en/' : ''}blog/${slug}.png`, Astro.site).href;
 const alternateHref = switchLocalePath(Astro.url.pathname, otherLocale);
 const links = [{ href: localePath('/', locale), label: tr('nav.home') }];
 const breadcrumbLabels: Record<string, string> = { blog: tr('breadcrumb.blog') };
@@ -38,10 +38,10 @@ const reading = calculateReadingTime(post.body ?? '');
 const readingTime = post.data.readTime ?? reading.readingTimeMinutes;
 ---
 
-<BaseLayout title={`${title} - Astro v7 Blog`} description={description} lang={locale} siteName={env.PUBLIC_SITE_NAME} ogImage={ogImage} articleAuthor={post.data.author} articleDate={post.data.date} articleModified={post.data.lastmod} articleKeywords={post.data.tags} articleWordCount={reading.wordCount} articleReadingTime={readingTime}>
+<BaseLayout title={`${title} - ${env.PUBLIC_SITE_NAME}`} description={description} lang={locale} siteName={env.PUBLIC_SITE_NAME} ogImage={ogImage} articleAuthor={post.data.author} articleDate={post.data.date} articleModified={post.data.lastmod} articleKeywords={post.data.tags} articleWordCount={reading.wordCount} articleReadingTime={readingTime}>
   <AutoBreadcrumbSchema slot="head" homeLabel={tr('breadcrumb.home')} labels={breadcrumbLabels} />
 
-  <Navbar slot="header" siteName="Astro v7 Blog" links={links}>
+  <Navbar slot="header" siteName={env.PUBLIC_SITE_NAME} links={links}>
     <a href={alternateHref} class="text-xs font-medium text-text-secondary hover:text-text no-underline">{otherLocale.toUpperCase()}</a>
     <ThemeToggle client:load />
   </Navbar>
@@ -87,7 +87,7 @@ const readingTime = post.data.readTime ?? reading.readingTimeMinutes;
   </div>
 
   <footer slot="footer" class="border-t border-border px-6 py-8 text-center text-sm text-text-secondary">
-    <p>&copy; {new Date().getFullYear()} Astro v7 Blog.</p>
+    <p>&copy; {new Date().getFullYear()} {env.PUBLIC_SITE_NAME}.</p>
   </footer>
 </BaseLayout>
 

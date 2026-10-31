@@ -13,6 +13,7 @@
     "./layouts/*": "./src/layouts/*",
     "./components/*": "./src/components/*",
     "./seo/*": "./src/seo/*",
+    "./data/*": "./src/data/*.ts",
     ".": "./src/utils/index.ts",
     "./utils": "./src/utils/index.ts",
     "./utils/*": "./src/utils/*.ts"

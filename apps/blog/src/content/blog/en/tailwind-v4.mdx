@@ -1,36 +1,19 @@
 ---
-title: 'Tailwind CSS v4 in Practice'
-description: 'How we use Tailwind v4 with CSS-first configuration and OKLCH colors in Astro v7.'
-date: 2026-02-23
-lastmod: 2026-09-26
-author: 'Astro v7 Template'
-tags: ['tailwind', 'css', 'design']
+title: 'Tailwind CSS v4 for Modern Developer Portals'
+description: 'Exploring Tailwind CSS v4 CSS-first configuration, OKLCH color palettes, and edge optimization.'
+date: 2026-03-01
+lastmod: 2026-03-01
+author: 'GitHub Guide Team'
+tags: ['tailwind', 'css', 'frontend', 'performance']
 ---
 
-Tailwind v4 introduces a fundamental shift: **CSS-first configuration** instead of JavaScript.
+Styling performance directly impacts Core Web Vitals and search rankings. Tailwind CSS v4 introduces fundamental architectural upgrades.
 
-## What Changed?
+## What Changed in Tailwind v4?
 
-- No more `tailwind.config.js` needed
-- Configuration directly in CSS via `@theme`
-- Native OKLCH colors
-- Built-in container queries
-- Significantly faster builds
+- **CSS-First Configuration**: No more `tailwind.config.js` required; config lives directly in CSS with `@theme` blocks
+- **Lightning CSS Integration**: Transform speeds are order-of-magnitude faster
+- **OKLCH Color Palette**: Vibrant wide-gamut colors with predictable perceptual lightness
+- **Container Queries**: First-class responsive containers without auxiliary plugins
 
-## Integration with Astro v7
-
-We use the Vite plugin directly:
-
-```javascript title="astro.config.mjs"
-import tailwindcss from '@tailwindcss/vite';
-
-export default defineConfig({
-  vite: {
-    plugins: [tailwindcss()],
-  },
-});
-```
-
-## Design Tokens
-
-Our design tokens use CSS custom properties with OKLCH colors for consistent, accessible color schemes in both light and dark mode.
+Combined with automated sitemaps and Cloudflare edge delivery, pages render instantly with zero layout shifts.

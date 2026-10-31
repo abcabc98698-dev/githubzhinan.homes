@@ -42,3 +42,6 @@ apps/*/public/og/
 
 # Build metrics
 astro-speed-measure-report.*
+
+# Scratch & temporary workspace
+scratch/

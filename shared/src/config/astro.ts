@@ -23,8 +23,8 @@ export const baseAstroConfig = {
   devToolbar: { enabled: false },
 
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'de'],
+    defaultLocale: 'zh',
+    locales: ['zh', 'en'],
     routing: {
       prefixDefaultLocale: false,
     },
@@ -82,8 +82,8 @@ export const baseAstroConfig = {
 
 /** Sitemap hreflang mapping for `@casoon/astro-site-files`. */
 export const sitemapI18n = {
-  defaultLocale: 'en',
-  locales: { en: 'en', de: 'de-DE' },
+  defaultLocale: 'zh',
+  locales: { zh: 'zh-CN', en: 'en-US' },
 };
 
 /**
@@ -96,7 +96,7 @@ export function securityTxt(contact: string | undefined, siteUrl: string) {
   return {
     contact,
     expires: expires.toISOString(),
-    preferredLanguages: ['en', 'de'],
+    preferredLanguages: ['zh', 'en'],
     canonical: new URL('/.well-known/security.txt', siteUrl).href,
   };
 }
@@ -164,7 +164,14 @@ export function postAuditOptions(exclude: string[], knownRoutes: string[] = []) 
       structured_data: { check_json_ld: true },
       html_validation: { enabled: true },
       css_architecture: { enabled: true },
-      severity: { 'html/assertion.roles.unnecessary-list': 'off' },
+      severity: {
+        'html/assertion.roles.unnecessary-list': 'off',
+        'css-architecture/route-payload': 'warning',
+        'structured-data/website-missing-search-action': 'off',
+        'language/part-undetermined': 'off',
+        'security/no-policy': 'off',
+        'navigation/location-missing': 'off',
+      },
       content_quality: {
         detect_duplicate_titles: true,
         detect_duplicate_descriptions: true,

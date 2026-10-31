@@ -96,7 +96,7 @@ export async function generateOgImage(
                   type: 'div',
                   props: {
                     style: { fontSize: 18, color: '#a0aec0' },
-                    children: 'Built with Astro v7',
+                    children: 'githubzhinan.homes',
                   },
                 },
               ],

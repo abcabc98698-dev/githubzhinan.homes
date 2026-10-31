@@ -12,80 +12,85 @@ export interface Props {
 }
 
 const { locale, title, description, image, blog = false, security = false } = Astro.props;
+
 const copy = {
+  zh: {
+    title: '常见问题与站点索引',
+    description:
+      '探索 GitHub指南 核心资源体系与结构化索引，包含权威站点地图、爬虫协议与大模型接入规范。',
+    files: '权威索引与规范文件',
+    questions: [
+      {
+        question: 'GitHub指南的核心定位与目标是什么？',
+        answer:
+          'GitHub指南 (githubzhinan.homes) 专注于为全球及中文开发者提供高效的 GitHub 协作技巧、Actions 工作流自动化实践、开源项目成长进阶与开发者工具链加速方案。',
+      },
+      {
+        question: '本站的内容更新机制与索引收录标准是什么？',
+        answer:
+          '所有推荐资源与实践指南均经过代码级验证与自动化测试，遵循高可用、SEO 友好及现代 Web 最佳工程规范，持续保持更新。',
+      },
+      {
+        question: '如何获取本站的最新动态或参与内容反馈？',
+        answer:
+          '您可以通过网站的联系页面提交反馈建议，或订阅 RSS 提要与查阅实时更新的 sitemap.xml 索引文件。',
+      },
+    ],
+  },
   en: {
-    title: 'Site files and structured data',
+    title: 'Frequently Asked Questions & Site Index',
     description:
-      'Open the generated files below. This page contains Organization, WebSite, WebPage and FAQPage JSON-LD; blog posts add BlogPosting and breadcrumbs.',
-    files: 'Generated site files',
+      'Explore GitHub Guide resources, structured sitemaps, crawler policies, and AI integration specifications.',
+    files: 'Site Index & Standards',
     questions: [
       {
-        question: 'What does llms.txt do?',
+        question: 'What is the primary purpose of GitHub Guide?',
         answer:
-          'It provides a site overview and links for AI tools. It does not grant access: this demo keeps the seoOnly crawler policy in robots.txt, which blocks known AI crawlers.',
+          'GitHub Guide (githubzhinan.homes) provides curated workflows, GitHub Actions CI/CD automation practices, open-source project guides, and developer acceleration resources.',
       },
       {
-        question: 'Where do the structured data come from?',
+        question: 'How are resources and guides maintained?',
         answer:
-          'Page content, article frontmatter and the shared site profile produce JSON-LD and matching canonical, Open Graph, Twitter and language tags. These questions and answers also appear as FAQPage data.',
+          'All guides and configurations are verified against modern web standards, maintaining strict SEO integrity, accessibility, and high performance.',
       },
       {
-        question: 'Are the organization details real?',
+        question: 'How can I stay updated with new content?',
         answer:
-          'No. The address, email, phone and team credits are demo placeholders. Replace them before publishing. Structured data describe content; they do not guarantee a rich search result.',
+          'You can subscribe to our RSS feed, follow our structured sitemap.xml, or reach out directly via the contact page.',
       },
     ],
   },
-  de: {
-    title: 'Site-Dateien und strukturierte Daten',
-    description:
-      'Öffne die erzeugten Dateien unten. Diese Seite enthält Organization-, WebSite-, WebPage- und FAQPage-JSON-LD; Blogartikel ergänzen BlogPosting und Breadcrumbs.',
-    files: 'Erzeugte Site-Dateien',
-    questions: [
-      {
-        question: 'Was macht die llms.txt?',
-        answer:
-          'Sie bietet KI-Werkzeugen eine Übersicht und Links zur Website. Sie erteilt keine Zugriffsrechte: Diese Demo behält die seoOnly-Regeln in robots.txt bei, die bekannte KI-Crawler ausschließen.',
-      },
-      {
-        question: 'Woher kommen die strukturierten Daten?',
-        answer:
-          'Seiteninhalte, Artikel-Frontmatter und das gemeinsame Site-Profil erzeugen JSON-LD sowie passende Canonical-, Open-Graph-, Twitter- und Sprach-Tags. Auch diese Fragen und Antworten erscheinen als FAQPage-Daten.',
-      },
-      {
-        question: 'Sind die Organisationsdaten echt?',
-        answer:
-          'Nein. Adresse, E-Mail, Telefon und Team-Angaben sind Demo-Platzhalter. Ersetze sie vor der Veröffentlichung. Strukturierte Daten beschreiben Inhalte; sie garantieren keine hervorgehobene Darstellung in Suchergebnissen.',
-      },
-    ],
-  },
-}[locale];
+}[locale] ?? {
+  title: '常见问题与站点索引',
+  description: '探索 GitHub指南 核心资源体系与结构化索引。',
+  files: '权威索引与规范文件',
+  questions: [],
+};
+
 const files = [
-  { href: '/sitemap.xml', label: 'sitemap.xml' },
-  { href: '/robots.txt', label: 'robots.txt' },
-  { href: '/llms.txt', label: 'llms.txt' },
-  { href: '/humans.txt', label: 'humans.txt' },
+  { href: '/sitemap.xml', label: 'sitemap.xml (网站地图)' },
+  { href: '/robots.txt', label: 'robots.txt (爬虫协议)' },
+  { href: '/llms.txt', label: 'llms.txt (AI 索引)' },
+  { href: '/humans.txt', label: 'humans.txt (团队与技术)' },
   ...(blog
     ? [
         {
-          href: locale === 'de' ? '/de/rss.xml' : '/rss.xml',
-          label: locale === 'de' ? 'RSS (DE)' : 'RSS (EN)',
+          href: locale === 'en' ? '/en/rss.xml' : '/rss.xml',
+          label: locale === 'en' ? 'RSS Feed (EN)' : 'RSS 订阅源',
         },
       ]
     : []),
-  ...(security ? [{ href: '/.well-known/security.txt', label: 'security.txt' }] : []),
+  ...(security ? [{ href: '/.well-known/security.txt', label: 'security.txt (安全声明)' }] : []),
 ];
 ---
 
-{/* FAQPage takes meta precedence over WebPage. Schema lets the FAQ carry the same page
-    metadata; the typed FAQSchema only accepts Q&A props. Both outputs use the visible Q&A. */}
 <Schema item={{
   '@type': 'FAQPage',
-  '@id': new URL(`${Astro.url.pathname}#metadata-demo`, Astro.site).href,
+  '@id': new URL(`${Astro.url.pathname}#faq`, Astro.site).href,
   name: title,
   description,
   image,
-  inLanguage: locale === 'de' ? 'de-DE' : 'en-US',
+  inLanguage: locale === 'en' ? 'en-US' : 'zh-CN',
   mainEntity: copy.questions.map(({ question, answer }) => ({
     '@type': 'Question',
     name: question,
@@ -93,18 +98,34 @@ const files = [
   })),
 }} />
 
-<section id="metadata-demo" class="mx-auto max-w-3xl px-6 pb-12" aria-labelledby="metadata-demo-title">
-  <h2 id="metadata-demo-title" class="mb-4 text-2xl font-bold">{copy.title}</h2>
-  <p class="mb-6 leading-relaxed text-text-secondary">{copy.description}</p>
-  <ul class="mb-6 flex list-none flex-wrap gap-4 p-0" role="list" aria-label={copy.files}>
-    {files.map(({ href, label }) => <li><a href={href} class="inline-block py-2">{label}</a></li>)}
-  </ul>
-  <dl class="space-y-6">
-    {copy.questions.map(({ question, answer }) => (
-      <div>
-        <dt class="mb-2 font-semibold">{question}</dt>
-        <dd class="leading-relaxed text-text-secondary">{answer}</dd>
-      </div>
-    ))}
-  </dl>
+<section id="faq" class="mx-auto max-w-4xl px-6 pb-16" aria-labelledby="faq-title">
+  <div class="rounded-2xl border border-border bg-surface p-8 shadow-sm">
+    <h2 id="faq-title" class="mb-3 text-2xl font-bold tracking-tight">{copy.title}</h2>
+    <p class="mb-8 leading-relaxed text-text-secondary">{copy.description}</p>
+
+    <div class="mb-10 space-y-6">
+      {copy.questions.map(({ question, answer }) => (
+        <div class="rounded-xl border border-border/70 bg-bg p-5">
+          <h3 class="mb-2 text-lg font-semibold text-text">{question}</h3>
+          <p class="leading-relaxed text-text-secondary text-sm">{answer}</p>
+        </div>
+      ))}
+    </div>
+
+    <div>
+      <h3 class="mb-3 text-sm font-semibold uppercase tracking-wider text-text-secondary">{copy.files}</h3>
+      <ul class="flex list-none flex-wrap gap-3 p-0" role="list">
+        {files.map(({ href, label }) => (
+          <li>
+            <a
+              href={href}
+              class="inline-flex items-center rounded-lg border border-border px-3.5 py-2 text-sm font-medium text-text-secondary transition-colors hover:border-accent hover:text-accent no-underline bg-bg"
+            >
+              {label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
 </section>

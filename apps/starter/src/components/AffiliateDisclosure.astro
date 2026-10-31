@@ -1,0 +1,19 @@
+---
+export interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<div class:list={['rounded-xl border border-border/80 bg-bg-secondary/40 p-4 text-xs text-text-secondary leading-relaxed font-sans', className]}>
+  <div class="flex items-start gap-2.5">
+    <span class="text-base leading-none">⚖️</span>
+    <div>
+      <p class="font-semibold text-text mb-1">合规披露与客观中立声明</p>
+      <p>
+        本站部分跳转链接包含合作推广标识（Affiliate / Sponsored），通过本站链接前往注册可享专属优惠码，不会增加您的实际支付成本，亦可能为实验室带来维持观测服务器运行的技术资助。所有测速、拓扑架构与流媒体解锁数据均基于独立网络探针客观记录，品牌方未参与评分评定。请严格遵守当地法律法规，仅用于合规跨境出海科研、软件开发与学术交流。
+      </p>
+    </div>
+  </div>
+</div>

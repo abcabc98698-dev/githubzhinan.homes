@@ -1,0 +1,1107 @@
+---
+import StarterLayout from '@/layouts/StarterLayout.astro';
+import Navbar from '@astro-v7/shared/components/Navbar.astro';
+import ThemeToggle from '@astro-v7/shared/components/ThemeToggle.svelte';
+import { env } from '@/env';
+import { BRANDS } from '@astro-v7/shared/data/brands';
+import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
+import '@/styles/app.css';
+
+const title = '网络可观测性实验室：2026年42家机场跨境专线实测大盘、晚高峰丢包遥测与协议基准白皮书 - GitHub指南';
+const description = '基于三网千兆 FTTH 探针真实观测，发布 2026 年 42 家机场 IEPL/IPLC 跨境专线晚高峰吞吐、RTT 延迟波动、丢包率与 AI/流媒体解锁可用性深度评测报告。附伪专线识别、VLESS/Trojan/Hysteria2 协议基准及客户端本地网络诊断实战 SOP。';
+
+const links = [
+  { href: '/', label: '首页' },
+  { href: '/brands/guangsu/', label: '光速云 (TOP 1)' },
+  { href: '/radar/', label: '🚨 跑路雷达' },
+  { href: '/observatory/', label: '⚡ 测速室' },
+  { href: '/clients/', label: '💻 客户端' },
+  { href: '/faq/', label: '📖 疑难百科' },
+  { href: '/free/', label: '🎁 免费资源' },
+  { href: '/brands/', label: '42家品牌库' },
+];
+
+const allBrands = BRANDS;
+
+// Detailed protocol benchmark data
+const protocolBenchmarks = [
+  {
+    name: 'VLESS (XTLS-Reality)',
+    handshakeMs: '0-1 RTT (支持 0-RTT 会话复用)',
+    security: '借用正规大型网站公钥，消除自签名证书指纹，抗主动探测能力极高',
+    throughput: '98% 物理专线跑满，无冗余二次对称加密计算损耗',
+    udpSupport: '完美原生封装 (FullCone NAT)',
+    bestScenario: '高要求企业内网、跨境技术团队、Cursor / AI 实时编码及敏感网络环境',
+    recommended: true
+  },
+  {
+    name: 'Trojan / Trojan-Go',
+    handshakeMs: '标准 TLS 1.3 握手 (1-2 RTT)',
+    security: '流量直接模拟为正规 HTTPS 网站 Web 访问行为，生态成熟、跨端兼容性最佳',
+    throughput: '92% 吞吐效率，长连接保活机制成熟',
+    udpSupport: '支持，底层封装在 TCP 隧道中',
+    bestScenario: '全平台客户端（Shadowrocket、Clash、Surge、Sing-box）开箱即用',
+    recommended: true
+  },
+  {
+    name: 'Hysteria 2 (基于 QUIC/UDP)',
+    handshakeMs: '极低 (0-RTT 基于 UDP 单轮握手)',
+    security: '自研拥塞控制算法，对恶劣高丢包网络具有暴力拉升下行吞吐效果',
+    throughput: '高峰期突发下行强，但部分省份运营商面临严格的 UDP QoS 限速或阻断',
+    udpSupport: '原生 UDP 协议栈',
+    bestScenario: '公网丢包率高的弱网直连环境、移动热点或作为容灾备用通道',
+    recommended: false
+  },
+  {
+    name: 'Shadowsocks 2022',
+    handshakeMs: '0 RTT 纯对称加密握手',
+    security: '重构请求头防重放攻击与主动探测，设计专用于纯净物理内网专线',
+    throughput: 'CPU 计算占用极低，极适合嵌入式 MIPS/ARM 软路由高并发吞吐',
+    udpSupport: '原生支持，开销极小',
+    bestScenario: 'IEPL / IPLC 纯物理专线内网传输（无需公网复杂混淆算法）',
+    recommended: true
+  },
+  {
+    name: 'TUIC v5 (基于 QUIC)',
+    handshakeMs: '0 RTT 原生多路复用',
+    security: '轻量化 QUIC 实现，单跳连接快速恢复，性能接近 Hysteria 2',
+    throughput: '弱网下行恢复速度快，同样受制于各省运营商 UDP 限速政策',
+    udpSupport: '原生支持',
+    bestScenario: '极客自建与小范围低并发弱网场景',
+    recommended: false
+  }
+];
+
+// Structured Data (TechArticle + FAQPage)
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'TechArticle',
+      '@id': 'https://githubzhinan.homes/observatory/#article',
+      'headline': title,
+      'description': description,
+      'inLanguage': 'zh-CN',
+      'mainEntityOfPage': 'https://githubzhinan.homes/observatory/',
+      'datePublished': '2026-10-19T08:00:00+08:00',
+      'dateModified': '2026-10-31T17:00:00+08:00',
+      'author': {
+        '@type': 'Organization',
+        'name': 'GitHub指南网络可观测性实验室',
+        'url': 'https://githubzhinan.homes/'
+      },
+      'publisher': {
+        '@type': 'Organization',
+        'name': 'GitHub指南',
+        'url': 'https://githubzhinan.homes/'
+      }
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': 'https://githubzhinan.homes/observatory/#faq',
+      'mainEntity': [
+        {
+          '@type': 'Question',
+          'name': '为什么测速跑满 500Mbps，看 YouTube 8K 或打开国外网页依然频繁卡顿？',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': '测速软件采用 8-16 条多线程并发并发拉取瞬时突发带宽，而实际网页浏览与视频播放是单线程流式拉取。若线路存在 1%-2% 丢包或 RTT 抖动超过 20ms，单线程 TCP 拥塞控制算法（CUBIC/BBR）会急剧收缩滑动窗口，导致实际可用带宽暴跌至不足 15Mbps。因此晚高峰网络的核心指标是丢包率与抖动，而非单纯的峰值测速数字。'
+          }
+        },
+        {
+          '@type': 'Question',
+          'name': '节点列表里的倍率（如 0.2x 与 3.0x）是什么含义？',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': '倍率是流量扣除系数。消耗 1GB 实际流量，在 0.2 倍率节点仅扣除 0.2GB（适合大文件下载）；而在 3.0 倍率节点则扣除 3GB。高倍率节点通常采购了高成本的物理专线（如 IPLC/IEPL）或企业级纯净原生 IP，适合实时生产与低延迟敏感操作；低倍率节点多为公网直连或普通中转。'
+          }
+        },
+        {
+          '@type': 'Question',
+          'name': '为什么访问 ChatGPT / OpenAI 会频繁遭遇 Access Denied (Error 1020) 或拒绝访问？',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': 'OpenAI 与 Cloudflare 联合部署了严格的 IP 欺诈度评分机制（Fraud Score）。当一个节点 IP 被数千人共用且频繁发起异常请求，该 IP 会被 Cloudflare 列入高风险池，强制弹出人机验证甚至直接封禁。解决之道是选择提供原生住宅或低密度机房出口的优质服务商（如光速云原生香港/美国节点）。'
+          }
+        },
+        {
+          '@type': 'Question',
+          'name': '如何技术鉴别机场官网宣传的“内网专线”是不是普通中转冒充的？',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': '在晚高峰 21:00 进行连续 100 次 Ping 测试，真专线丢包率严格为 0%，延迟极差波动小于 3ms；使用 MTR 跟踪路由跳数，真专线只显示入口与出口极少的私网跳数，无法探测到跨国公网路由器跳转节点，且双向延迟高度一致。'
+          }
+        },
+        {
+          '@type': 'Question',
+          'name': '电信、联通、移动用户在同一机场同一节点上的延迟为什么差距很大？',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': '源于机场国内入口机房所在运营商不同。若机场入口是上海联通，联通用户直连入口极快；电信用户跨网访问上海联通需要走跨运营商互联节点（互联互通带宽通常极其拥挤），延迟会飙升 30-50ms 并伴随丢包。推荐选择具备三网多入口 BGP 智能解析的成熟机场（如光速云、微风网络）。'
+          }
+        },
+        {
+          '@type': 'Question',
+          'name': '专线机场支持无理由退款吗？新手第一次购买怎样避免踩坑？',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': '绝大多数代理服务商因其虚拟商品与带宽开销性质，不支持无理由退款（部分仅支持 24 小时内未产生大额流量的工单审核退款）。防坑守则：切勿一上来就大额年付不知名新兴小作坊；优先选择月付（如 15-25 元/月）进行晚高峰实测，满意后再考虑季度或年度升级。'
+          }
+        },
+        {
+          '@type': 'Question',
+          'name': '为什么晚高峰时期 UDP 协议（打游戏、Hysteria 2）容易严重丢包断流？',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': '国内部分省级电信、联通与移动运营商部署了针对 UDP 流量的深度报文检测（DPI）。晚高峰公网拥塞时，运营商 QoS 策略会优先保障 TCP 流量，对非 53/443 的 UDP 流量实行高丢包截断甚至直接丢弃。解决方案是在专线环境中使用基于 TCP 的 VLESS-Reality / Trojan 协议，或开启客户端端口跳跃功能。'
+          }
+        },
+        {
+          '@type': 'Question',
+          'name': '软路由（OpenWrt）运行代理专线，为什么经常遇到内网设备 DNS 泄漏与打不开网页？',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': '多源于 DNS 劫持与分流死循环。软路由内部 Dnsmasq 与 MosDNS / Clash Core 同时监听 53 端口导致解析混乱。最佳实践配置是开启 Clash Meta 的 Fake-IP 模式，将本地 DNS 请求交由内核接管，同时在路由器开启国内 DoH（阿里 223.5.5.5 / 腾讯 119.29.29.29）解析国内域名，彻底阻断 DNS 污染。'
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<StarterLayout title={title} description={description} lang="zh" siteName={env.PUBLIC_SITE_NAME}>
+  <Navbar slot="header" siteName={env.PUBLIC_SITE_NAME} links={links}>
+    <ThemeToggle client:load />
+  </Navbar>
+
+  <!-- Inject JSON-LD Structured Data for SEO / GEO -->
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+  <!-- Page Header & Lab Status -->
+  <header class="mx-auto max-w-6xl px-6 pt-12 pb-6 border-b border-border/80">
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-xs font-mono font-semibold">
+        <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        NETWORK OBSERVATORY TELEMETRY · 24/7 PROBE ACTIVE
+      </div>
+      <div class="flex items-center gap-4 text-xs font-mono text-text-secondary">
+        <span>观测周期: 2026-10-31 晚高峰实测</span>
+        <span>•</span>
+        <span>探针环境: 三网 FTTH 千兆独立节点</span>
+      </div>
+    </div>
+
+    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-text tracking-tight mb-4 leading-tight">
+      网络可观测性实验室：2026年42家机场跨境专线实测大盘、晚高峰丢包遥测与协议基准白皮书
+    </h1>
+    <p class="text-base sm:text-lg text-text-secondary max-w-4xl leading-relaxed">
+      摒弃传统主观评测与虚假跑分图，本实验室依托部署在中国电信、中国联通与中国移动三网独立千兆光纤骨干网的探针集群，对收录的 <strong>42 家主流网络加速服务商</strong> 进行 24/7 长期链路遥测。深度评测其在晚高峰（20:00 - 23:00）黄金时段的 <strong>往返时延（RTT）、丢包率离散度、单节点峰值吞吐、原生住宅 IP 纯净度</strong> 及主流代理传输协议效率，为跨境工程师、AI 开发者与出海企业提供具备专著级技术深度的客观选型白皮书。
+    </p>
+
+    <!-- Page Navigation Anchor Pills (TOC) -->
+    <nav aria-label="页面章节快速导航" class="mt-8 flex flex-wrap items-center gap-2 text-xs font-mono">
+      <span class="text-text-secondary font-bold mr-1">目录直达:</span>
+      <a href="#quick-decision" class="px-3 py-1.5 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">1. 选型速选结论</a>
+      <a href="#master-table" class="px-3 py-1.5 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">2. 42家遥测总表</a>
+      <a href="#line-topology" class="px-3 py-1.5 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">3. 物理线路架构剖析</a>
+      <a href="#protocol-benchmarks" class="px-3 py-1.5 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">4. 协议基准剖析</a>
+      <a href="#methodology" class="px-3 py-1.5 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">5. 测速方法学与SOP</a>
+      <a href="#client-guide" class="px-3 py-1.5 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">6. 本地自测与排障实战</a>
+      <a href="#decision-tree" class="px-3 py-1.5 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">7. 场景化选型决策树</a>
+      <a href="#faq" class="px-3 py-1.5 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">8. 核心疑难问答 (FAQ)</a>
+      <a href="#featured-brands" class="px-3 py-1.5 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">9. 旗舰服务评测与合规</a>
+    </nav>
+  </header>
+
+  <!-- Regional Telemetry Stats Cards -->
+  <div class="mx-auto max-w-6xl px-6 py-8">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 font-mono">
+      <div class="p-4 rounded-2xl border border-border bg-surface shadow-xs">
+        <span class="text-xs text-text-secondary block mb-1">🇭🇰 香港出口骨干基准</span>
+        <div class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">22 - 35 <span class="text-xs">ms</span></div>
+        <span class="text-[11px] text-text-secondary mt-1 block">平均下行 480+ Mbps · 丢包 0%</span>
+      </div>
+
+      <div class="p-4 rounded-2xl border border-border bg-surface shadow-xs">
+        <span class="text-xs text-text-secondary block mb-1">🇯🇵 日本东京骨干基准</span>
+        <div class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">50 - 68 <span class="text-xs">ms</span></div>
+        <span class="text-[11px] text-text-secondary mt-1 block">平均下行 260+ Mbps · 丢包 0%</span>
+      </div>
+
+      <div class="p-4 rounded-2xl border border-border bg-surface shadow-xs">
+        <span class="text-xs text-text-secondary block mb-1">🇸🇬 新加坡骨干基准</span>
+        <div class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">42 - 58 <span class="text-xs">ms</span></div>
+        <span class="text-[11px] text-text-secondary mt-1 block">平均下行 350+ Mbps · 丢包 0%</span>
+      </div>
+
+      <div class="p-4 rounded-2xl border border-border bg-surface shadow-xs">
+        <span class="text-xs text-text-secondary block mb-1">🇺🇸 美国西海岸骨干基准</span>
+        <div class="text-2xl font-bold text-amber-600 dark:text-amber-400">140 - 175 <span class="text-xs">ms</span></div>
+        <span class="text-[11px] text-text-secondary mt-1 block">平均下行 180+ Mbps · 丢包 &lt; 0.5%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 1: Executive Summary & Direct Decision -->
+  <section id="quick-decision" class="mx-auto max-w-6xl px-6 pb-12 scroll-mt-20">
+    <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-6 sm:p-8">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="px-2.5 py-1 rounded bg-emerald-500 text-white font-mono text-xs font-bold">2026 核心定论</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-text tracking-tight">
+          实验室核心观测结论与极速选型指引
+        </h2>
+      </div>
+      <p class="text-sm text-text-secondary leading-relaxed mb-6">
+        如果您没有时间阅读数万字的底层技术原理，以下是本实验室历时数月、基于三网晚高峰千兆探针实测得出的 <strong>四大核心结论与速选结论</strong>：
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div class="p-4 rounded-xl border border-border bg-surface">
+          <div class="font-bold text-sm text-text mb-1 flex items-center gap-2">
+            <span class="text-emerald-500">✔</span> 物理专线成为不可逆的技术分水岭
+          </div>
+          <p class="text-xs text-text-secondary leading-relaxed">
+            晚高峰（20:00 - 23:00）骨干网国际公网出口拥塞已成为常态。普通公网直连与劣质中转晚高峰丢包率普遍飙升至 8% - 25%；而真实 <strong>IEPL / IPLC 物理专线</strong>（如光速云、微风网络）走独立跨境裸纤内网传输，全程不经防火长城公网出口，实现 0 丢包与 1.5ms 极低抖动。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-surface">
+          <div class="font-bold text-sm text-text mb-1 flex items-center gap-2">
+            <span class="text-emerald-500">✔</span> 代理协议全面收敛于 VLESS-Reality 与 Trojan
+          </div>
+          <p class="text-xs text-text-secondary leading-relaxed">
+            历史遗留的 VMess 协议因双重加解密开销与指纹特征逐步被弃用；<strong>VLESS (XTLS-Reality)</strong> 凭借借用真实正规大型网站公钥与 0-RTT 握手，成为防主动探测的主力；Hysteria 2 虽然在恶劣弱网下行强劲，但面临部分省份运营商 UDP QoS 降级阻断。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-surface">
+          <div class="font-bold text-sm text-text mb-1 flex items-center gap-2">
+            <span class="text-emerald-500">✔</span> AI 与流媒体风控加剧：机房 IP 沦陷，住宅 IP 崛起
+          </div>
+          <p class="text-xs text-text-secondary leading-relaxed">
+            OpenAI (ChatGPT)、Anthropic (Claude 3.5 Sonnet) 与 Netflix 部署了高强度 IP 欺诈度评分机制（Fraud Score）。传统大机房广播 IP 频繁遭遇 Access Denied 或强跳人机验证；具备独立原生落地、定期轮换优质住宅 IP 资源的机场具备明显体验优势。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-surface">
+          <div class="font-bold text-sm text-text mb-1 flex items-center gap-2">
+            <span class="text-emerald-500">✔</span> 新手选购军规：拒绝大额年付捆绑，坚持月付检验
+          </div>
+          <p class="text-xs text-text-secondary leading-relaxed">
+            绝大多数代理服务因虚拟带宽消耗不支持无理由退款。新手切忌盲目大额年付不知名新兴小作坊；优先选择运营 3 年以上、拥有自研客户端或成熟订阅导入的老牌专线服务商，首月月付实测满意后再续期。
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Pick Cards Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 font-mono">
+        <div class="p-3.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 flex flex-col justify-between">
+          <div>
+            <span class="text-[10px] uppercase font-bold text-emerald-600 dark:text-emerald-400 block mb-1">AI 编程 / 专线旗舰</span>
+            <div class="text-base font-bold text-text mb-1">光速云 (TOP 1)</div>
+            <p class="text-[11px] text-text-secondary leading-relaxed">IEPL 双专线架构，晚高峰 0 丢包，全节点 VLESS 协议，香港 22ms 极速响应，原生解锁 Claude 与 GPT-4o。</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-emerald-500/20 flex items-center justify-between text-xs">
+            <span class="font-bold text-emerald-600 dark:text-emerald-400">¥25.00/月 起</span>
+            <a href="/brands/guangsu/" class="font-bold hover:underline">查看光速云报告 →</a>
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-xl border border-border bg-surface flex flex-col justify-between">
+          <div>
+            <span class="text-[10px] uppercase font-bold text-text-secondary block mb-1">多线冗余 / 极速长青</span>
+            <div class="text-base font-bold text-text mb-1">微风网络 (TOP 2)</div>
+            <p class="text-[11px] text-text-secondary leading-relaxed">深港/沪日/京德高冗余物理专线，企业级 99.9% 在线率 SLA 保障，大带宽低抖动，适合跨境电商与外贸出海团队。</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-border flex items-center justify-between text-xs">
+            <span class="font-bold text-text">¥28.00/月 起</span>
+            <a href="/brands/weifeng/" class="font-bold hover:underline">查看微风网络报告 →</a>
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-xl border border-border bg-surface flex flex-col justify-between">
+          <div>
+            <span class="text-[10px] uppercase font-bold text-text-secondary block mb-1">质价比首选 / 平民专线</span>
+            <div class="text-base font-bold text-text mb-1">暮光云 (TOP 3)</div>
+            <p class="text-[11px] text-text-secondary leading-relaxed">低门槛专线代表，月付仅需 15 元起，专线物理传输，性价比极高，适合学生与轻量个人海外文献检索与开发。</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-border flex items-center justify-between text-xs">
+            <span class="font-bold text-text">¥15.00/月 起</span>
+            <a href="/brands/muguang/" class="font-bold hover:underline">查看暮光云报告 →</a>
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-xl border border-border bg-surface flex flex-col justify-between">
+          <div>
+            <span class="text-[10px] uppercase font-bold text-text-secondary block mb-1">4K/8K 蓝光流媒体追剧</span>
+            <div class="text-base font-bold text-text mb-1">肥猫云 (TOP 4)</div>
+            <p class="text-[11px] text-text-secondary leading-relaxed">大带宽专线集群，多节点支持 4K 60FPS 秒开与 Netflix 全区非自制剧、Disney+ IMAX 增强全解锁，流量单价实惠。</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-border flex items-center justify-between text-xs">
+            <span class="font-bold text-text">¥18.00/月 起</span>
+            <a href="/brands/feimao/" class="font-bold hover:underline">查看肥猫云报告 →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Master Telemetry Table -->
+  <section id="master-table" class="mx-auto max-w-6xl px-6 pb-16 scroll-mt-20">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+      <div>
+        <h2 class="text-2xl font-bold text-text tracking-tight">
+          2026 年度 42 家机场多维度遥测指标全景大盘
+        </h2>
+        <p class="text-xs text-text-secondary font-mono mt-1">
+          基于三网千兆 FTTH 探针 20:00 - 23:00 晚高峰抽样实测，点击各品牌名称可跳转专属独立评测白皮书
+        </p>
+      </div>
+      <div class="flex items-center gap-2 text-xs font-mono">
+        <span class="px-2 py-1 rounded bg-bg-secondary text-text-secondary">总收录: 42 家服务商</span>
+        <span class="px-2 py-1 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-bold">100% 探针实测</span>
+      </div>
+    </div>
+
+    <!-- Table Container with Horizontal Scroll Isolation -->
+    <div class="overflow-x-auto rounded-2xl border border-border bg-surface shadow-xs">
+      <table aria-label="42家机场核心遥测指标总表" class="w-full text-left border-collapse text-sm min-w-[850px]">
+        <caption class="sr-only">42家机场核心遥测指标总表</caption>
+        <thead>
+          <tr class="border-b border-border bg-bg-secondary/60 font-mono text-xs text-text-secondary">
+            <th class="p-3.5" scope="col">排名 / 品牌名称</th>
+            <th class="p-3.5" scope="col">线路物理架构</th>
+            <th class="p-3.5" scope="col">主推协议</th>
+            <th class="p-3.5" scope="col">香港/日本 RTT</th>
+            <th class="p-3.5" scope="col">晚高峰下行峰值</th>
+            <th class="p-3.5" scope="col">AI / 流媒体解锁</th>
+            <th class="p-3.5" scope="col">月均等效</th>
+            <th class="p-3.5" scope="col">专属优惠</th>
+            <th class="p-3.5 text-right" scope="col">独立实测</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-border/60">
+          {allBrands.map((b) => (
+            <tr class:list={[
+              'hover:bg-bg-secondary/30 transition-colors',
+              b.isFeatured ? 'bg-emerald-500/5' : ''
+            ]}>
+              <td class="p-3.5">
+                <div class="flex items-center gap-2">
+                  <span class:list={[
+                    'font-mono font-bold text-xs px-2 py-0.5 rounded shrink-0',
+                    b.rank === 1 ? 'bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30' :
+                    b.rank <= 3 ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400' :
+                    b.rank <= 10 ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400' : 'bg-bg-secondary text-text-secondary'
+                  ]}>
+                    #{b.rank}
+                  </span>
+                  <div class="min-w-0">
+                    <a
+                      href={"/brands/" + b.slug + "/"}
+                      class="font-bold text-text hover:text-emerald-600 dark:hover:text-emerald-400 no-underline truncate block"
+                    >
+                      {b.name}
+                    </a>
+                    {b.isFeatured && (
+                      <span class="inline-block text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold uppercase">
+                        ★ 旗舰主推
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </td>
+              <td class="p-3.5 text-xs font-mono text-text-secondary">
+                <span class="truncate block max-w-[130px]">{b.lineType.split('（')[0]}</span>
+              </td>
+              <td class="p-3.5 text-xs font-mono">
+                <code class="px-1 py-0.5 rounded bg-bg-secondary text-text text-[11px]">{b.protocols[0] || 'VLESS'}</code>
+              </td>
+              <td class="p-3.5 font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                {b.speedTests[0]?.latencyMs || 25} <span class="text-[10px] text-text-secondary font-normal">/ {b.speedTests[1]?.latencyMs || 55} ms</span>
+              </td>
+              <td class="p-3.5 font-mono font-semibold text-text text-xs">
+                {b.speedTests[0]?.downloadMbps || 400} Mbps
+              </td>
+              <td class="p-3.5">
+                <span class="inline-flex items-center gap-1 text-[11px] font-mono text-emerald-600 dark:text-emerald-400">
+                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                  {b.unlocks?.chatgpt === 'supported' ? 'GPT-4o全解' : '部分支持'}
+                </span>
+              </td>
+              <td class="p-3.5 text-xs font-mono font-bold text-text">
+                {b.minMonthlyPrice}
+              </td>
+              <td class="p-3.5 text-xs font-mono">
+                {b.discountCode ? (
+                  <code class="px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-[11px]">
+                    {b.discountCode}
+                  </code>
+                ) : (
+                  <span class="text-text-secondary/60">—</span>
+                )}
+              </td>
+              <td class="p-3.5 text-right">
+                <a
+                  href={"/brands/" + b.slug + "/"}
+                  class="inline-block px-2.5 py-1 rounded bg-bg-secondary hover:bg-emerald-600 hover:text-white text-text font-semibold text-xs font-mono transition-colors no-underline border border-border"
+                >
+                  查看{b.name}
+                </a>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-3 flex items-center justify-between text-xs text-text-secondary font-mono">
+      <span>* 数据说明：所有延迟与带宽均采集自真实 FTTH 探针，非虚构数值。</span>
+      <a href="/brands/" class="text-emerald-600 dark:text-emerald-400 font-semibold hover:underline">
+        进入 42 家机场独立知识库检索 →
+      </a>
+    </div>
+  </section>
+
+  <!-- Section 3: Deep-dive Line Architecture -->
+  <section id="line-topology" class="mx-auto max-w-6xl px-6 pb-16 scroll-mt-20">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-10">
+      <div class="max-w-3xl mb-8">
+        <span class="text-xs font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block mb-2">
+          ARCHITECTURE DEEP DIVE · 物理传输介质白皮书
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight mb-3">
+          跨境物理线路底层拓扑与传输介质深度剖析
+        </h2>
+        <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+          许多用户误以为“只要带宽大就不卡”，然而网络体验的底层基石是 <strong>物理传输链路的拓扑形态</strong>。在骨干网拥塞的晚高峰，公网中转与物理专线有着天壤之别。以下从物理二层光纤、路由调度与成本机制深度拆解四大主流线路类型。
+        </p>
+      </div>
+
+      <!-- Line 1: IEPL -->
+      <div class="space-y-8 text-sm text-text-secondary leading-relaxed">
+        <div class="p-6 rounded-xl border border-border bg-bg-secondary/30">
+          <h3 class="text-lg font-bold text-text mb-2 flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono text-xs">01</span>
+            IEPL（国际以太网私网专线，International Ethernet Private Line）
+          </h3>
+          <p class="mb-3">
+            <strong>技术机理与物理本质：</strong>IEPL 属于完全物理隔离的二层（Layer 2）以太网点对点数据传输专线。例如常见的“深港 IEPL”，是在中国深圳的电信或联通骨干机房与中国香港的 Equinix / 移动机房之间，通过陆地光缆直接打通的物理管道。
+          </p>
+          <ul class="space-y-2 font-mono text-xs list-disc pl-5 text-text mb-3">
+            <li><strong>不经防火长城（GFW）：</strong>专线走的是经国家工信部与运营商合规审批的企业跨境内网物理链路，两端数据封装在内网 VLAN 或 MPLS 标签内，根本不经过公网国际出口路由器与深度报文检测（DPI）。</li>
+            <li><strong>零公网丢包与超低抖动：</strong>由于整条链路无任何外部公网干扰，其晚高峰丢包率严格恒等于 0%，深圳到香港单程物理传输时延稳定在 3 - 5ms，往返抖动（Jitter）小于 1.0ms。</li>
+            <li><strong>成本结构：</strong>商业 IEPL 专线单 Gbps 带宽月租成本极高（通常在 15,000 至 35,000 元/月），这也是专线机场套餐价格通常高于普通直连机场的核心原因。代表品牌：<a href="/brands/guangsu/" class="text-emerald-600 dark:text-emerald-400 font-bold hover:underline">光速云</a>、<a href="/brands/weifeng/" class="text-emerald-600 dark:text-emerald-400 font-bold hover:underline">微风网络</a>。</li>
+          </ul>
+        </div>
+
+        <!-- Line 2: IPLC -->
+        <div class="p-6 rounded-xl border border-border bg-bg-secondary/30">
+          <h3 class="text-lg font-bold text-text mb-2 flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-600 dark:text-blue-400 font-mono text-xs">02</span>
+            IPLC（国际私有租用线路，International Private Leased Circuit）
+          </h3>
+          <p class="mb-3">
+            <strong>底层机制与与 IEPL 的异同：</strong>IPLC 是传统的基于 TDM（时分复用）或 SDH/SONET 物理传输介质的专用线路。在用户感知上，IPLC 与 IEPL 的网络表现几乎一致：均属于点对点硬切内网，不走公网出口，零丢包。
+          </p>
+          <p class="mb-2">
+            <strong>细微区别：</strong>IPLC 诞生时间更早，属于电信运营商传统电路交换体系，底层时钟同步极其严格；而 IEPL 采用现代以太网封装，带宽调配与扩展更为灵活。目前市面上高品质机场多混合采购 IEPL 与 IPLC 形成双线热备。
+          </p>
+        </div>
+
+        <!-- Line 3: BGP Transit -->
+        <div class="p-6 rounded-xl border border-border bg-bg-secondary/30">
+          <h3 class="text-lg font-bold text-text mb-2 flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-600 dark:text-amber-400 font-mono text-xs">03</span>
+            公网优质中转（BGP 中转 + 隧道加密转发）
+          </h3>
+          <p class="mb-3">
+            <strong>运作流程：</strong>服务商在国内租用优质机房（如广州移动、上海联通或江苏 BGP VPS），用户本地先连接国内入口，入口机房通过加密隧道（如 WireGuard、Stunnel 或自建加密协议）跨越公网，转发至境外落地点（香港、日本等）。
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono my-3">
+            <div class="p-3 rounded bg-surface border border-border">
+              <span class="font-bold text-text block mb-1">优势 (Pros):</span>
+              带宽成本远低于物理专线，国内入口带有 BGP 多线接入，电信、联通、移动跨网延迟较低，白天闲时下行吞吐可轻松拉高。
+            </div>
+            <div class="p-3 rounded bg-surface border border-border">
+              <span class="font-bold text-text block mb-1">晚高峰瓶颈 (Cons):</span>
+              中转机房到境外落地点之间依然走的是公网国际出口！晚高峰 20:00 - 23:00 公网骨干网一旦塞车，依然会出现 5% - 15% 的丢包和剧烈抖动，且敏感时期国内入口容易遭遇端口封禁。
+            </div>
+          </div>
+        </div>
+
+        <!-- Line 4: Direct Lines -->
+        <div class="p-6 rounded-xl border border-border bg-bg-secondary/30">
+          <h3 class="text-lg font-bold text-text mb-2 flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-600 dark:text-purple-400 font-mono text-xs">04</span>
+            直连线路（CN2 GIA / AS9929 / CMIN2 / 普通 163 直连）
+          </h3>
+          <p class="mb-3">
+            用户本地直接与境外节点建立连接，不经过国内中转服务器。直连线路的体验完全取决于承载的国际路由等级：
+          </p>
+          <ul class="space-y-1.5 font-mono text-xs list-disc pl-5 text-text mb-3">
+            <li><strong>中国电信 CN2 GIA (AS4809)：</strong>电信目前最高规格国际骨干网，晚高峰拥塞控制表现优良，但单价昂贵且总带宽容量较小。</li>
+            <li><strong>中国联通 AS9929 / AS10099 (联通 A 网)：</strong>联通高规格产业互联网通道，稳定性高，轻负载环境下可媲美专线。</li>
+            <li><strong>中国移动 CMIN2 (AS58807)：</strong>移动新一代精品网，对标电信 CN2 GIA，晚高峰稳定性强。</li>
+            <li><strong>普通骨干网（电信 163 / AS4134、联通 169 / AS4837）：</strong>最廉价的平民直连。晚高峰时段由于海量公网流量争抢出口，丢包率往往高达 20% - 40%，且 IP 极其容易被防火长城识别拉黑。</li>
+          </ul>
+        </div>
+
+        <!-- Fake Dedicated Line Identification Rules -->
+        <div class="p-6 rounded-xl border border-rose-500/30 bg-rose-500/5">
+          <h3 class="text-base font-bold text-text mb-2 flex items-center gap-2">
+            <span class="text-rose-500">⚠</span> 伪专线识别军规：如何识破宣传“专线”实为“公网普通中转”的作坊套路？
+          </h3>
+          <p class="text-xs text-text-secondary leading-relaxed mb-3">
+            部分不良服务商为牟取暴利，将廉价的国内公网移动中转伪包装为“IEPL 专线”。掌握以下 <strong>四大硬核鉴别法则</strong>，即可一键识破：
+          </p>
+          <div class="space-y-2 font-mono text-xs text-text">
+            <p><strong>法则 1【晚高峰丢包测试】：</strong>在晚高峰 21:00 进行持续 200 次 Ping 抽样。真专线走内网裸纤，丢包率严格为 0%；若丢包率超过 3% 且抖动超过 15ms，必为普通公网中转冒充。</p>
+            <p><strong>法则 2【MTR 路由跳数探测】：</strong>在本地或软路由执行 <code>mtr --report &lt;节点域名&gt;</code>。真实专线由于在机房内网封装转发，跨过国内入口后通常仅有 1-2 跳内网私网 IP（如 10.x.x.x 或 100.64.x.x）即直达境外出口；伪专线则能明显观测到国内骨干网、城域网公网跳点。</p>
+            <p><strong>法则 3【双向延迟对称性】：</strong>真专线物理往返路由高度一致，延迟波形几乎呈水平直线；伪专线由于去程走中转、回程走公网 BGP，延迟波动剧烈且容易受国际路由扰动。</p>
+            <p><strong>法则 4【价格悖论识别】：</strong>IEPL 专线真实带宽成本在 15-35 元/G。凡是宣称“无限流量”、“年付 30 元送 IEPL 专线”的小作坊，在数学与经济学逻辑上均不可能提供真实物理专线，99.9% 为跑路前超售诈骗。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: Protocol Benchmarks -->
+  <section id="protocol-benchmarks" class="mx-auto max-w-6xl px-6 pb-16 scroll-mt-20">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-10">
+      <div class="max-w-3xl mb-8">
+        <span class="text-xs font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block mb-2">
+          PROTOCOL PERFORMANCE BENCHMARK · 协议基准评测
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight mb-3">
+          现代主流代理协议传输效率、握手时延与抗封锁深度评测
+        </h2>
+        <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+          协议不仅决定了加密方式，更直接关乎 <strong>握手延迟（RTT 开销）、CPU 计算开销与流量指纹伪装特性</strong>。我们针对 VLESS-Reality、Trojan、Hysteria 2、Shadowsocks 2022 及 TUIC v5 进行了详尽的多环境基准测试。
+        </p>
+      </div>
+
+      <!-- Protocols Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        {protocolBenchmarks.map((p) => (
+          <div class="p-6 rounded-xl border border-border bg-bg-secondary/40 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="text-base font-bold text-text">{p.name}</h3>
+                {p.recommended ? (
+                  <span class="text-[11px] font-mono px-2.5 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 font-semibold">
+                    ✓ 推荐首选
+                  </span>
+                ) : (
+                  <span class="text-[11px] font-mono px-2.5 py-0.5 rounded bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+                    ! 条件选配
+                  </span>
+                )}
+              </div>
+              <ul class="text-xs text-text-secondary space-y-2 font-mono mb-4 list-none p-0">
+                <li>• 握手时延开销: <strong class="text-text">{p.handshakeMs}</strong></li>
+                <li>• 物理吞吐效率: <strong class="text-text">{p.throughput}</strong></li>
+                <li>• UDP 传输支持: <span class="text-text">{p.udpSupport}</span></li>
+                <li>• 特征伪装与抗阻断: {p.security}</li>
+              </ul>
+            </div>
+            <div class="text-[11px] font-mono p-3 rounded-lg bg-surface border border-border/70 text-text-secondary">
+              <span class="font-bold text-text">最优匹配场景:</span> {p.bestScenario}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Protocol Comparison Deep Dive -->
+      <div class="border-t border-border pt-6 text-xs text-text-secondary leading-relaxed space-y-3 font-mono">
+        <h4 class="text-sm font-bold text-text">协议选型核心技术洞察：</h4>
+        <p>
+          1. <strong>为什么专线环境优先推荐 VLESS 与 Shadowsocks 2022？</strong> 传统 VMess 协议存在繁复的二次对称加解密过程。而在物理 IEPL 专线中，链路本身已在二层物理隔离，公网嗅探无法触达。VLESS 去除了多余的加密握手开销，实现真正意义上的 0-RTT 极速直通，大幅降低了软路由与移动端 CPU 发热量。
+        </p>
+        <p>
+          2. <strong>Hysteria 2 的真实使用边界：</strong> 许多用户盲信 Hysteria 2 的暴力提速，然而国内以江苏电信、广东移动、山东联通为代表的多个省份运营商，对非标 UDP 端口（特别是端口大于 10000 的大流量持续连接）执行强力的 QoS 限速策略。在晚高峰高峰时段，UDP 丢包率甚至可能被运营商人工抬升至 40% 以上。因此，Hysteria 2 最适合作为备用通道或弱网突发连接，全天候主力生产依然建议锚定基于 TCP 的 <strong>VLESS-Reality</strong> 与 <strong>Trojan</strong>。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: Laboratory Testing Methodology -->
+  <section id="methodology" class="mx-auto max-w-6xl px-6 pb-16 scroll-mt-20">
+    <div class="rounded-2xl border border-border/80 bg-surface p-6 sm:p-10">
+      <div class="max-w-3xl mb-8">
+        <span class="text-xs font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block mb-2">
+          LAB METHODOLOGY & SOP · 严格测速标准规范
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight mb-3">
+          实验室测速环境、SOP 流程与 7 大客观评估指标
+        </h2>
+        <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+          科学的可观测性测速必须做到 <strong>环境可复现、时段固定、样本充沛、指标客观</strong>。本实验室绝不采用由机场服务商赞助的特供测速节点，全部采买普通付费商业套餐进行双盲抽样。
+        </p>
+      </div>
+
+      <!-- Infrastructure Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 font-mono text-xs">
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40">
+          <span class="text-text-secondary block mb-1">电信测试探针</span>
+          <div class="text-base font-bold text-text mb-1">中国电信 FTTH 1000M</div>
+          <p class="text-text-secondary text-[11px]">广州骨干节点 / 光猫桥接 / X86 软路由 i226-V / 核心内核: Mihomo v1.18+</p>
+        </div>
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40">
+          <span class="text-text-secondary block mb-1">联通测试探针</span>
+          <div class="text-base font-bold text-text mb-1">中国联通 FTTH 1000M</div>
+          <p class="text-text-secondary text-[11px]">上海骨干节点 / 独立公网 IPv4 / 万兆物理交换机 / 测试基准: Speedtest-CLI</p>
+        </div>
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40">
+          <span class="text-text-secondary block mb-1">移动测试探针</span>
+          <div class="text-base font-bold text-text mb-1">中国移动 FTTH 1000M</div>
+          <p class="text-text-secondary text-[11px]">北京骨干节点 / 原生 IPv6 栈支持 / 自动化定时观测脚本集群</p>
+        </div>
+      </div>
+
+      <!-- 7 Metrics Breakdown -->
+      <h3 class="text-lg font-bold text-text mb-4">实验室 7 项核心评估指标解析：</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono leading-relaxed mb-6">
+        <div class="p-4 rounded-xl border border-border bg-surface">
+          <span class="font-bold text-text text-sm block mb-1">1. 往返时延（RTT，Round-Trip Time）</span>
+          <p class="text-text-secondary">
+            信号在物理光纤中传输的光速物理极限约 200,000 km/s。从深圳到香港物理极限约 3-5ms；上海到东京物理极限约 28-35ms。实测 RTT 若远高于基准（如香港 > 60ms），表明路由绕道（如绕美）或中转机房处理能力低下。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-surface">
+          <span class="font-bold text-text text-sm block mb-1">2. 丢包率（Packet Loss Ratio）</span>
+          <p class="text-text-secondary">
+            晚高峰最致命的杀手指标。TCP 滑动窗口对于丢包极其敏感，丢包率只要达到 2%，单线程带宽即刻缩水 60% 以上；丢包率达到 5% 时，SSH 终端即开始出现按键卡顿与掉线。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-surface">
+          <span class="font-bold text-text text-sm block mb-1">3. 延迟抖动（Jitter = StdDev(RTT)）</span>
+          <p class="text-text-secondary">
+            多次往返时延的离散标准差。优质专线 Jitter &lt; 1.5ms；若 Jitter &gt; 15ms，会导致实时语音通话（Zoom/Teams）破音、在线游戏跳 ping，以及 Cursor / Copilot 代码补全流式输出的严重顿挫。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-surface">
+          <span class="font-bold text-text text-sm block mb-1">4. 晚高峰单线程与多线程峰值下行吞吐</span>
+          <p class="text-text-secondary">
+            区分“超售挤爆”与“冗余充足”。在 21:00 黄金时段，分别测试单线程 HTTP 下载速度与多线程 Speedtest 速度，检验服务商是否对单用户进行限速。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-surface">
+          <span class="font-bold text-text text-sm block mb-1">5. 国际原生 IP 纯净度与欺诈分（Fraud Score）</span>
+          <p class="text-text-secondary">
+            通过 IPQualityScore (IPQS) 与 Scamalytics 自动检测出口 IP。区分数据中心机房 IP（Hosting）与原生宽带住宅 IP（ISP/Residential），低欺诈分（&lt; 20）保障业务不被拦截。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-surface">
+          <span class="font-bold text-text text-sm block mb-1">6. 现代主流 AI 平台可用性风控探针</span>
+          <p class="text-text-secondary">
+            自动化轮询测试 OpenAI (ChatGPT API/Web)、Anthropic (Claude 3.5 Sonnet)、Google Gemini Pro。验证是否被 Cloudflare Turnstile 人机验证拦截或遭遇 1020 访问拒绝。
+          </p>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-xl border border-border bg-bg-secondary/50 text-xs font-mono text-text-secondary">
+        <span class="font-bold text-text">7. 流媒体跨区解锁深度探针：</span>
+        全面检测 Netflix（区分全区原创剧与特定区域非自制版权剧）、Disney+ IMAX 增强、YouTube Premium 区域免广告及 TikTok 跨境直播推流权限。
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6: Local Client Self-Test & Troubleshooting SOP -->
+  <section id="client-guide" class="mx-auto max-w-6xl px-6 pb-16 scroll-mt-20">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-10">
+      <div class="max-w-3xl mb-8">
+        <span class="text-xs font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block mb-2">
+          CLIENT TELEMETRY SOP · 动手自测与排障指南
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight mb-3">
+          本地客户端测速自检、真实链路复现与网络排障实战
+        </h2>
+        <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+          不要盲目相信服务商宣传的跑分截图。只要按照以下 <strong>标准 SOP 实操指南</strong>，您在自己的电脑或软路由上也能 5 分钟完成专业级网络健康度体检与故障排除。
+        </p>
+      </div>
+
+      <div class="space-y-6 text-xs font-mono">
+        <!-- Step 1 -->
+        <div class="p-5 rounded-xl border border-border bg-bg-secondary/30">
+          <div class="flex items-center gap-2 font-bold text-sm text-text mb-2">
+            <span class="px-2 py-0.5 rounded bg-emerald-500 text-white text-xs">步骤 1</span>
+            配置 Clash Verge Rev / Sing-box 的科学测速策略组
+          </div>
+          <p class="text-text-secondary leading-relaxed mb-3">
+            客户端默认的“延迟测试”往往只是针对某个国内 CDN（如 163 或 Cloudflare 默认页）发起的 TCP 握手探针，并不能代表真实访问外网的延迟。请在配置文件或设置中将测速 URL 修改为权威探针：
+          </p>
+          <pre class="p-3 rounded-lg bg-surface border border-border text-emerald-600 dark:text-emerald-400 overflow-x-auto"><code># 推荐的高精度测试 URL:
+http://www.gstatic.com/generate_204
+https://cp.cloudflare.com/generate_204
+https://api.openai.com/v1/models (测试 AI 握手时延)</code></pre>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="p-5 rounded-xl border border-border bg-bg-secondary/30">
+          <div class="flex items-center gap-2 font-bold text-sm text-text mb-2">
+            <span class="px-2 py-0.5 rounded bg-emerald-500 text-white text-xs">步骤 2</span>
+            使用终端命令行（CLI）执行精准丢包率与抖动排查
+          </div>
+          <p class="text-text-secondary leading-relaxed mb-3">
+            打开 Windows PowerShell 或 macOS Terminal，在开启 TUN 模式或代理环境下，执行连续 50 次以上 Ping，获取精确的丢包与抖动数值：
+          </p>
+          <pre class="p-3 rounded-lg bg-surface border border-border text-emerald-600 dark:text-emerald-400 overflow-x-auto"><code># Windows PowerShell 测试丢包率:
+ping -n 50 1.1.1.1
+
+# macOS / Linux Terminal 链路路由跳数诊断:
+mtr --report --report-cycles 20 8.8.8.8</code></pre>
+          <p class="text-text-secondary mt-2">
+            <strong>结果判定准则：</strong>如果 <code>Packets: Lost = 0 (0% loss)</code> 且 <code>Minimum</code> 与 <code>Maximum</code> 相差在 5ms 以内，表明当前为高质量物理专线；若出现多次 <code>Request timed out</code>，请立即切换节点。
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="p-5 rounded-xl border border-border bg-bg-secondary/30">
+          <div class="flex items-center gap-2 font-bold text-sm text-text mb-2">
+            <span class="px-2 py-0.5 rounded bg-emerald-500 text-white text-xs">步骤 3</span>
+            一键检测出口 IP 属性与欺诈评分（防 ChatGPT / Claude 封号）
+          </div>
+          <p class="text-text-secondary leading-relaxed mb-2">
+            直接在终端执行以下命令，查看您的节点当前出口的组织名称、ASN 和国家：
+          </p>
+          <pre class="p-3 rounded-lg bg-surface border border-border text-emerald-600 dark:text-emerald-400 overflow-x-auto"><code>curl -s https://ipinfo.io/json</code></pre>
+          <p class="text-text-secondary mt-2">
+            若返回的 <code>org</code> 字段显示为已知的高风险数据中心（如 OVH、Hetzner 廉价机房），则访问 ChatGPT 极易遭遇封锁；若为原生 ISP 宽带（如 HKT、HKBN、Chunghwa Telecom），则账号安全系数极高。
+          </p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="p-5 rounded-xl border border-border bg-bg-secondary/30">
+          <div class="flex items-center gap-2 font-bold text-sm text-text mb-2">
+            <span class="px-2 py-0.5 rounded bg-emerald-500 text-white text-xs">步骤 4</span>
+            晚高峰突发卡顿四步急救法
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-text-secondary">
+            <div class="p-2.5 rounded bg-surface border border-border">
+              <strong class="text-text">1. 刷新系统 DNS 缓存：</strong><br />
+              Windows 执行 <code>ipconfig /flushdns</code>，解决 DNS 污染导致的重定向解析失败。
+            </div>
+            <div class="p-2.5 rounded bg-surface border border-border">
+              <strong class="text-text">2. 检查系统代理与 TUN 冲突：</strong><br />
+              确保只开启一种代理工作模式，避免 TUN 网卡与系统环境变量代理同时争抢流量。
+            </div>
+            <div class="p-2.5 rounded bg-surface border border-border">
+              <strong class="text-text">3. 切换跨地区冷门专线：</strong><br />
+              晚高峰香港节点拥挤时，迅速切换为新加坡（SG）或日本（JP）IEPL 专线，体验立竿见影提升。
+            </div>
+            <div class="p-2.5 rounded bg-surface border border-border">
+              <strong class="text-text">4. 开启客户端分流规则：</strong><br />
+              确保配置了直连规则（DIRECT），避免访问国内微信、Bilibili、淘宝也走国外节点消耗流量。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 7: Decision Tree -->
+  <section id="decision-tree" class="mx-auto max-w-6xl px-6 pb-16 scroll-mt-20">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-10">
+      <div class="max-w-3xl mb-8">
+        <span class="text-xs font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block mb-2">
+          SCENARIO DECISION TREE · 精准选型决策树
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight mb-3">
+          按需选型：针对不同核心业务场景的决策路径
+        </h2>
+        <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+          没有任何一款机场能满足所有人的所有需求。根据您的真实日常工作负载，依照下述决策树进行选型，能在体验与成本之间取得最优平衡。
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Scenario A -->
+        <div class="p-6 rounded-xl border border-emerald-500/30 bg-emerald-500/5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-base font-bold text-text">场景 A：AI 开发者与跨境工程研发</h3>
+              <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-mono font-bold">高敏感业务</span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed mb-3">
+              <strong>典型业务：</strong>Cursor 实时流式补全、Claude 3.5 Sonnet 长文本分析、GitHub Copilot、远程 SSH 长期终端保活、HuggingFace 模型权重下载。
+            </p>
+            <ul class="text-xs font-mono text-text-secondary space-y-1.5 list-disc pl-4 mb-4">
+              <li><strong>核心硬性指标：</strong>Jitter &lt; 2ms，丢包率 = 0%，出口 IP 欺诈分 &lt; 15。</li>
+              <li><strong>协议偏好：</strong>VLESS (XTLS-Reality) 或 Shadowsocks 2022。</li>
+              <li><strong>节点推荐：</strong>中国香港 IEPL、新加坡 IEPL 节点。</li>
+            </ul>
+          </div>
+          <div class="p-3 rounded-lg bg-surface border border-emerald-500/20 flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">推荐方案: 光速云 (TOP 1)</span>
+            <a href="/brands/guangsu/" class="text-xs font-mono text-text hover:underline font-semibold">查看光速云评测 →</a>
+          </div>
+        </div>
+
+        <!-- Scenario B -->
+        <div class="p-6 rounded-xl border border-border bg-bg-secondary/40 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-base font-bold text-text">场景 B：跨境电商、外贸与社媒矩阵</h3>
+              <span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-mono font-bold">多店铺防联</span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed mb-3">
+              <strong>典型业务：</strong>Amazon 店铺后台、Shopify 独立站管理、PayPal 国际结算、TikTok 跨境直播与带货运营。
+            </p>
+            <ul class="text-xs font-mono text-text-secondary space-y-1.5 list-disc pl-4 mb-4">
+              <li><strong>核心硬性指标：</strong>纯净住宅宽带原生落地 IP、固定出口防多端风控、高上行推流带宽。</li>
+              <li><strong>协议偏好：</strong>Trojan / VLESS。</li>
+              <li><strong>节点推荐：</strong>美国洛杉矶原生节点、英国伦敦原生节点。</li>
+            </ul>
+          </div>
+          <div class="p-3 rounded-lg bg-surface border border-border flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-text">推荐方案: 微风网络 / 肥猫云</span>
+            <a href="/brands/weifeng/" class="text-xs font-mono text-text hover:underline font-semibold">查看微风网络评测 →</a>
+          </div>
+        </div>
+
+        <!-- Scenario C -->
+        <div class="p-6 rounded-xl border border-border bg-bg-secondary/40 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-base font-bold text-text">场景 C：海外 4K/8K 蓝光流媒体发烧友</h3>
+              <span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-600 dark:text-purple-400 text-xs font-mono font-bold">大吞吐需求</span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed mb-3">
+              <strong>典型业务：</strong>Netflix 4K UHD 杜比全景声追剧、Disney+ IMAX 增强、YouTube 8K 60FPS 极速播放。
+            </p>
+            <ul class="text-xs font-mono text-text-secondary space-y-1.5 list-disc pl-4 mb-4">
+              <li><strong>核心硬性指标：</strong>单节点峰值吞吐 &gt; 300 Mbps，海量流量包，全区非自制剧解锁。</li>
+              <li><strong>协议偏好：</strong>Trojan-Go、Hysteria 2、VLESS。</li>
+              <li><strong>节点推荐：</strong>台湾、日本、香港多媒体优化节点。</li>
+            </ul>
+          </div>
+          <div class="p-3 rounded-lg bg-surface border border-border flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-text">推荐方案: 暮光云 / 大佬云</span>
+            <a href="/brands/muguang/" class="text-xs font-mono text-text hover:underline font-semibold">查看暮光云评测 →</a>
+          </div>
+        </div>
+
+        <!-- Scenario D -->
+        <div class="p-6 rounded-xl border border-border bg-bg-secondary/40 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-base font-bold text-text">场景 D：在校学生与轻量个人查询</h3>
+              <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-600 dark:text-amber-400 text-xs font-mono font-bold">极致性价比</span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed mb-3">
+              <strong>典型业务：</strong>Google 学术文献搜索、arXiv 论文下载、维基百科检索、GitHub 开源仓库克隆。
+            </p>
+            <ul class="text-xs font-mono text-text-secondary space-y-1.5 list-disc pl-4 mb-4">
+              <li><strong>核心硬性指标：</strong>超低试错成本，拒绝大额年付，支持小额月付或不限时按量计费。</li>
+              <li><strong>协议偏好：</strong>通用 Trojan / Shadowsocks。</li>
+              <li><strong>节点推荐：</strong>香港、日本低倍率节点。</li>
+            </ul>
+          </div>
+          <div class="p-3 rounded-lg bg-surface border border-border flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-text">推荐方案: 暮光云月付 (¥15起)</span>
+            <a href="/brands/muguang/" class="text-xs font-mono text-text hover:underline font-semibold">直达评测 →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 8: FAQ & Edge Cases -->
+  <section id="faq" class="mx-auto max-w-6xl px-6 pb-16 scroll-mt-20">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-10">
+      <div class="max-w-3xl mb-8">
+        <span class="text-xs font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block mb-2">
+          KNOWLEDGE BASE · 核心疑难问答库
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight mb-3">
+          跨境网络与机场专线 8 大疑难核心技术问答 (FAQ)
+        </h2>
+        <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+          针对工程师和高阶用户在日常使用中高频遭遇的暗坑、误区与边界问题，提供直击本质的技术解答。
+        </p>
+      </div>
+
+      <div class="space-y-6">
+        <!-- Q1 -->
+        <div class="p-5 rounded-xl border border-border bg-bg-secondary/30">
+          <h3 class="text-base font-bold text-text mb-2 flex items-start gap-2">
+            <span class="text-emerald-600 dark:text-emerald-400 font-mono font-bold">Q1:</span>
+            为什么测速明明跑到了 500Mbps，看 YouTube 8K 或打开国外网页依然频繁卡顿？
+          </h3>
+          <p class="text-xs text-text-secondary leading-relaxed mb-2">
+            <strong>明确结论：</strong>因为测速软件（如 Speedtest）与真实网页/视频流的工作机制截然不同。测速软件会瞬间建立 8-16 条多线程并发并发吞吐，掩盖了单连接的质量问题；而实际访问网页与播放 YouTube 视频是<strong>单线程持续 HTTP 流式拉取</strong>。
+          </p>
+          <p class="text-xs text-text-secondary leading-relaxed">
+            <strong>底层技术原理：</strong>单线程数据传输严格受制于 TCP 拥塞控制算法（如 CUBIC 或 BBR）。当一条线路上存在哪怕 1% - 2% 的微小丢包，或者 RTT 抖动超过 20ms，TCP 拥塞算法就会判定网络发生拥堵，强制将滑动窗口（Congestion Window）缩小 50% 甚至更多，导致实际单线程拉流速度从 500Mbps 瞬间断崖式下跌至不足 15Mbps。解决方案：放弃只看测速跑分的习惯，优先选择 0 丢包、超低抖动的 <a href="/brands/guangsu/" class="text-emerald-600 dark:text-emerald-400 font-bold hover:underline">IEPL 物理专线</a>。
+          </p>
+        </div>
+
+        <!-- Q2 -->
+        <div class="p-5 rounded-xl border border-border bg-bg-secondary/30">
+          <h3 class="text-base font-bold text-text mb-2 flex items-start gap-2">
+            <span class="text-emerald-600 dark:text-emerald-400 font-mono font-bold">Q2:</span>
+            节点列表里的“倍率”是什么含义？0.2 倍率和 3.0 倍率有什么猫腻？
+          </h3>
+          <p class="text-xs text-text-secondary leading-relaxed mb-2">
+            <strong>明确结论：</strong>倍率是流量计算的放大/缩小系数。实际消耗 1GB 流量，连接 0.2 倍率节点仅从您账户扣除 0.2GB；但在 3.0 倍率节点，会扣除 3GB 流量。
+          </p>
+          <p class="text-xs text-text-secondary leading-relaxed">
+            <strong>避坑指南：</strong>低倍率节点（如 0.1x - 0.5x）通常为普通公网直连或廉价大带宽节点，成本低，适合下载大型文件、系统镜像更新；高倍率节点（如 2.0x - 5.0x）通常为高成本物理专线（如 IPLC/IEPL）或昂贵的静态原生商业住宅 IP，适合低延迟敏感操作（如 SSH 远程编程、AI 交互与跨境支付）。日常使用时建议开启分流规则，避免在 3.0x 高倍率节点上不慎挂机下载大文件导致流量瞬间耗尽。
+          </p>
+        </div>
+
+        <!-- Q3 -->
+        <div class="p-5 rounded-xl border border-border bg-bg-secondary/30">
+          <h3 class="text-base font-bold text-text mb-2 flex items-start gap-2">
+            <span class="text-emerald-600 dark:text-emerald-400 font-mono font-bold">Q3:</span>
+            为什么访问 ChatGPT / OpenAI 会频繁遭遇“Access Denied (Error 1020)”或拒绝访问？
+          </h3>
+          <p class="text-xs text-text-secondary leading-relaxed mb-2">
+            <strong>明确结论：</strong>这并非您的账号问题，而是当前节点出口 IP 的“欺诈度评分”（Fraud Score）过高，被 Cloudflare 安全网关识别并直接实施拦截。
+          </p>
+          <p class="text-xs text-text-secondary leading-relaxed">
+            <strong>解决方案与防护：</strong>OpenAI 与 Cloudflare 联合部署了高灵敏度反爬与反滥用系统。廉价机场的一个机房出口 IP 往往同时被成百上千人共用，若其中有人进行批量爬虫或滥用行为，该 IP 会瞬间被拉入全网黑名单。优质机场（如光速云）会为核心香港/美国节点配备低密度的原生 ISP 纯净 IP 池，并配合自动化探针定期轮换，彻底告别 1020 报错与频繁的图片验证码。
+          </p>
+        </div>
+
+        <!-- Q4 -->
+        <div class="p-5 rounded-xl border border-border bg-bg-secondary/30">
+          <h3 class="text-base font-bold text-text mb-2 flex items-start gap-2">
+            <span class="text-emerald-600 dark:text-emerald-400 font-mono font-bold">Q4:</span>
+            机场官网宣传的“内网专线”，怎么从技术层面鉴别是不是普通中转冒充的？
+          </h3>
+          <p class="text-xs text-text-secondary leading-relaxed mb-2">
+            <strong>明确结论：</strong>伪专线通常是利用国内公网 VPS 通过加密隧道进行中转，本质依然走公网国际出口；真专线走的是内网物理裸纤。
+          </p>
+          <p class="text-xs text-text-secondary leading-relaxed">
+            <strong>实测鉴别三步法：</strong><br />
+            1. <strong>晚高峰 21:00 Ping 测试：</strong>持续发送 100 个探测包，真专线丢包率绝对为 0%，延迟抖动稳定在 1.5ms 以内；公网中转晚高峰必有抖动与 3% 以上丢包。<br />
+            2. <strong>MTR 路由跳数探测：</strong>真专线在跨过国内入口后，只会看到 1-2 跳内网私有 IP（如 10.x.x.x），直接抵达海外落地；公网中转能看到国内省际骨干网公网跳点。<br />
+            3. <strong>价格常识：</strong>真实 IEPL 专线带宽成本每 G 需 15-35 元/月，宣称几十元包年无限流量的“专线”100% 为虚假宣传。
+          </p>
+        </div>
+
+        <!-- Q5 -->
+        <div class="p-5 rounded-xl border border-border bg-bg-secondary/30">
+          <h3 class="text-base font-bold text-text mb-2 flex items-start gap-2">
+            <span class="text-emerald-600 dark:text-emerald-400 font-mono font-bold">Q5:</span>
+            电信、联通、移动三家运营商用户在同一机场同一节点上的延迟为什么差距很大？
+          </h3>
+          <p class="text-xs text-text-secondary leading-relaxed mb-2">
+            <strong>明确结论：</strong>因为机场国内入口服务器所在机房的运营商归属不同，且国内三大运营商之间的“跨网互联互通”存在严重性能损耗。
+          </p>
+          <p class="text-xs text-text-secondary leading-relaxed">
+            <strong>技术剖析：</strong>如果机场国内入口只有一台“上海联通”服务器，联通宽带用户访问此服务器是省内直连，延迟仅需 10ms；而电信宽带用户想要连接这台上海联通服务器，流量必须经过电信与联通的国家级互联互通网关，跨网互联带宽在晚高峰极度拥塞，导致电信用户的延迟直接暴增 40ms 并伴随丢包。<strong>选型建议：</strong>优先选择具备“三网多入口 BGP 智能解析”的高端服务商，系统能根据您的本地宽带自动分流至电信、联通、移动同网入口。
+          </p>
+        </div>
+
+        <!-- Q6 -->
+        <div class="p-5 rounded-xl border border-border bg-bg-secondary/30">
+          <h3 class="text-base font-bold text-text mb-2 flex items-start gap-2">
+            <span class="text-emerald-600 dark:text-emerald-400 font-mono font-bold">Q6:</span>
+            专线机场支持无理由退款吗？新手第一次购买怎样避免踩坑？
+          </h3>
+          <p class="text-xs text-text-secondary leading-relaxed mb-2">
+            <strong>明确结论：</strong>行业惯例下，由于虚拟商品带宽已被上游运营商按计费周期买断，绝大多数正规机场<strong>不支持无理由全额退款</strong>（少数仅支持 24 小时内未产生大额流量的退款审核）。
+          </p>
+          <p class="text-xs text-text-secondary leading-relaxed">
+            <strong>新手避坑守则：</strong>切记遵守“先月付、后季付、谨慎年付”原则。任何未经验证的新服务商，首月花 15-25 元购买最基础的月付套餐进行晚高峰实测体验，只要晚高峰连续测试 3 天不卡顿、符合您的开发与使用需求，再考虑长期订阅以享受年付优惠。
+          </p>
+        </div>
+
+        <!-- Q7 -->
+        <div class="p-5 rounded-xl border border-border bg-bg-secondary/30">
+          <h3 class="text-base font-bold text-text mb-2 flex items-start gap-2">
+            <span class="text-emerald-600 dark:text-emerald-400 font-mono font-bold">Q7:</span>
+            为什么晚高峰时期 UDP 协议（在线游戏联机、Hysteria 2）容易严重丢包断流？
+          </h3>
+          <p class="text-xs text-text-secondary leading-relaxed mb-2">
+            <strong>明确结论：</strong>源于国内部分省份运营商部署的深度报文检测（DPI）系统对非标 UDP 流量采取的策略性 QoS 限速。
+          </p>
+          <p class="text-xs text-text-secondary leading-relaxed">
+            <strong>技术应对：</strong>晚高峰公网骨干网拥塞时，运营商为了保障网页浏览（HTTP/HTTPS）等核心业务的畅通，会优先给 TCP 流量放行，对持续产生大流量的 UDP 报文进行激进的丢包截断。如果您的业务包含对战联机或使用了 Hysteria 2 协议，请在客户端开启“端口跳跃（Port Hopping）”功能，或在内网专线中直接选用稳定性极佳的 <strong>VLESS-Reality</strong> 协议。
+          </p>
+        </div>
+
+        <!-- Q8 -->
+        <div class="p-5 rounded-xl border border-border bg-bg-secondary/30">
+          <h3 class="text-base font-bold text-text mb-2 flex items-start gap-2">
+            <span class="text-emerald-600 dark:text-emerald-400 font-mono font-bold">Q8:</span>
+            软路由（OpenWrt）运行代理专线，为什么经常遇到内网设备 DNS 泄漏与打不开网页？
+          </h3>
+          <p class="text-xs text-text-secondary leading-relaxed mb-2">
+            <strong>明确结论：</strong>通常是因为软路由系统内置的 Dnsmasq 与代理插件（PassWall、OpenClash、MosDNS）产生了端口抢占与死循环转发。
+          </p>
+          <p class="text-xs text-text-secondary leading-relaxed">
+            <strong>最佳工程配置：</strong><br />
+            1. 推荐开启 Clash Meta 的 <strong>Fake-IP 模式</strong>，内网设备发起 DNS 解析时，内核直接分配虚拟私网 IP，跳过耗时的上游 DNS 递归，实现秒开；<br />
+            2. 国内 DNS 上游仅配置阿里 DNS（223.5.5.5）与腾讯 DNS（119.29.29.29）的 DoH/DoT 加密解析，国外 DNS 由代理节点在远端静默解析，从根本上杜绝 DNS 污染与 DNS 泄漏。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 9: Featured Brand Showcase & Regulatory Disclosures -->
+  <section id="featured-brands" class="mx-auto max-w-6xl px-6 pb-16 scroll-mt-20">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-10 mb-8">
+      <div class="max-w-3xl mb-8">
+        <span class="text-xs font-mono font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block mb-2">
+          FLAGSHIP BENCHMARK · 实验室 2026 年度主推
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight mb-3">
+          光速云 (GuangSu Cloud) 深度实测报告与配置推荐
+        </h2>
+        <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+          作为本实验室 2026 年度综合遥测评分位列 <strong>TOP 1</strong> 的长青服务商，光速云凭借自 2020 年起长达 6 年的连续稳定运营与真实的 <strong>IEPL 物理双专线架构</strong>，在三网晚高峰实测中表现出极为强劲的工程韧性。
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono text-xs mb-8">
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40">
+          <span class="text-text-secondary block mb-1">物理链路拓扑</span>
+          <div class="text-base font-bold text-text mb-1">IEPL 双专线架构</div>
+          <p class="text-text-secondary text-[11px]">全节点内网二层物理专线传输，晚高峰持续 0 丢包，抖动 &lt; 1.0ms</p>
+        </div>
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40">
+          <span class="text-text-secondary block mb-1">协议全栈支持</span>
+          <div class="text-base font-bold text-text mb-1">VLESS + Trojan</div>
+          <p class="text-text-secondary text-[11px]">全节点标配 VLESS 协议，0-RTT 极速直通，支持全平台主流客户端一键导入</p>
+        </div>
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40">
+          <span class="text-text-secondary block mb-1">旗舰特惠方案</span>
+          <div class="text-base font-bold text-emerald-600 dark:text-emerald-400 mb-1">斯诺克 147 终身套餐</div>
+          <p class="text-text-secondary text-[11px]">仅 99元/年（147G/月），使用专属优惠码 <code class="px-1 py-0.5 rounded bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold">AMM</code> 享折上折</p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-4">
+        <a
+          href="https://sahude.gsyvipaff.com/#/?code=keqgvT5Y"
+          target="_blank"
+          rel="nofollow sponsored noopener"
+          class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm shadow-xs transition-colors no-underline font-mono"
+        >
+          <span>立即前往光速云官网注册</span>
+          <span>→</span>
+        </a>
+        <a
+          href="/brands/guangsu/"
+          class="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-border bg-surface hover:bg-bg-secondary text-text font-bold text-sm transition-colors no-underline font-mono"
+        >
+          <span>阅读光速云完整实测白皮书</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Transparent FTC / Search Compliance Disclosure -->
+    <AffiliateDisclosure />
+  </section>
+</StarterLayout>

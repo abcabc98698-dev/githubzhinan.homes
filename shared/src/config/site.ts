@@ -1,30 +1,21 @@
 /**
  * Organization profile used for JSON-LD (Organization, WebPage, BlogPosting publisher).
- *
- * DEMO DATA — replace every value before going live. The placeholders are chosen so they
- * can't be mistaken for real contact data: example.com is reserved for documentation
- * (RFC 2606) and 555-01xx numbers are reserved for fictional use.
+ * Official site profile for GitHub指南 (githubzhinan.homes).
  */
 export const siteProfile = {
-  email: 'hello@example.com',
-  telephone: '+1-555-0100',
-  address: {
-    streetAddress: '123 Example Street',
-    addressLocality: 'Example City',
-    postalCode: '00000',
-    addressCountry: 'US',
-  },
-  sameAs: ['https://github.com/casoon/astro-v7-template'],
+  name: 'GitHub指南',
+  email: 'contact@githubzhinan.homes',
+  sameAs: ['https://githubzhinan.homes'],
   /** Served from each app's `public/` folder. */
   logoPath: '/logo.svg',
   /** First publication of the site — used as WebPage `datePublished`. */
-  launchDate: '2026-02-23',
+  launchDate: '2026-03-01',
 };
 
-/** Fictional credits demonstrate humans.txt without publishing personal contact data. */
+/** Official site credits for humans.txt */
 export const siteCredits = {
-  team: [{ name: 'Example Template Team (demo)', role: 'Design and development' }],
-  thanks: ['Astro, Svelte and the open-source community'],
+  team: [{ name: 'GitHub指南团队', role: 'Architect & Core Maintainers' }],
+  thanks: ['Astro, Svelte, Tailwind CSS and the global open-source community'],
   technology: ['Astro', 'TypeScript', 'Svelte', 'Tailwind CSS', 'Cloudflare Workers'],
-  note: 'Demo credits — replace these with your own team before publishing.',
+  note: 'GitHub指南 (githubzhinan.homes) — 开发者加速与开源进阶导航',
 };

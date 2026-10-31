@@ -21,7 +21,7 @@ import propsForThat from '../../integrations/props-for-that.mjs';
 import { envSchema } from './src/env.ts';
 
 // Routes with `prerender = false` — no file in dist, so sitemap and link audit need them listed.
-const onDemandRoutes = ['/contact/', '/de/contact/'];
+const onDemandRoutes = [];
 
 const env = validateEnv(envSchema, configEnv(new URL('.env', import.meta.url)));
 
@@ -53,26 +53,40 @@ export default defineConfig({
           errorOnDuplicates: true,
         },
       },
-      robots: { preset: 'seoOnly', disallow: ['/api/', '/web-vitals/'] },
+      robots: {
+        preset: 'citationFriendly',
+        disallow: ['/api/', '/web-vitals/'],
+        bots: {
+          DeepSeekBot: 'allow',
+          QwenBot: 'allow',
+        },
+        extraBots: [
+          { id: 'Baiduspider', provider: 'Baidu', userAgents: ['Baiduspider'], categories: ['search'], verified: true },
+          { id: 'yisouspider', provider: 'Shenma', userAgents: ['yisouspider'], categories: ['search'], verified: true },
+        ],
+      },
       humans: siteCredits,
       security: securityTxt(env.PUBLIC_SECURITY_CONTACT, env.PUBLIC_SITE_URL),
       llms: {
         title: env.PUBLIC_SITE_NAME,
-        description: 'Astro v7 starter with Tailwind v4, Svelte 5 and Cloudflare.',
+        description: 'GitHub指南 (githubzhinan.homes) — 开发者加速与开源进阶指南。',
         details:
-          'This is a bilingual demonstration template, not a real business. Contact and organization details are placeholders; the contact form does not send mail. robots.txt defines crawler preferences independently of this file.',
+          '本站致力于为开发者提供精选的 GitHub 高效开发技巧、开源项目实践、自动化工作流与工具链导航。',
         sections: [
           {
             title: 'Pages',
             links: [
-              { title: 'Home', url: '/', description: 'Starter template overview.' },
-              { title: 'Contact', url: '/contact/', description: 'Example contact form.' },
-              { title: 'German home', url: '/de/', description: 'German localized homepage.' },
-              {
-                title: 'German contact',
-                url: '/de/contact/',
-                description: 'German localized contact form.',
-              },
+              { title: 'Home', url: '/', description: 'GitHub指南首页与2026综合旗舰网络推荐。' },
+              { title: 'GuangSu Cloud Review', url: '/brands/guangsu/', description: '光速云IEPL双专线实测与斯诺克147深度拆解白皮书。' },
+              { title: 'Radar', url: '/radar/', description: '跑路预警雷达与资金安全白皮书，收录倒闭名单与防坑模型。' },
+              { title: 'FAQ', url: '/faq/', description: '网络疑难技术百科与百问百答排障全指南。' },
+              { title: 'Free Resources', url: '/free/', description: '免费机场与节点资源合集，蜜罐反编译与白嫖避坑。' },
+              { title: 'Observatory', url: '/observatory/', description: '网络可观测性实验室与42家品牌延迟测速大盘。' },
+              { title: 'Brands Directory', url: '/brands/', description: '42家精选机场评测与专线导航全库。' },
+              { title: 'Clients Guide', url: '/clients/', description: '全平台代理客户端下载与配置指南。' },
+              { title: 'About Laboratory', url: '/about/', description: '网络可观测性实验室背景与中立评测准则。' },
+              { title: 'Methodology', url: '/methodology/', description: '晚高峰测速方法论与遥测基准规范。' },
+              { title: 'English home', url: '/en/', description: 'GitHub Guide English homepage.' },
             ],
           },
           {
@@ -86,10 +100,10 @@ export default defineConfig({
               {
                 title: 'Crawler preferences',
                 url: '/robots.txt',
-                description: 'Search engines allowed; known AI crawlers blocked.',
+                description: 'Search engines and citation-friendly AI crawlers allowed.',
               },
               {
-                title: 'Demo credits',
+                title: 'Team and credits',
                 url: '/humans.txt',
                 description: 'Example team and technology stack.',
               },

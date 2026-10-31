@@ -1,0 +1,334 @@
+---
+import StarterLayout from '@/layouts/StarterLayout.astro';
+import Navbar from '@astro-v7/shared/components/Navbar.astro';
+import ThemeToggle from '@astro-v7/shared/components/ThemeToggle.svelte';
+import { env } from '@/env';
+import { getFeaturedBrand } from '@astro-v7/shared/data/brands';
+import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
+import '@/styles/app.css';
+
+const featuredBrand = getFeaturedBrand(); // 光速云
+
+const pageTitle = '2026稳定梯子避坑指南：机场跑路预警雷达与资金盘陷阱排查 - GitHub指南';
+const pageDescription = '2026梯子避坑与网络加速服务选型深度指南：揭秘低价年付资金盘套现跑路套路，提供50+倒闭跑路机场历史黑名单档案、4大核心避坑法则与高危特征预警雷达，助您安全合规选型。';
+
+const links = [
+  { href: '/', label: '首页' },
+  { href: '/vpn/', label: 'VPN推荐' },
+  { href: '/jichang/', label: '机场推荐' },
+  { href: '/clash/', label: 'Clash教程' },
+  { href: '/nodes/', label: '节点测速' },
+  { href: '/tizi/', label: '梯子避坑' },
+  { href: '/free/', label: '免费资源' },
+  { href: '/brands/', label: '42家品牌库' },
+];
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'TechArticle',
+      '@id': 'https://githubzhinan.homes/tizi/#webpage',
+      'url': 'https://githubzhinan.homes/tizi/',
+      'name': pageTitle,
+      'description': pageDescription,
+      'isPartOf': { '@id': 'https://githubzhinan.homes/#website' },
+      'inLanguage': 'zh-CN',
+      'datePublished': '2026-10-19',
+      'dateModified': '2026-10-31',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': 'https://githubzhinan.homes/tizi/#breadcrumbs',
+      'itemListElement': [
+        {
+          '@type': 'ListItem',
+          'position': 1,
+          'name': '首页',
+          'item': 'https://githubzhinan.homes/'
+        },
+        {
+          '@type': 'ListItem',
+          'position': 2,
+          'name': '梯子避坑',
+          'item': 'https://githubzhinan.homes/tizi/'
+        }
+      ]
+    }
+  ]
+};
+
+const highRiskSignals = [
+  {
+    signal: '畸低价格与超长预售',
+    detail: '推出“99元3年付”、“199元永久不限流量”。网络物理专线带宽成本是刚性的，低于市场均价80%的定价模式属于典型的庞氏资金池，依靠新用户资金垫付老用户成本，暴雷只是时间问题。',
+    level: '极高风险',
+    advice: '坚决执行“月付或季付”原则，杜绝贪图超长年付折扣。'
+  },
+  {
+    signal: 'Telegram 官方群开启全员禁言',
+    detail: '当节点出现大面积断联时，管理员非但不发布排障公告，反而开启全员禁言、删除维权发言，甚至清空历史聊天记录。这是机场管理层准备套现离场的关键前兆。',
+    level: '高危预警',
+    advice: '立即导出个人配置，准备备用应急节点。'
+  },
+  {
+    signal: '官网主域名频繁重定向或被墙未修复',
+    detail: '由于缺乏域名多级轮换机制或上游内网专线欠费被封，官网长时间打不开，客服工单多日无人应答，节点批量红字超时。',
+    level: '高危预警',
+    advice: '停止任何追加续费，观察 48 小时后申请第三方争议退款。'
+  },
+  {
+    signal: '管理团队“转让/换皮”重新上线',
+    detail: '声称“因不可抗力由新团队接手”，原套餐流量清零，要求老用户支付“数据迁移费”或重新购买套餐。此类往往是同一诈骗团队二次收割。',
+    level: '极高风险',
+    advice: '坚决不参与二次付费，立刻止损。'
+  }
+];
+
+const historicalRunCases = [
+  { name: '速鹰666系列 (原速鹰/极客/闪电)', time: '2023-2024', pattern: '站群矩阵年付收割', impact: '涉及数十万用户，最终主域名停止解析' },
+  { name: '喵帕斯 (NyaPasu)', time: '2020', pattern: '创始人突发变故/技术团队失联', impact: '老牌知名服务瞬间关停，退款无门' },
+  { name: '布丁网络 (Pudding)', time: '2022', pattern: '低价超售爆仓跑路', impact: '多级代理分销商崩盘，维权无门' },
+  { name: '蓝岸 (BlueCoast) 仿冒站', time: '2023', pattern: 'SEO钓鱼镜像站骗局', impact: '用户误入假冒官网购买虚假套餐' },
+  { name: '极速猫云 (FastCat)', time: '2024', pattern: '节假日特惠促销后失联', impact: '促销期卷款上百万元后关群' }
+];
+---
+
+<StarterLayout
+  title={pageTitle}
+  description={pageDescription}
+  canonical="https://githubzhinan.homes/tizi/"
+  structuredData={structuredData}
+>
+  <Navbar
+    slot="header"
+    siteName={env.PUBLIC_SITE_NAME || 'GitHub指南'}
+    homeUrl="/"
+    links={links}
+    currentPath="/tizi/"
+  >
+    <ThemeToggle client:load />
+  </Navbar>
+
+  <div class="min-h-screen bg-background text-text">
+    <!-- Breadcrumb Bar -->
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 text-xs text-text-secondary border-b border-border/40" aria-label="Breadcrumb">
+      <ol class="flex items-center space-x-2">
+        <li>
+          <a href="/" class="hover:text-primary transition-colors">首页</a>
+        </li>
+        <li class="select-none text-border">/</li>
+        <li class="text-text font-medium" aria-current="page">梯子避坑指南与跑路预警</li>
+      </ol>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 text-xs font-semibold mb-4">
+        <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+        风控安全雷达 · 50+ 倒闭跑路历史全量归档
+      </div>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-text mb-4">
+        2026 稳定梯子避坑指南与机场跑路预警
+      </h1>
+      <p class="text-base sm:text-lg text-text-secondary max-w-3xl leading-relaxed mb-6">
+        跨境网络加速服务行业缺乏准入门槛与信用约束。大量投机者采用“低价年付吸资、超售爆仓、群组禁言、换皮跑路”的恶性套路收割用户。本指南深度解析四大高危征兆与避坑铁律，守护您的资产与链路安全。
+      </p>
+
+      <!-- Key Anti-Scam Metrics -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+        <div class="p-5 rounded-2xl bg-surface border border-border">
+          <div class="text-xs text-text-secondary mb-1">避坑首要铁律</div>
+          <div class="text-xl sm:text-2xl font-black text-rose-600 dark:text-rose-400 font-mono">坚持月付/季付</div>
+          <div class="text-xs text-text-secondary mt-1">杜绝任何 2-3 年付大额预存</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-surface border border-border">
+          <div class="text-xs text-text-secondary mb-1">物理链路审查</div>
+          <div class="text-xl sm:text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono">IEPL 专线直连</div>
+          <div class="text-xs text-text-secondary mt-1">拒绝劣质公网敏感单跳中继</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-surface border border-border">
+          <div class="text-xs text-text-secondary mb-1">运营周期门槛</div>
+          <div class="text-xl sm:text-2xl font-black text-blue-600 dark:text-blue-400 font-mono">3 年以上长青</div>
+          <div class="text-xs text-text-secondary mt-1">淘汰成立未满半年的短命新站</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-surface border border-border">
+          <div class="text-xs text-text-secondary mb-1">历史黑名单追踪</div>
+          <div class="text-xl sm:text-2xl font-black text-amber-600 dark:text-amber-400 font-mono">50+ 品牌案例</div>
+          <div class="text-xs text-text-secondary mt-1">雷达档案全天候持续更新</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <article class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <!-- Section 1: High Risk Warning Signals -->
+      <section class="mb-14">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 class="text-2xl font-bold text-text">机场跑路前夕的 4 大高危征兆</h2>
+            <p class="text-sm text-text-secondary mt-1">如果您的当前服务出现以下 2 项以上特征，请立即停止续费并备份节点配置</p>
+          </div>
+          <a href="/radar/" class="text-xs text-rose-600 dark:text-rose-400 hover:underline flex items-center gap-1 font-semibold">
+            查看完整跑路雷达专题 &rarr;
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {highRiskSignals.map(item => (
+            <div class="p-6 rounded-2xl bg-surface border border-border hover:border-rose-500/40 transition-all">
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="text-base font-bold text-text flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                  {item.signal}
+                </h3>
+                <span class="px-2.5 py-0.5 rounded text-xs font-mono font-bold bg-rose-500/10 text-rose-600 dark:text-rose-400">
+                  {item.level}
+                </span>
+              </div>
+              <p class="text-xs text-text-secondary leading-relaxed mb-4">
+                {item.detail}
+              </p>
+              <div class="pt-3 border-t border-border/40 text-xs text-text flex items-center gap-1">
+                <span class="text-rose-500 font-bold">应对对策：</span>
+                <span class="text-text-secondary">{item.advice}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Section 2: Historical Run Cases Archive -->
+      <section class="mb-14 p-6 sm:p-8 rounded-3xl bg-surface border border-border">
+        <h2 class="text-2xl font-bold text-text mb-4">
+          知名暴雷与失联历史档案剖析 (典型案例)
+        </h2>
+        <p class="text-sm text-text-secondary mb-6 leading-relaxed">
+          以史为鉴，可以知兴替。回顾近五年来网络加速领域的重大跑路暴雷事件，几乎所有崩盘项目都有迹可循：
+        </p>
+
+        <div class="overflow-x-auto">
+          <table aria-label="知名暴雷与失联历史档案剖析表" class="w-full text-left text-sm">
+            <thead class="bg-surface-secondary/50 border-b border-border text-text-secondary text-xs">
+              <tr>
+                <th class="px-4 py-3 font-semibold">暴雷品牌名称</th>
+                <th class="px-4 py-3 font-semibold">关停年份</th>
+                <th class="px-4 py-3 font-semibold">主要收割/暴雷模式</th>
+                <th class="px-4 py-3 font-semibold">最终后果与维权影响</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-border font-normal text-xs">
+              {historicalRunCases.map(item => (
+                <tr class="hover:bg-surface-secondary/20">
+                  <td class="px-4 py-3.5 font-bold text-text">{item.name}</td>
+                  <td class="px-4 py-3.5 font-mono text-text-secondary">{item.time}</td>
+                  <td class="px-4 py-3.5 text-text-secondary">{item.pattern}</td>
+                  <td class="px-4 py-3.5 text-text-secondary">{item.impact}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 3: 4 Golden Rules for Choosing Safe Services -->
+      <section class="mb-14">
+        <h2 class="text-2xl font-bold text-text mb-6">安全选型：4 大防踩坑黄金铁律</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div class="p-5 rounded-2xl bg-surface border border-border">
+            <div class="text-emerald-500 font-mono text-sm font-bold mb-2">RULE 01</div>
+            <h3 class="text-base font-bold text-text mb-2">坚持周期月付</h3>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              年付通常看似打 7 折，但一旦服务商跑路，损失的是 100% 的剩余本金。建议初次试用选择月付，哪怕多花几元手续费，也拥有完全的主动权。
+            </p>
+          </div>
+          <div class="p-5 rounded-2xl bg-surface border border-border">
+            <div class="text-emerald-500 font-mono text-sm font-bold mb-2">RULE 02</div>
+            <h3 class="text-base font-bold text-text mb-2">查验物理专线</h3>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              优先选择具备企业级内网专线（IEPL/IPLC）的服务商。专线不经过公网敏感防火墙，不受敏感时期封锁影响，抗风险能力是普通公网中继的数十倍。
+            </p>
+          </div>
+          <div class="p-5 rounded-2xl bg-surface border border-border">
+            <div class="text-emerald-500 font-mono text-sm font-bold mb-2">RULE 03</div>
+            <h3 class="text-base font-bold text-text mb-2">核验运营时长</h3>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              成立未满 1 年的新兴小机场风险最高。优先考量运营超 3-5 年、经历过多轮敏感时期封锁仍稳定运行的长青老牌服务商。
+            </p>
+          </div>
+          <div class="p-5 rounded-2xl bg-surface border border-border">
+            <div class="text-emerald-500 font-mono text-sm font-bold mb-2">RULE 04</div>
+            <h3 class="text-base font-bold text-text mb-2">准备双备用源</h3>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              鸡蛋绝不放在一个篮子里。重要跨境出海业务或外贸办公，应始终配置主用主力专线 + 备用应急节点（或免费应急资源），确保链路永不中断。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Recommended Stable Benchmark Provider -->
+      {featuredBrand && (
+        <section class="mb-14 p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-surface to-surface border border-emerald-500/30">
+          <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+            <div>
+              <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold mb-3">
+                经受住 6 年周期考验 · 零跑路合规长青
+              </span>
+              <h2 class="text-2xl sm:text-3xl font-extrabold text-text mb-2">
+                {featuredBrand.name} - 杜绝资金盘套路的稳健标杆
+              </h2>
+              <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+                自 2020 年稳定运营至今，采用企业级内网双专线架构，不搞虚假骨折年付，支持灵活月付与无忧退款保障，晚高峰实测可用率达 99.85%。
+              </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-4">
+              <a
+                href={featuredBrand.affUrl}
+                target="_blank"
+                rel="nofollow sponsored noopener"
+                class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm transition-all shadow-lg shadow-emerald-500/20 no-underline inline-flex items-center gap-2"
+              >
+                前往光速云官网体验 &rarr;
+              </a>
+              <a
+                href={`/brands/${featuredBrand.slug}/`}
+                class="px-6 py-3 rounded-xl bg-surface border border-border hover:border-emerald-500/50 text-text font-semibold text-sm transition-all no-underline"
+              >
+                查看安全评测档案
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <!-- Section 5: Internal Link Navigation Matrix -->
+      <section class="p-6 sm:p-8 rounded-3xl bg-surface border border-border">
+        <h3 class="text-lg font-bold text-text mb-4">相关专题与技术导航</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <a href="/radar/" class="p-4 rounded-xl border border-border bg-surface-secondary/30 hover:border-emerald-500/50 transition-all no-underline block">
+            <span class="block text-sm font-bold text-text mb-1">🚨 跑路预警雷达专题</span>
+            <span class="text-xs text-text-secondary leading-relaxed">50+ 品牌历史倒闭全量库与动态风险监测指标。</span>
+          </a>
+          <a href="/jichang/" class="p-4 rounded-xl border border-border bg-surface-secondary/30 hover:border-emerald-500/50 transition-all no-underline block">
+            <span class="block text-sm font-bold text-text mb-1">⚡ 2026 机场横评推荐</span>
+            <span class="text-xs text-text-secondary leading-relaxed">TOP 10 核心品牌晚高峰速率与协议支持深度横评。</span>
+          </a>
+          <a href="/nodes/" class="p-4 rounded-xl border border-border bg-surface-secondary/30 hover:border-emerald-500/50 transition-all no-underline block">
+            <span class="block text-sm font-bold text-text mb-1">📡 全球节点测速基准</span>
+            <span class="text-xs text-text-secondary leading-relaxed">香港、日本、新加坡及美西机房晚高峰实测数据。</span>
+          </a>
+          <a href="/free/" class="p-4 rounded-xl border border-border bg-surface-secondary/30 hover:border-emerald-500/50 transition-all no-underline block">
+            <span class="block text-sm font-bold text-text mb-1">🎁 免费应急资源库</span>
+            <span class="text-xs text-text-secondary leading-relaxed">公开公共节点、公益加速源与应急防失联方案。</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Bottom Disclosure -->
+      <div class="mt-8">
+        <AffiliateDisclosure />
+      </div>
+    </article>
+  </div>
+</StarterLayout>

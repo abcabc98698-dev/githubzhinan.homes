@@ -8,7 +8,7 @@ const SITE = env.PUBLIC_SITE_URL;
 const NS = `${SITE}/feed/ns/`;
 
 export async function GET() {
-  const posts = await getBlogPosts('en');
+  const posts = await getBlogPosts('zh');
   const sorted = posts.sort((a: BlogPost, b: BlogPost) => {
     const da = new Date(a.data.lastmod ?? a.data.date).getTime();
     const db = new Date(b.data.lastmod ?? b.data.date).getTime();
@@ -17,7 +17,7 @@ export async function GET() {
 
   return rss({
     title: env.PUBLIC_SITE_NAME,
-    description: 'A blog template built with Astro v7, MDX and Content Collections.',
+    description: 'GitHub指南官方技术专栏，专注于 Git 工作流、Actions 自动化与开源最佳实践。',
     site: new URL(SITE),
     xmlns: { article: NS },
     customData: [

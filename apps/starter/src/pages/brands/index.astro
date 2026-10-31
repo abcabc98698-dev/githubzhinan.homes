@@ -1,0 +1,133 @@
+---
+import StarterLayout from '@/layouts/StarterLayout.astro';
+import Navbar from '@astro-v7/shared/components/Navbar.astro';
+import ThemeToggle from '@astro-v7/shared/components/ThemeToggle.svelte';
+import { env } from '@/env';
+import { BRANDS } from '@astro-v7/shared/data/brands';
+import BrandCard from '@/components/BrandCard.astro';
+import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
+import '@/styles/app.css';
+
+const title = '42 家机场品牌库与实测选型指南 (2026 最新) - GitHub指南';
+const description = '收录 2026 年主流 42 家机场品牌，涵盖光速云、微风网络、暮光加速、飞猫云等。提供真实晚高峰测速、IEPL/IPLC 专线拓扑、ChatGPT/Netflix 解锁矩阵及独家优惠码。';
+
+const links = [
+  { href: '/', label: '首页' },
+  { href: '/brands/guangsu/', label: '光速云 (TOP 1)' },
+  { href: '/radar/', label: '🚨 跑路雷达' },
+  { href: '/observatory/', label: '⚡ 测速室' },
+  { href: '/clients/', label: '💻 客户端' },
+  { href: '/faq/', label: '📖 疑难百科' },
+  { href: '/free/', label: '🎁 免费资源' },
+  { href: '/brands/', label: '42家品牌库' },
+];
+---
+
+<StarterLayout title={title} description={description} lang="zh" siteName={env.PUBLIC_SITE_NAME}>
+  <Navbar slot="header" siteName={env.PUBLIC_SITE_NAME} links={links}>
+    <ThemeToggle client:load />
+  </Navbar>
+
+  <!-- Page Header -->
+  <div class="mx-auto max-w-6xl px-6 pt-12 pb-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-border/80 pb-8">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-xs font-mono font-semibold mb-3">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          42 品牌已收录 · 覆盖 IEPL/IPLC/VLESS/Trojan
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-text tracking-tight mb-3">
+          机场品牌库与网络可观测性选型
+        </h1>
+        <p class="text-base text-text-secondary max-w-2xl leading-relaxed">
+          依托独立网络实验室探针，持续观测 42 家主流机场的晚高峰延迟、下行吞吐量、原生 IP 纯净度以及 ChatGPT / 流媒体解锁能力，助您快速甄选最稳跨境连接方案。
+        </p>
+      </div>
+
+      <!-- Quick Filter / Search Bar -->
+      <div class="w-full md:w-72">
+        <label for="brand-search" class="sr-only">搜索品牌</label>
+        <div class="relative">
+          <input
+            type="text"
+            id="brand-search"
+            placeholder="搜索品牌名、协议或专线..."
+            class="w-full rounded-xl border border-border bg-bg-secondary px-4 py-2.5 text-sm text-text placeholder-text-secondary focus:border-emerald-500 focus:outline-none"
+          />
+          <span class="absolute right-3 top-3 text-text-secondary text-xs font-mono">⌘K</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Filters -->
+    <div class="flex flex-wrap items-center gap-2 pt-6 font-mono text-xs">
+      <button
+        type="button"
+        class="filter-btn active px-3.5 py-1.5 rounded-lg border border-emerald-500 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-semibold cursor-pointer transition-colors"
+        data-filter="all"
+      >
+        全部 42 家 ({BRANDS.length})
+      </button>
+      <button
+        type="button"
+        class="filter-btn px-3.5 py-1.5 rounded-lg border border-border bg-surface text-text-secondary hover:text-text cursor-pointer transition-colors"
+        data-filter="top10"
+      >
+        Top 10 优选 (10)
+      </button>
+      <button
+        type="button"
+        class="filter-btn px-3.5 py-1.5 rounded-lg border border-border bg-surface text-text-secondary hover:text-text cursor-pointer transition-colors"
+        data-filter="dedicated"
+      >
+        物理专线 (IEPL/IPLC)
+      </button>
+      <button
+        type="button"
+        class="filter-btn px-3.5 py-1.5 rounded-lg border border-border bg-surface text-text-secondary hover:text-text cursor-pointer transition-colors"
+        data-filter="budget"
+      >
+        轻量入门 (≤¥15/月)
+      </button>
+      <button
+        type="button"
+        class="filter-btn px-3.5 py-1.5 rounded-lg border border-border bg-surface text-text-secondary hover:text-text cursor-pointer transition-colors"
+        data-filter="historical"
+      >
+        历史后置品牌 (14)
+      </button>
+    </div>
+  </div>
+
+  <!-- Brands Grid Section -->
+  <section class="mx-auto max-w-6xl px-6 pb-16">
+    <h2 class="sr-only">42家机场品牌列表</h2>
+    <div id="brands-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {BRANDS.map((brand) => (
+        <div
+          class="brand-item"
+          data-name={brand.name.toLowerCase()}
+          data-slug={brand.slug}
+          data-protocols={brand.protocols.join(' ').toLowerCase()}
+          data-line={brand.lineType.toLowerCase()}
+          data-top10={brand.isTop10 ? 'true' : 'false'}
+          data-dedicated={(brand.lineType.includes('IEPL') || brand.lineType.includes('IPLC')) ? 'true' : 'false'}
+          data-budget={brand.minMonthlyPriceNum <= 15 ? 'true' : 'false'}
+          data-historical={brand.tier === 'historical' ? 'true' : 'false'}
+        >
+          <BrandCard brand={brand} />
+        </div>
+      ))}
+    </div>
+
+    <!-- Empty State -->
+    <div id="no-results" class="hidden text-center py-16">
+      <p class="text-text-secondary text-base">未找到符合条件的品牌，建议尝试更换搜索关键词。</p>
+    </div>
+
+    <!-- Bottom Disclosure -->
+    <div class="mt-12">
+      <AffiliateDisclosure />
+    </div>
+  </section>
+</StarterLayout>

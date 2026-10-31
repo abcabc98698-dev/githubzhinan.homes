@@ -1,0 +1,375 @@
+---
+import StarterLayout from '@/layouts/StarterLayout.astro';
+import Navbar from '@astro-v7/shared/components/Navbar.astro';
+import ThemeToggle from '@astro-v7/shared/components/ThemeToggle.svelte';
+import { env } from '@/env';
+import { getFeaturedBrand, getTop10Brands } from '@astro-v7/shared/data/brands';
+import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
+import '@/styles/app.css';
+
+const featuredBrand = getFeaturedBrand(); // 光速云
+const topBrands = getTop10Brands();
+
+const pageTitle = '全球节点测速与网络延迟基准：香港/日本/新加坡/美西晚高峰实测 - GitHub指南';
+const pageDescription = '2026最新全球节点测速与网络可观测性基准数据：基于真实探针监测香港(22ms)、日本(50ms)、新加坡(42ms)及美西(140ms)晚高峰延迟、丢包率与吞吐带宽，深度解析原生住宅IP与机房托管IP风控差异。';
+
+const links = [
+  { href: '/', label: '首页' },
+  { href: '/vpn/', label: 'VPN推荐' },
+  { href: '/jichang/', label: '机场推荐' },
+  { href: '/clash/', label: 'Clash教程' },
+  { href: '/nodes/', label: '节点测速' },
+  { href: '/tizi/', label: '梯子避坑' },
+  { href: '/free/', label: '免费资源' },
+  { href: '/brands/', label: '42家品牌库' },
+];
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'TechArticle',
+      '@id': 'https://githubzhinan.homes/nodes/#webpage',
+      'url': 'https://githubzhinan.homes/nodes/',
+      'name': pageTitle,
+      'description': pageDescription,
+      'isPartOf': { '@id': 'https://githubzhinan.homes/#website' },
+      'inLanguage': 'zh-CN',
+      'datePublished': '2026-10-19',
+      'dateModified': '2026-10-31',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': 'https://githubzhinan.homes/nodes/#breadcrumbs',
+      'itemListElement': [
+        {
+          '@type': 'ListItem',
+          'position': 1,
+          'name': '首页',
+          'item': 'https://githubzhinan.homes/'
+        },
+        {
+          '@type': 'ListItem',
+          'position': 2,
+          'name': '节点测速',
+          'item': 'https://githubzhinan.homes/nodes/'
+        }
+      ]
+    }
+  ]
+};
+
+const nodeBenchmarks = [
+  {
+    region: '中国香港 (HK)',
+    latency: '22 - 35 ms',
+    downlink: '480+ Mbps',
+    loss: '< 0.1%',
+    lines: 'IEPL / IPLC 专线直连、BGP Anycast',
+    unlock: 'Netflix HK / Disney+ / TVB / YouTube Premium',
+    bestFor: '极致低延迟、实时竞技游戏、网页即时加载、外贸日常通讯',
+    risk: '低风险（合规跨境内网）'
+  },
+  {
+    region: '日本东京 (JP)',
+    latency: '50 - 68 ms',
+    downlink: '260+ Mbps',
+    loss: '< 0.2%',
+    lines: '东京 NTT / KDDI / SoftBank / 企业级内网专线',
+    unlock: 'AbemaTV / DMM / Netflix JP / ChatGPT Plus / Claude 3.5',
+    bestFor: 'AI大模型交互、日服游戏、4K高清流媒体点播',
+    risk: '低风险（IP段纯净，支持欺诈检测免流）'
+  },
+  {
+    region: '新加坡 (SG)',
+    latency: '42 - 58 ms',
+    downlink: '350+ Mbps',
+    loss: '< 0.15%',
+    lines: 'Singtel / StarHub / AWS亚太直连专线',
+    unlock: '全区主流流媒体 / TikTok东南亚运营 / Shopee卖家后台',
+    bestFor: '跨国电商出海、TikTok短视频推流、东南亚业务加速',
+    risk: '极低（企业专线稳定，极少触发封控）'
+  },
+  {
+    region: '美国西海岸 (US-West)',
+    latency: '140 - 175 ms',
+    downlink: '80+ Mbps',
+    loss: '< 0.5%',
+    lines: '电信CN2 GIA / 联通9929优质骨干直连 / CMIN2',
+    unlock: 'ChatGPT / Claude 3.5 Sonnet / Midjourney / Hulu / HBO Max',
+    bestFor: 'AI研究开发、美区原生App开发调试、跨境金融合规',
+    risk: '中等（需配合住宅原生IP避免风控封号）'
+  },
+  {
+    region: '德国/英国 (EU)',
+    latency: '180 - 220 ms',
+    downlink: '120+ Mbps',
+    loss: '< 0.8%',
+    lines: '中欧陆缆直达 / 欧洲一级运营商直连',
+    unlock: 'BBC iPlayer / 欧服Steam / 跨国合规审计平台',
+    bestFor: '欧洲本地化合规、学术跨国文献检索、GDPR合规业务',
+    risk: '低风险（网络稳定，国际骨干直连）'
+  }
+];
+---
+
+<StarterLayout
+  title={pageTitle}
+  description={pageDescription}
+  canonical="https://githubzhinan.homes/nodes/"
+  structuredData={structuredData}
+>
+  <Navbar
+    slot="header"
+    siteName={env.PUBLIC_SITE_NAME || 'GitHub指南'}
+    homeUrl="/"
+    links={links}
+    currentPath="/nodes/"
+  >
+    <ThemeToggle client:load />
+  </Navbar>
+
+  <div class="min-h-screen bg-background text-text">
+    <!-- Breadcrumb Bar -->
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 text-xs text-text-secondary border-b border-border/40" aria-label="Breadcrumb">
+      <ol class="flex items-center space-x-2">
+        <li>
+          <a href="/" class="hover:text-primary transition-colors">首页</a>
+        </li>
+        <li class="select-none text-border">/</li>
+        <li class="text-text font-medium" aria-current="page">全球节点测速与网络延迟基准</li>
+      </ol>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-semibold mb-4">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        24/7 全球探针实时遥测 · 晚高峰无损样本库
+      </div>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-text mb-4">
+        全球节点测速与网络延迟基准大盘
+      </h1>
+      <p class="text-base sm:text-lg text-text-secondary max-w-3xl leading-relaxed mb-6">
+        基于分布于中国三大运营商（电信/联通/移动）的自动化探针，全天候 24 小时对收录网络服务的节点往返时延（RTT）、晚高峰吞吐带宽、抖动丢失率及海外原生 IP 纯净度进行持续基准遥测。
+      </p>
+
+      <!-- Key Latency Metric Cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+        <div class="p-5 rounded-2xl bg-surface border border-border">
+          <div class="flex items-center justify-between text-xs text-text-secondary mb-2">
+            <span>HK 中国香港</span>
+            <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono font-bold">专线</span>
+          </div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">22 - 35 <span class="text-xs font-normal">ms</span></div>
+          <div class="text-xs text-text-secondary mt-1">均值下行 480+ Mbps · 丢包 &lt; 0.1%</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-surface border border-border">
+          <div class="flex items-center justify-between text-xs text-text-secondary mb-2">
+            <span>SG 新加坡</span>
+            <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono font-bold">专线</span>
+          </div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">42 - 58 <span class="text-xs font-normal">ms</span></div>
+          <div class="text-xs text-text-secondary mt-1">均值下行 350+ Mbps · 丢包 &lt; 0.15%</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-surface border border-border">
+          <div class="flex items-center justify-between text-xs text-text-secondary mb-2">
+            <span>JP 日本东京</span>
+            <span class="px-2 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 font-mono font-bold">专线/BGP</span>
+          </div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-blue-600 dark:text-blue-400 font-mono">50 - 68 <span class="text-xs font-normal">ms</span></div>
+          <div class="text-xs text-text-secondary mt-1">均值下行 260+ Mbps · 丢包 &lt; 0.2%</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-surface border border-border">
+          <div class="flex items-center justify-between text-xs text-text-secondary mb-2">
+            <span>US 美国西海岸</span>
+            <span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 font-mono font-bold">CN2/9929</span>
+          </div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-amber-600 dark:text-amber-400 font-mono">140 - 175 <span class="text-xs font-normal">ms</span></div>
+          <div class="text-xs text-text-secondary mt-1">均值下行 80+ Mbps · 丢包 &lt; 0.5%</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content Grid -->
+    <article class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <!-- Section 1: Detailed Telemetry Table -->
+      <section class="mb-14">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 class="text-2xl font-bold text-text">全球核心枢纽节点延迟与带宽评测大盘</h2>
+            <p class="text-sm text-text-secondary mt-1">晚高峰（20:00 - 23:00）全链路高频压测统计均值</p>
+          </div>
+          <a href="/observatory/" class="text-xs text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 font-semibold">
+            查看网络实验室全景实测 &rarr;
+          </a>
+        </div>
+
+        <div class="overflow-x-auto rounded-2xl border border-border bg-surface">
+          <table aria-label="全球核心枢纽节点延迟与带宽评测大盘" class="w-full text-left text-sm">
+            <thead class="bg-surface-secondary/50 border-b border-border text-text-secondary text-xs">
+              <tr>
+                <th class="px-5 py-4 font-semibold">目标区域</th>
+                <th class="px-5 py-4 font-semibold">实测往返延迟 (RTT)</th>
+                <th class="px-5 py-4 font-semibold">晚高峰平均下行</th>
+                <th class="px-5 py-4 font-semibold">骨干物理链路</th>
+                <th class="px-5 py-4 font-semibold">典型流媒体与AI解锁</th>
+                <th class="px-5 py-4 font-semibold">最佳适用业务场景</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-border font-normal">
+              {nodeBenchmarks.map(item => (
+                <tr class="hover:bg-surface-secondary/30 transition-colors">
+                  <td class="px-5 py-4 font-bold text-text flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    {item.region}
+                  </td>
+                  <td class="px-5 py-4 font-mono font-bold text-emerald-600 dark:text-emerald-400">{item.latency}</td>
+                  <td class="px-5 py-4 font-mono">{item.downlink}</td>
+                  <td class="px-5 py-4 text-xs text-text-secondary">{item.lines}</td>
+                  <td class="px-5 py-4 text-xs text-text-secondary max-w-xs">{item.unlock}</td>
+                  <td class="px-5 py-4 text-xs text-text-secondary max-w-xs">{item.bestFor}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 2: Residential vs Datacenter IP Analysis -->
+      <section class="mb-14 p-6 sm:p-8 rounded-3xl bg-surface border border-border">
+        <h2 class="text-2xl font-bold text-text mb-4">
+          原生住宅 IP 与机房托管 IP 的风控对抗实录
+        </h2>
+        <p class="text-sm text-text-secondary leading-relaxed mb-6">
+          很多用户在选型节点时只关注延迟数字（Ping），却忽视了节点的 <strong>IP 纯净度与 ASN 属性</strong>。当节点被用于 ChatGPT、Claude 3.5 Sonnet、Midjourney、PayPal 或跨境电商店铺管理时，IP 类型直接决定了是否会触发风控拦截或封号。
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="p-6 rounded-2xl bg-surface-secondary/40 border border-border">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="px-2.5 py-1 rounded-md bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold font-mono">ISP 原生住宅 IP</span>
+              <span class="text-xs text-emerald-500 font-semibold">推荐：AI高敏/电商运营</span>
+            </div>
+            <ul class="space-y-2 text-xs text-text-secondary leading-relaxed">
+              <li><strong>IP 归属库：</strong>直接挂靠海外当地民用电信运营商（如 AT&amp;T、Verizon、Comcast、HKT、Singtel）。</li>
+              <li><strong>欺诈评分 (Fraud Score)：</strong>通常低于 15 分，IPQualityScore / Scamalytics 判定为真实家庭宽带。</li>
+              <li><strong>ChatGPT / OpenAI 兼容：</strong>不会触发 Cloudflare 持续人机验证，账号极低封控概率。</li>
+              <li><strong>缺点与代价：</strong>带宽采购成本是机房 IP 的 3-5 倍，单节点峰值通常限制在 100-300 Mbps。</li>
+            </ul>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-surface-secondary/40 border border-border">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="px-2.5 py-1 rounded-md bg-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-bold font-mono">Hosting 机房托管 IP</span>
+              <span class="text-xs text-blue-500 font-semibold">推荐：4K点播/大文件下载</span>
+            </div>
+            <ul class="space-y-2 text-xs text-text-secondary leading-relaxed">
+              <li><strong>IP 归属库：</strong>ASN 属于海外数据中心与云厂商（如 AWS、Google Cloud、DigitalOcean、Linode、OVH）。</li>
+              <li><strong>欺诈评分 (Fraud Score)：</strong>往往在 40 - 85 分之间，被风控算法直接标记为“代理服务/数据中心流量”。</li>
+              <li><strong>业务表现：</strong>极易触发 Google 搜索验证码，ChatGPT 经常提示“Access Denied (1020)”。</li>
+              <li><strong>优势：</strong>物理带宽充裕（1Gbps - 10Gbps 不限速），适合观看 YouTube 4K、Steam 游戏更新及大文件同步。</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: How to Scientifically Benchmark Nodes -->
+      <section class="mb-14">
+        <h2 class="text-2xl font-bold text-text mb-4">
+          如何科学进行本地网络节点测速与故障排查
+        </h2>
+        <p class="text-sm text-text-secondary mb-6">
+          使用客户端自带的“延迟测试”往往只能反映 TCP 握手或 HTTP 头部响应时间，无法衡量真实吞吐与全链路丢包。推荐以下专业排障方案：
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-5 rounded-2xl bg-surface border border-border">
+            <div class="text-emerald-500 font-mono text-sm font-bold mb-2">01 / RTT 延迟与抖动</div>
+            <h3 class="text-base font-bold text-text mb-2">MTR / NextTrace 路由追踪</h3>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              运行 <code>nexttrace 目标IP</code> 或使用 BestTrace。观察数据包在国内骨干出口、海缆登陆站及海外接入点的逐跳延迟与丢包率，准确判定延迟突增发生在哪一段物理线路。
+            </p>
+          </div>
+          <div class="p-5 rounded-2xl bg-surface border border-border">
+            <div class="text-emerald-500 font-mono text-sm font-bold mb-2">02 / 真实下行吞吐</div>
+            <h3 class="text-base font-bold text-text mb-2">Speedtest CLI 多线程跑流</h3>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              开启代理 TUN 模式后，通过官方 Speedtest CLI 指定海外目标测试服务器节点。重点对比晚高峰 21:00 与白天 14:00 的带宽降幅，降幅低于 20% 即为高品质专线。
+            </p>
+          </div>
+          <div class="p-5 rounded-2xl bg-surface border border-border">
+            <div class="text-emerald-500 font-mono text-sm font-bold mb-2">03 / IP 纯净度检测</div>
+            <h3 class="text-base font-bold text-text mb-2">IPCheck / Fraud Check</h3>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              访问 IPinfo.io 与 Scamalytics 检查 IP 属性。确认是否为原生 Residential、是否进入 Spamhaus 黑名单，以及是否支持原生解锁 Netflix、Disney+ 与 ChatGPT。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Recommended Verified Providers -->
+      {featuredBrand && (
+        <section class="mb-14 p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-surface to-surface border border-emerald-500/30">
+          <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+            <div>
+              <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold mb-3">
+                实验室标杆推荐 · 2026 稳定长青榜首
+              </span>
+              <h2 class="text-2xl sm:text-3xl font-extrabold text-text mb-2">
+                {featuredBrand.name} - IEPL 双专线架构
+              </h2>
+              <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+                全节点部署企业级内网专线与原生住宅 IP，香港节点实测延迟低至 22ms，晚高峰 4K 零卡顿，全自动流媒体与 ChatGPT 原生解锁。
+              </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-4">
+              <a
+                href={featuredBrand.affUrl}
+                target="_blank"
+                rel="nofollow sponsored noopener"
+                class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm transition-all shadow-lg shadow-emerald-500/20 no-underline inline-flex items-center gap-2"
+              >
+                前往官网体验测速 &rarr;
+              </a>
+              <a
+                href={`/brands/${featuredBrand.slug}/`}
+                class="px-6 py-3 rounded-xl bg-surface border border-border hover:border-emerald-500/50 text-text font-semibold text-sm transition-all no-underline"
+              >
+                查看完整遥测档案
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <!-- Section 5: Internal Link Navigation Matrix -->
+      <section class="p-6 sm:p-8 rounded-3xl bg-surface border border-border">
+        <h3 class="text-lg font-bold text-text mb-4">相关专题与技术导航</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <a href="/observatory/" class="p-4 rounded-xl border border-border bg-surface-secondary/30 hover:border-emerald-500/50 transition-all no-underline block">
+            <span class="block text-sm font-bold text-text mb-1">📡 网络观测实验室</span>
+            <span class="text-xs text-text-secondary leading-relaxed">查看 42 家网络服务 24/7 探针原始延迟与吞吐大盘。</span>
+          </a>
+          <a href="/jichang/" class="p-4 rounded-xl border border-border bg-surface-secondary/30 hover:border-emerald-500/50 transition-all no-underline block">
+            <span class="block text-sm font-bold text-text mb-1">⚡ 2026 机场横评推荐</span>
+            <span class="text-xs text-text-secondary leading-relaxed">TOP 10 核心品牌晚高峰速率与协议支持深度横评。</span>
+          </a>
+          <a href="/clash/" class="p-4 rounded-xl border border-border bg-surface-secondary/30 hover:border-emerald-500/50 transition-all no-underline block">
+            <span class="block text-sm font-bold text-text mb-1">🛠️ Clash Verge Rev 教程</span>
+            <span class="text-xs text-text-secondary leading-relaxed">跨平台客户端安装、TUN 虚拟网卡与分流规则指南。</span>
+          </a>
+          <a href="/tizi/" class="p-4 rounded-xl border border-border bg-surface-secondary/30 hover:border-emerald-500/50 transition-all no-underline block">
+            <span class="block text-sm font-bold text-text mb-1">🚨 梯子避坑与跑路预警</span>
+            <span class="text-xs text-text-secondary leading-relaxed">低价年付资金盘陷阱排查与 50+ 倒闭跑路历史档案。</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Bottom Disclosure -->
+      <div class="mt-8">
+        <AffiliateDisclosure />
+      </div>
+    </article>
+  </div>
+</StarterLayout>

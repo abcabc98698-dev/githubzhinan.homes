@@ -20,10 +20,10 @@ function getPublishedPosts() {
       const raw = readFileSync(`${blogContentDir}/${file}`, 'utf-8');
       const { data } = matter(raw);
       if (data.draft) return null;
-      // en/<slug>.mdx → /blog/<slug>/, de/<slug>.mdx → /de/blog/<slug>/
-      const [locale, ...segments] = file.replace(/\.(mdx|md)$/, '').split('/');
+      // zh/<slug>.mdx → /blog/<slug>/, en/<slug>.mdx → /en/blog/<slug>/
+      const [locale, ...segments] = file.replace(/\\/g, '/').replace(/\.(mdx|md)$/, '').split('/');
       const slug = segments.join('/');
-      return { locale, data, url: `${locale === 'en' ? '' : `/${locale}`}/blog/${slug}/` };
+      return { locale, data, url: `${locale === 'zh' ? '' : `/${locale}`}/blog/${slug}/` };
     })
     .filter(Boolean);
 }
@@ -45,7 +45,7 @@ export function getBlogSitemapEntries() {
 /** Build hooks read frontmatter directly; Astro's content runtime is unavailable here. */
 export function getBlogLlmsSection(locale) {
   return {
-    title: locale === 'de' ? 'Artikel auf Deutsch' : 'Articles in English',
+    title: locale === 'zh' ? '中文技术文章' : 'Articles in English',
     links: getPublishedPosts()
       .filter((post) => post.locale === locale)
       .map(({ data, url }) => ({ title: data.title, url, description: data.description })),

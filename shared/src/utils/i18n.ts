@@ -1,5 +1,5 @@
-export const defaultLocale = 'en' as const;
-export const locales = ['en', 'de'] as const;
+export const defaultLocale = 'zh' as const;
+export const locales = ['zh', 'en'] as const;
 export type Locale = (typeof locales)[number];
 
 export interface I18nConfig<TLocale extends string = string> {

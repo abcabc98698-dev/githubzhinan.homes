@@ -1,14 +1,14 @@
 {
-  "name": "astro-v7-workspace",
+  "name": "githubzhinan-workspace",
   "version": "1.3.5",
   "private": true,
-  "description": "Astro v7 monorepo template with pnpm workspaces, Tailwind v4, Svelte 5, and Biome",
-  "author": "casoon",
+  "description": "GitHub指南 (githubzhinan.homes) - 开发者加速与开源进阶官方站点",
+  "author": "GitHub指南",
   "license": "MIT",
-  "homepage": "https://astro-v7-template.casoon.dev",
+  "homepage": "https://githubzhinan.homes",
   "repository": {
     "type": "git",
-    "url": "https://github.com/casoon/astro-v7-template"
+    "url": "https://githubzhinan.homes"
   },
   "packageManager": "pnpm@11.0.9",
   "engines": {
@@ -48,7 +48,7 @@
     "fallow:dead": "fallow dead-code",
     "secrets:scan": "pnpm exec nosecrets scan .",
     "secrets:scan:staged": "pnpm exec nosecrets scan --staged",
-    "clean": "pnpm -r clean && rm -rf node_modules",
+    "clean": "pnpm -r clean && node scripts/clean.mjs node_modules",
     "prepare": "husky"
   },
   "scripts-info": {

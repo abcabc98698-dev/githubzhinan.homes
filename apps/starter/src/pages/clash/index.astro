@@ -1,0 +1,214 @@
+---
+import StarterLayout from '@/layouts/StarterLayout.astro';
+import Navbar from '@astro-v7/shared/components/Navbar.astro';
+import ThemeToggle from '@astro-v7/shared/components/ThemeToggle.svelte';
+import { env } from '@/env';
+import { getFeaturedBrand } from '@astro-v7/shared/data/brands';
+import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
+import '@/styles/app.css';
+
+const featuredBrand = getFeaturedBrand(); // 光速云
+
+const pageTitle = 'Clash Verge Rev 完整使用指南：Mihomo内核与规则配置教程 - GitHub指南';
+const pageDescription = '2026最新 Clash Verge Rev 与 Mihomo (Clash Meta) 完整配置教程：涵盖跨平台客户端下载、订阅链接导入、TUN虚拟网卡模式开启、分流规则定制与DNS防污染排障全流程。';
+
+const links = [
+  { href: '/', label: '首页' },
+  { href: '/vpn/', label: 'VPN推荐' },
+  { href: '/jichang/', label: '机场推荐' },
+  { href: '/clash/', label: 'Clash教程' },
+  { href: '/nodes/', label: '节点测速' },
+  { href: '/tizi/', label: '梯子避坑' },
+  { href: '/free/', label: '免费资源' },
+  { href: '/brands/', label: '42家品牌库' },
+];
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'TechArticle',
+      '@id': 'https://githubzhinan.homes/clash/#webpage',
+      'url': 'https://githubzhinan.homes/clash/',
+      'name': pageTitle,
+      'description': pageDescription,
+      'isPartOf': { '@id': 'https://githubzhinan.homes/#website' },
+      'inLanguage': 'zh-CN',
+      'datePublished': '2026-10-19',
+      'dateModified': '2026-10-31',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': 'https://githubzhinan.homes/clash/#breadcrumbs',
+      'itemListElement': [
+        {
+          '@type': 'ListItem',
+          'position': 1,
+          'name': '首页',
+          'item': 'https://githubzhinan.homes/'
+        },
+        {
+          '@type': 'ListItem',
+          'position': 2,
+          'name': 'Clash Verge 配置指南',
+          'item': 'https://githubzhinan.homes/clash/'
+        }
+      ]
+    },
+    {
+      '@type': 'HowTo',
+      '@id': 'https://githubzhinan.homes/clash/#setup-guide',
+      'name': 'Clash Verge Rev 快速导入订阅与开启 TUN 模式指南',
+      'step': [
+        {
+          '@type': 'HowToStep',
+          'position': 1,
+          'name': '下载并安装 Clash Verge Rev',
+          'text': '从官方 GitHub Release 页面下载适用于您操作系统架构（Windows x64、macOS Apple Silicon / Intel）的最新安装包并完成安装。'
+        },
+        {
+          '@type': 'HowToStep',
+          'position': 2,
+          'name': '复制并导入机场订阅链接',
+          'text': '登录优质专线服务商（如光速云）后台，复制 Clash 订阅链接，在 Clash Verge 左侧「订阅」界面粘贴并点击「保存导入」。'
+        },
+        {
+          '@type': 'HowToStep',
+          'position': 3,
+          'name': '开启 TUN 虚拟网卡与系统代理',
+          'text': '进入「设置」页面，授予 Service Mode 权限，开启「TUN 模式」，接管全系统网络流量（包括终端命令行与非系统代理软件）。'
+        }
+      ]
+    }
+  ]
+};
+---
+
+<StarterLayout
+  title={pageTitle}
+  description={pageDescription}
+  structuredData={structuredData}
+>
+  <Navbar
+    slot="header"
+    siteName={env.PUBLIC_SITE_NAME || 'GitHub指南'}
+    homeUrl="/"
+    links={links}
+    currentPath="/clash/"
+  >
+    <ThemeToggle client:load />
+  </Navbar>
+
+  <div class="min-h-screen bg-bg text-text py-12 px-4 sm:px-6">
+    <article class="mx-auto max-w-5xl">
+      <!-- Breadcrumb -->
+      <nav aria-label="Breadcrumb" class="mb-6 flex items-center gap-2 text-xs text-text-secondary font-mono">
+        <a href="/" class="hover:text-text no-underline">首页</a>
+        <span>/</span>
+        <span class="text-text font-semibold">Clash教程专区</span>
+      </nav>
+
+      <!-- Hero Header -->
+      <header class="border-b border-border pb-8 mb-10">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 text-xs font-mono font-semibold mb-4 border border-blue-500/20">
+          <span>CLASH VERGE REV & MIHOMO KERNEL HANDBOOK</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-black tracking-tight text-text mb-4">
+          Clash Verge Rev 核心使用指南与订阅配置全流程
+        </h1>
+        <p class="text-text-secondary text-base sm:text-lg leading-relaxed">
+          作为 2026 年现代主流开源代理客户端，内置 Mihomo (Clash Meta) 内核的 Clash Verge Rev 支持 VLESS、Trojan、Hysteria 2 及全系统级 TUN 虚拟网卡分流。
+        </p>
+      </header>
+
+      <!-- Step by Step Setup Guide -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-bold text-text mb-6">
+          一、 三步快速配置标准作业 SOP
+        </h2>
+
+        <div class="space-y-6">
+          <div class="p-6 rounded-2xl border border-border bg-surface">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="h-7 w-7 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-xs shrink-0 font-mono">1</span>
+              <h3 class="text-lg font-bold text-text">获取最新客户端安装包</h3>
+            </div>
+            <p class="text-xs sm:text-sm text-text-secondary leading-relaxed mb-3">
+              建议始终从官方开源仓库下载签名版安装包。Windows 用户优先选择 <code>.exe</code> 安装程序；macOS 用户根据 CPU 芯片架构选择 <code>aarch64.dmg</code> (M1/M2/M3/M4) 或 <code>x64.dmg</code> (Intel)。
+            </p>
+            <a href="/clients/" class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 no-underline hover:underline">
+              查阅全平台 6 大客户端下载镜像导航 →
+            </a>
+          </div>
+
+          <div class="p-6 rounded-2xl border border-border bg-surface">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="h-7 w-7 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-xs shrink-0 font-mono">2</span>
+              <h3 class="text-lg font-bold text-text">导入订阅链接与自动定时更新</h3>
+            </div>
+            <p class="text-xs sm:text-sm text-text-secondary leading-relaxed mb-3">
+              登录支持 VLESS 协议的专线服务商（如 <a href="/brands/guangsu/" class="text-emerald-600 dark:text-emerald-400 font-semibold underline">光速云</a>），一键复制 Clash 订阅链接。进入 Clash Verge 左侧「订阅」窗口，粘贴 URL 并设置「自动更新间隔为 1440 分钟（24小时）」，点击保存后右键设为当前激活配置。
+            </p>
+          </div>
+
+          <div class="p-6 rounded-2xl border border-border bg-surface">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="h-7 w-7 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-xs shrink-0 font-mono">3</span>
+              <h3 class="text-lg font-bold text-text">开启 TUN 虚拟网卡与防 DNS 泄漏</h3>
+            </div>
+            <p class="text-xs sm:text-sm text-text-secondary leading-relaxed mb-3">
+              进入「设置」选项卡，点击「Service Mode」旁的安装并授权管理员权限。开启「TUN 模式」，此模式可在网络底层接管所有不遵循系统代理的环境（如 Git 命令行、Docker 容器、海外游戏客户端），实现完全透明代理与零 DNS 污染。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Chapter 2: Technical FAQ for Clash -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-bold text-text mb-4">
+          二、 Clash 常见疑难故障排查
+        </h2>
+        <div class="space-y-4">
+          <div class="p-5 rounded-xl border border-border bg-surface">
+            <h3 class="font-bold text-sm text-text mb-2">Q: 节点测速显示绿色延迟，但浏览器完全打不开网页？</h3>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              这是新手最常见的问题。测速仅测试本地到国内中转入口的握手，若海外落地端故障或本地系统时间偏差超过 90 秒，TLS 握手将直接失败。请先校准系统时间，并尝试切换至香港或其他备用节点。
+            </p>
+          </div>
+          <div class="p-5 rounded-xl border border-border bg-surface">
+            <h3 class="font-bold text-sm text-text mb-2">Q: TUN 模式与普通系统代理模式有何本质不同？</h3>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              普通系统代理仅通过设置 HTTP/SOCKS 环境变量生效，很多软件（如终端命令、游戏）会直接绕过；TUN 模式会在操作系统创建虚拟网卡（wintun/utun），将全系统所有的 IP 数据包在三层网络层捕获并转发，分流彻底且无死角。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Chapter 3: Related Navigation -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-bold text-text mb-4">
+          三、 协同选型与技术支持
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <a href="/faq/" class="p-4 rounded-xl border border-border bg-surface hover:border-emerald-500/50 transition-all no-underline block">
+            <span class="block text-sm font-bold text-text mb-1">📖 疑难技术百科</span>
+            <span class="text-xs text-text-secondary leading-relaxed">DNS 污染、节点超时与规则分流 50+ 百问百答。</span>
+          </a>
+          <a href="/nodes/" class="p-4 rounded-xl border border-border bg-surface hover:border-emerald-500/50 transition-all no-underline block">
+            <span class="block text-sm font-bold text-text mb-1">⚡ 全球节点测速</span>
+            <span class="text-xs text-text-secondary leading-relaxed">香港、日本、新加坡及美西机房晚高峰实测数据。</span>
+          </a>
+          <a href="/brands/guangsu/" class="p-4 rounded-xl border border-border bg-surface hover:border-emerald-500/50 transition-all no-underline block">
+            <span class="block text-sm font-bold text-text mb-1">👑 光速云旗舰配置</span>
+            <span class="text-xs text-text-secondary leading-relaxed">VLESS 双专线一键订阅导入官方推荐。</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Bottom Disclosure -->
+      <div class="mt-8">
+        <AffiliateDisclosure />
+      </div>
+    </article>
+  </div>
+</StarterLayout>

@@ -26,7 +26,7 @@ export interface Props {
 const {
   title,
   description = '',
-  lang = 'en',
+  lang = 'zh',
   siteName,
   ogImage,
   robots,
@@ -42,16 +42,22 @@ const useArticleSchema = !!articleDate && !!ogImage;
 const logoUrl = new URL(siteProfile.logoPath, Astro.site).href;
 // Pages without their own OG image (e.g. 404) fall back to the home image.
 const pageImage = ogImage ?? new URL('/og/home.png', Astro.site).href;
-const publisherName = siteName ?? Astro.site?.hostname ?? 'Website';
+const publisherName = siteName ?? Astro.site?.hostname ?? 'GitHub指南';
 const organizationId = new URL('/#organization', Astro.site).href;
 const websiteId = new URL('/#website', Astro.site).href;
-const language = lang === 'de' ? 'de-DE' : 'en-US';
+const language = lang === 'en' ? 'en-US' : 'zh-CN';
 const alternates = robots?.includes('noindex')
   ? undefined
-  : locales.map((locale) => ({
-      hreflang: locale,
-      href: new URL(switchLocalePath(Astro.url.pathname, locale), Astro.site).href,
-    }));
+  : [
+      ...locales.map((locale) => ({
+        hreflang: locale,
+        href: new URL(switchLocalePath(Astro.url.pathname, locale), Astro.site).href,
+      })),
+      {
+        hreflang: 'x-default',
+        href: new URL(switchLocalePath(Astro.url.pathname, 'zh'), Astro.site).href,
+      },
+    ];
 ---
 
 <!doctype html>
@@ -70,7 +76,7 @@ const alternates = robots?.includes('noindex')
         description={description}
         datePublished={articleDate!.toISOString()}
         dateModified={articleModified?.toISOString()}
-        authorName={articleAuthor ?? 'Unknown'}
+        authorName={articleAuthor ?? 'GitHub指南'}
         imageUrl={ogImage!}
         publisherName={publisherName}
         publisherLogo={logoUrl}
@@ -105,8 +111,6 @@ const alternates = robots?.includes('noindex')
         url={Astro.site?.href}
         logoUrl={logoUrl}
         email={siteProfile.email}
-        telephone={siteProfile.telephone}
-        address={siteProfile.address}
         sameAs={siteProfile.sameAs}
       />
     )}

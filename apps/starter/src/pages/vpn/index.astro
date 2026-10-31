@@ -1,0 +1,246 @@
+﻿---
+import StarterLayout from '@/layouts/StarterLayout.astro';
+import Navbar from '@astro-v7/shared/components/Navbar.astro';
+import ThemeToggle from '@astro-v7/shared/components/ThemeToggle.svelte';
+import { env } from '@/env';
+import { getFeaturedBrand, getTop10Brands } from '@astro-v7/shared/data/brands';
+import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
+import '@/styles/app.css';
+
+const featuredBrand = getFeaturedBrand(); // 光速云
+const topBrands = getTop10Brands().slice(0, 4);
+
+const pageTitle = 'VPN推荐与出海网络专线选型指南：2026安全稳定协议评测 - GitHub指南';
+const pageDescription = '2026跨境出海商业与开发级VPN深度选型指南：基于42家网络服务商实测，涵盖物理IEPL双专线架构、WireGuard与VLESS加密协议对比、ChatGPT/Claude原生住宅IP解锁及隐私安全评测。';
+
+const links = [
+  { href: '/', label: '首页' },
+  { href: '/vpn/', label: 'VPN推荐' },
+  { href: '/jichang/', label: '机场推荐' },
+  { href: '/clash/', label: 'Clash教程' },
+  { href: '/nodes/', label: '节点测速' },
+  { href: '/tizi/', label: '梯子避坑' },
+  { href: '/free/', label: '免费资源' },
+  { href: '/brands/', label: '42家品牌库' },
+];
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'CollectionPage',
+      '@id': 'https://githubzhinan.homes/vpn/#webpage',
+      'url': 'https://githubzhinan.homes/vpn/',
+      'name': pageTitle,
+      'description': pageDescription,
+      'isPartOf': { '@id': 'https://githubzhinan.homes/#website' },
+      'inLanguage': 'zh-CN',
+      'datePublished': '2026-10-19',
+      'dateModified': '2026-10-31',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': 'https://githubzhinan.homes/vpn/#breadcrumbs',
+      'itemListElement': [
+        {
+          '@type': 'ListItem',
+          'position': 1,
+          'name': '首页',
+          'item': 'https://githubzhinan.homes/'
+        },
+        {
+          '@type': 'ListItem',
+          'position': 2,
+          'name': 'VPN推荐与出海专线',
+          'item': 'https://githubzhinan.homes/vpn/'
+        }
+      ]
+    },
+    {
+      '@type': 'ItemList',
+      '@id': 'https://githubzhinan.homes/vpn/#top-vpn',
+      'name': '2026 出海商业与开发级 VPN 旗舰推荐',
+      'itemListElement': [
+        {
+          '@type': 'ListItem',
+          'position': 1,
+          'name': '光速云 (GuangSu Cloud) - IEPL双专线旗舰',
+          'url': 'https://githubzhinan.homes/brands/guangsu/'
+        },
+        {
+          '@type': 'ListItem',
+          'position': 2,
+          'name': '微风网络 (BreezeNet) - BGP企业内网',
+          'url': 'https://githubzhinan.homes/brands/weifeng/'
+        }
+      ]
+    }
+  ]
+};
+---
+
+<StarterLayout
+  title={pageTitle}
+  description={pageDescription}
+  structuredData={structuredData}
+>
+  <Navbar
+    slot="header"
+    siteName={env.PUBLIC_SITE_NAME || 'GitHub指南'}
+    homeUrl="/"
+    links={links}
+    currentPath="/vpn/"
+  >
+    <ThemeToggle client:load />
+  </Navbar>
+
+  <div class="min-h-screen bg-bg text-text py-12 px-4 sm:px-6">
+    <article class="mx-auto max-w-5xl">
+      <!-- Breadcrumb -->
+      <nav aria-label="Breadcrumb" class="mb-6 flex items-center gap-2 text-xs text-text-secondary font-mono">
+        <a href="/" class="hover:text-text no-underline">首页</a>
+        <span>/</span>
+        <span class="text-text font-semibold">VPN推荐与专线选型</span>
+      </nav>
+
+      <!-- Hero Header -->
+      <header class="border-b border-border pb-8 mb-10">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-mono font-semibold mb-4 border border-emerald-500/20">
+          <span>ENTERPRISE VPN & DEDICATED NETWORK MATRIX</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-black tracking-tight text-text mb-4">
+          2026 商业级出海 VPN 推荐与跨境专线选型指南
+        </h1>
+        <p class="text-text-secondary text-base sm:text-lg leading-relaxed">
+          立足网络工程与安全传输视角，深度对比物理专线（IEPL/IPLC）与公网商用 VPN 的抗封锁、延迟抖动与隐私加密特性，为跨境企业与远程开发者提供客观选型支撑。
+        </p>
+      </header>
+
+      <!-- Executive Answer-First Summary -->
+      <section class="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-6 mb-12">
+        <h2 class="text-lg font-bold text-text mb-2 flex items-center gap-2">
+          <span class="text-emerald-500">⚡</span>
+          <span>选型结论直出：2026 年选购商业 VPN 的核心判断</span>
+        </h2>
+        <p class="text-sm text-text-secondary leading-relaxed mb-4">
+          传统消费级海外公网 VPN（如 ExpressVPN、NordVPN）因其公网出口特征明显，在敏感时期极易遭遇 GFW 深度包检测（DPI）干扰导致频繁断连或 DNS 污染。对于高频依赖海外 AI（ChatGPT、Claude）、跨境电商后台及远程 Git 开发的高要求用户，<strong>基于物理内网硬隔离的 IEPL/IPLC 企业专线网络（如老牌旗舰光速云）</strong>在晚高峰可用性（0 丢包、RTT &lt; 35ms）上具有绝对代际优势。
+        </p>
+        <div class="flex flex-wrap items-center gap-3">
+          <a
+            href={featuredBrand.affUrl}
+            target="_blank"
+            rel="nofollow sponsored noopener"
+            class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs no-underline transition-all shadow-md shadow-emerald-600/20"
+          >
+            直达 2026 年度 TOP 1 旗舰：光速云 ↗
+          </a>
+          <a
+            href="/brands/guangsu/"
+            class="px-5 py-2.5 rounded-xl border border-border bg-surface hover:bg-bg-secondary text-text font-semibold text-xs no-underline transition-all"
+          >
+            查阅光速云完整实测白皮书 →
+          </a>
+        </div>
+      </section>
+
+      <!-- Chapter 1: Technical Architecture Comparison -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-bold text-text mb-4">
+          一、 物理专线与普通公网 VPN 核心指标横评
+        </h2>
+        <div class="overflow-x-auto rounded-xl border border-border bg-surface mb-6">
+          <table aria-label="商业级 VPN 与高阶专线机场多维度选型对比表" class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-border bg-bg-secondary/60 text-text font-mono">
+                <th class="p-3.5">架构类型</th>
+                <th class="p-3.5">晚高峰延迟 (香港)</th>
+                <th class="p-3.5">丢包率表现</th>
+                <th class="p-3.5">抗封锁防护机制</th>
+                <th class="p-3.5">适用核心业务</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-border/60 font-mono text-text-secondary">
+              <tr>
+                <td class="p-3.5 font-bold text-emerald-600 dark:text-emerald-400">IEPL 双专线 (光速云)</td>
+                <td class="p-3.5 text-emerald-600 dark:text-emerald-400 font-bold">22 ms</td>
+                <td class="p-3.5 text-emerald-600 dark:text-emerald-400 font-bold">0.0%</td>
+                <td class="p-3.5">二层物理内网隔离，不经公网 GFW</td>
+                <td class="p-3.5">4K秒开、ChatGPT/Claude生产力、跨境交易</td>
+              </tr>
+              <tr>
+                <td class="p-3.5 font-bold text-text">BGP 多线内网中转</td>
+                <td class="p-3.5">38 - 55 ms</td>
+                <td class="p-3.5">0.5% - 2.0%</td>
+                <td class="p-3.5">国内多线入口汇聚，抗抖动能力强</td>
+                <td class="p-3.5">日常外贸浏览、学术资料检索</td>
+              </tr>
+              <tr>
+                <td class="p-3.5 font-bold text-amber-600 dark:text-amber-400">海外公网商业 VPN</td>
+                <td class="p-3.5">180 - 320 ms</td>
+                <td class="p-3.5">8.0% - 25.0%</td>
+                <td class="p-3.5">强行公网流量特征混淆，敏感期易阻断</td>
+                <td class="p-3.5">偶发非关键性浏览、特定国家 IP 需求</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Chapter 2: Top VPN Matrix -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-bold text-text mb-4">
+          二、 2026 第一梯队出海服务商横向测评
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {topBrands.map((b) => (
+            <div class="rounded-xl border border-border bg-surface p-5 hover:border-emerald-500/40 transition-all">
+              <div class="flex items-center justify-between text-xs font-mono mb-2">
+                <span class="font-bold text-text text-base">{b.name}</span>
+                <span class="font-semibold text-emerald-600 dark:text-emerald-400">{b.minMonthlyPrice}</span>
+              </div>
+              <p class="text-xs text-text-secondary leading-relaxed mb-4">
+                物理链路：<strong class="text-text font-mono">{b.lineType}</strong>。香港实测延迟 {b.speedSummary.avgLatency}ms，峰值带宽 {b.speedSummary.peakDownloadMbps}Mbps。
+              </p>
+              <div class="flex items-center justify-between text-xs pt-3 border-t border-border/60">
+                <a href={`/brands/${b.slug}/`} class="text-emerald-600 dark:text-emerald-400 font-semibold no-underline hover:underline" >
+                  查阅 {b.name} 测速档案 →
+                </a>
+                {b.affUrl && b.affUrl !== '#' ? (
+                  <a href={b.affUrl} target="_blank" rel="nofollow sponsored noopener" class="px-3 py-1 rounded-lg bg-emerald-600 text-white font-bold no-underline text-xs" aria-label={`直达 ${b.name} 官网`}>
+                    直达 {b.name} 官网 ↗
+                  </a>
+                ) : null}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Chapter 3: Related Cluster Entries -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-bold text-text mb-4">
+          三、 核心出海专题与子栏目入口
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <a href="/jichang/" class="p-4 rounded-xl border border-border bg-surface hover:border-emerald-500/50 transition-all no-underline block">
+            <span class="block text-sm font-bold text-text mb-1">✈️ 机场推荐大全</span>
+            <span class="text-xs text-text-secondary leading-relaxed">42 家机场多维度测速与专线选型矩阵。</span>
+          </a>
+          <a href="/clash/" class="p-4 rounded-xl border border-border bg-surface hover:border-emerald-500/50 transition-all no-underline block">
+            <span class="block text-sm font-bold text-text mb-1">⚡ Clash 使用教程</span>
+            <span class="text-xs text-text-secondary leading-relaxed">Clash Verge Rev 订阅导入与 TUN 模式配置。</span>
+          </a>
+          <a href="/tizi/" class="p-4 rounded-xl border border-border bg-surface hover:border-emerald-500/50 transition-all no-underline block">
+            <span class="block text-sm font-bold text-text mb-1">🚨 梯子避坑指南</span>
+            <span class="text-xs text-text-secondary leading-relaxed">跑路预警雷达与资金安全白皮书。</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Bottom Disclosure -->
+      <div class="mt-8">
+        <AffiliateDisclosure />
+      </div>
+    </article>
+  </div>
+</StarterLayout>

@@ -1,0 +1,80 @@
+---
+export interface Props {
+  brandName?: string;
+  lineType?: string;
+  class?: string;
+}
+
+const { brandName = '光速云', lineType = 'IEPL 专线 + 企业内网专线', class: className = '' } = Astro.props;
+---
+
+<div class:list={['rounded-2xl border border-border bg-[var(--color-surface)] p-6 shadow-sm font-sans', className]}>
+  <div class="flex flex-wrap items-center justify-between gap-3 border-b border-border/70 pb-4 mb-5">
+    <div>
+      <div class="text-base font-bold text-text tracking-tight flex items-center gap-2">
+        <span>{brandName}</span>
+        <span class="text-xs font-mono font-medium px-2 py-0.5 rounded bg-bg-secondary text-text-secondary border border-border">网络拓扑路径图</span>
+      </div>
+      <p class="text-xs text-text-secondary font-mono mt-0.5">架构定义: {lineType}</p>
+    </div>
+    <span class="text-xs font-mono px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 font-semibold">
+      Zero Public Tunneling
+    </span>
+  </div>
+
+  <!-- Topology Flow -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 relative py-2">
+    <!-- Step 1: Client -->
+    <div class="flex flex-col items-center text-center p-4 rounded-xl border border-border/60 bg-bg-secondary/40 relative">
+      <div class="h-10 w-10 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg mb-2">
+        💻
+      </div>
+      <span class="text-xs font-bold text-text mb-1">用户终端设备</span>
+      <span class="text-[11px] text-text-secondary font-mono">Windows / macOS / iOS / Android</span>
+      <span class="mt-2 text-[10px] px-2 py-0.5 rounded bg-bg-secondary text-text-secondary font-mono border border-border/50">
+        VLESS / Trojan 加密
+      </span>
+    </div>
+
+    <!-- Step 2: Ingress -->
+    <div class="flex flex-col items-center text-center p-4 rounded-xl border border-border/60 bg-bg-secondary/40 relative">
+      <div class="h-10 w-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-lg mb-2">
+        🏢
+      </div>
+      <span class="text-xs font-bold text-text mb-1">国内 BGP 入口</span>
+      <span class="text-[11px] text-text-secondary font-mono">电信 / 联通 / 移动 三网优化</span>
+      <span class="mt-2 text-[10px] px-2 py-0.5 rounded bg-bg-secondary text-text-secondary font-mono border border-border/50">
+        智能就近接入 · 隐藏真实IP
+      </span>
+    </div>
+
+    <!-- Step 3: IEPL Tunnel (Highlighted) -->
+    <div class="flex flex-col items-center text-center p-4 rounded-xl border-2 border-emerald-500/50 bg-emerald-500/5 relative shadow-sm">
+      <div class="h-10 w-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg mb-2 animate-pulse">
+        ⚡
+      </div>
+      <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-1">IEPL 物理专线</span>
+      <span class="text-[11px] text-text-secondary font-mono">内网跨境直连 · 不经公网</span>
+      <span class="mt-2 text-[10px] px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-mono font-semibold border border-emerald-500/30">
+        抗封锁 · 零 QoS 抖动
+      </span>
+    </div>
+
+    <!-- Step 4: Egress / Services -->
+    <div class="flex flex-col items-center text-center p-4 rounded-xl border border-border/60 bg-bg-secondary/40 relative">
+      <div class="h-10 w-10 rounded-xl bg-teal-500/10 border border-teal-500/20 text-teal-600 dark:text-teal-400 flex items-center justify-center text-lg mb-2">
+        🌐
+      </div>
+      <span class="text-xs font-bold text-text mb-1">海外原生落地</span>
+      <span class="text-[11px] text-text-secondary font-mono">香港 / 日本 / 新加坡 / 美国</span>
+      <span class="mt-2 text-[10px] px-2 py-0.5 rounded bg-bg-secondary text-text-secondary font-mono border border-border/50">
+        原生住宅 IP · AI / 4K 解锁
+      </span>
+    </div>
+  </div>
+
+  <div class="mt-4 pt-3 border-t border-border/70 text-xs text-text-secondary font-mono flex flex-wrap items-center justify-between gap-2">
+    <span>线路优势: 物理级内网传输保障，晚高峰丢包率极限压低至 &lt;0.1%</span>
+    <span class="text-[11px] opacity-75">githubzhinan.homes · 拓扑监测</span>
+  </div>
+</div>

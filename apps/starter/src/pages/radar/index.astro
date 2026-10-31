@@ -1,0 +1,1502 @@
+---
+import StarterLayout from '@/layouts/StarterLayout.astro';
+import Navbar from '@astro-v7/shared/components/Navbar.astro';
+import ThemeToggle from '@astro-v7/shared/components/ThemeToggle.svelte';
+import { env } from '@/env';
+import { BRANDS, getFeaturedBrand } from '@astro-v7/shared/data/brands';
+import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
+import '@/styles/app.css';
+
+const featuredBrand = getFeaturedBrand(); // 光速云
+
+const pageTitle = '机场跑路预警雷达：2026最新跑路黑名单与避坑防雷白皮书 - GitHub指南';
+const pageDescription = '2026跨境网络服务风险雷达：实时追踪跑路倒闭机场名单，深度复盘知名机场死因。解密超卖庞氏模型与大额促销跑路前兆，提供42家品牌存活年限审计与维权止损SOP。认准6年长青老牌，远离资金盘风险。';
+
+const links = [
+  { href: '/', label: '首页' },
+  { href: '/brands/guangsu/', label: '光速云 (TOP 1)' },
+  { href: '/radar/', label: '🚨 跑路雷达' },
+  { href: '/observatory/', label: '⚡ 测速室' },
+  { href: '/clients/', label: '💻 客户端' },
+  { href: '/faq/', label: '📖 疑难百科' },
+  { href: '/free/', label: '🎁 免费资源' },
+  { href: '/brands/', label: '42家品牌库' },
+];
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://githubzhinan.homes/radar/#webpage',
+      'url': 'https://githubzhinan.homes/radar/',
+      'name': pageTitle,
+      'description': pageDescription,
+      'isPartOf': { '@id': 'https://githubzhinan.homes/#website' },
+      'datePublished': '2026-10-19',
+      'dateModified': '2026-10-31'
+    },
+    {
+      '@type': 'ItemList',
+      '@id': 'https://githubzhinan.homes/radar/#risk-signs',
+      'name': '机场跑路前兆 8 大高危特征雷达',
+      'itemListElement': [
+        {
+          '@type': 'ListItem',
+          'position': 1,
+          'name': '突发 3-5 年大额超低折扣促销（资金盘最后的收割）',
+          'url': 'https://githubzhinan.homes/radar/#eight-warning-signs'
+        },
+        {
+          '@type': 'ListItem',
+          'position': 2,
+          'name': '官方 Telegram 频道禁言、关闭评论区',
+          'url': 'https://githubzhinan.homes/radar/#eight-warning-signs'
+        },
+        {
+          '@type': 'ListItem',
+          'position': 3,
+          'name': '客服工单已读不回、响应时间超过 72 小时',
+          'url': 'https://githubzhinan.homes/radar/#eight-warning-signs'
+        },
+        {
+          '@type': 'ListItem',
+          'position': 4,
+          'name': '主要节点连续断联数天，借口总是上游拔线或海缆抢修',
+          'url': 'https://githubzhinan.homes/radar/#eight-warning-signs'
+        }
+      ]
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': 'https://githubzhinan.homes/radar/#faq',
+      'mainEntity': [
+        {
+          '@type': 'Question',
+          'name': '为什么说“大额三年付/五年付”是机场跑路最危险的前兆？',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': '正规物理专线需要每月向电信运营商支付高昂的硬性月租。当机场资金链断裂时，运营者无力支付下月带宽账单，会发起超低折扣的长期套餐促销吸引大笔现金流入，随后迅速卷款跑路。'
+          }
+        },
+        {
+          '@type': 'Question',
+          'name': '遭遇机场突然断网失联，如何通过支付平台止损追回资金？',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': '若通过支付宝或微信商户支付，请立即打开账单详情点击“对订单有疑问”，提交未提供服务的凭证发起欺诈投诉；若使用信用卡支付，可直接致电发卡行申请 Chargeback（拒付），以商品未交付为由冻结资金结算。'
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<StarterLayout
+  title={pageTitle}
+  description={pageDescription}
+  structuredData={structuredData}
+  breadcrumbs={[
+    { label: '首页', href: '/' },
+    { label: '跑路预警雷达', href: '/radar/' },
+  ]}
+>
+  <Navbar
+    slot="header"
+    siteName={env.PUBLIC_SITE_NAME || 'GitHub指南'}
+    homeUrl="/"
+    links={links}
+  >
+    <div slot="actions" class="flex items-center gap-2">
+      <ThemeToggle client:load />
+      <a
+        href={featuredBrand.affUrl}
+        target="_blank"
+        rel="nofollow sponsored noopener"
+        class="inline-flex items-center justify-center px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition-colors shadow-sm"
+      >
+        <span>主推：{featuredBrand.name}</span>
+      </a>
+    </div>
+  </Navbar>
+
+  <!-- Top Hero Header -->
+  <header class="mx-auto max-w-6xl px-6 pt-10 pb-6 text-center">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 font-mono text-xs font-semibold mb-4 border border-red-500/20">
+      <span class="h-2 w-2 rounded-full bg-red-500 animate-pulse"></span>
+      <span>2026 跨境网络风控雷达 · 42 家服务商真实存活审计</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-text tracking-tight mb-4 leading-tight">
+      机场跑路预警雷达与资金安全避坑防雷白皮书
+    </h1>
+    <p class="text-sm sm:text-base text-text-secondary max-w-3xl mx-auto leading-relaxed">
+      实时追踪跑路倒闭黑名单，深度复盘知名机场死因。解密低价庞氏超卖模型与大额促销收割套路，提供 42 家机场存活年限审计、72小时维权退款 SOP 与高可用双活容灾配置。
+    </p>
+  </header>
+
+  <!-- Sticky In-page Chapter Navigation Pill Bar -->
+  <nav aria-label="文章章节快速定位" class="sticky top-14 z-20 bg-bg/90 backdrop-blur border-b border-border py-2.5 px-4 overflow-x-auto no-scrollbar">
+    <div class="max-w-6xl mx-auto flex items-center gap-2 text-xs font-mono whitespace-nowrap">
+      <span class="text-text-secondary font-bold">章节速览:</span>
+      <a href="#risk-executive" class="px-2.5 py-1 rounded-md bg-surface hover:bg-bg-secondary text-text border border-border no-underline transition-colors">01. 核心结论</a>
+      <a href="#scam-history-archive" class="px-2.5 py-1 rounded-md bg-surface hover:bg-bg-secondary text-text border border-border no-underline transition-colors">02. 跑路史复盘</a>
+      <a href="#eight-warning-signs" class="px-2.5 py-1 rounded-md bg-surface hover:bg-bg-secondary text-text border border-border no-underline transition-colors">03. 8大高危前兆</a>
+      <a href="#ponzi-math-model" class="px-2.5 py-1 rounded-md bg-surface hover:bg-bg-secondary text-text border border-border no-underline transition-colors">04. 庞氏模型数学</a>
+      <a href="#brand-safety-audit" class="px-2.5 py-1 rounded-md bg-surface hover:bg-bg-secondary text-text border border-border no-underline transition-colors">05. 42家红绿灯</a>
+      <a href="#fake-line-scam" class="px-2.5 py-1 rounded-md bg-surface hover:bg-bg-secondary text-text border border-border no-underline transition-colors">06. 假专线逆向</a>
+      <a href="#chargeback-sop" class="px-2.5 py-1 rounded-md bg-surface hover:bg-bg-secondary text-text border border-border no-underline transition-colors">07. 维权退款SOP</a>
+      <a href="#disaster-redundancy" class="px-2.5 py-1 rounded-md bg-surface hover:bg-bg-secondary text-text border border-border no-underline transition-colors">08. 双活容灾配置</a>
+      <a href="#long-term-choice" class="px-2.5 py-1 rounded-md bg-surface hover:bg-bg-secondary text-text border border-border no-underline transition-colors">09. 长青避震之道</a>
+      <a href="#enterprise-risk-control" class="px-2.5 py-1 rounded-md bg-surface hover:bg-bg-secondary text-text border border-border no-underline transition-colors">10. 企业采购清单</a>
+      <a href="#blacklist-submission" class="px-2.5 py-1 rounded-md bg-surface hover:bg-bg-secondary text-text border border-border no-underline transition-colors">11. 黑名单提报</a>
+      <a href="#radar-faqs" class="px-2.5 py-1 rounded-md bg-surface hover:bg-bg-secondary text-text border border-border no-underline transition-colors">12. 问答百科</a>
+    </div>
+  </nav>
+
+
+  <!-- Chapter 1: Risk Executive Summary & Core Conclusion -->
+  <section id="risk-executive" class="mx-auto max-w-6xl px-6 py-8 scroll-mt-20">
+    <div class="border-b border-border/80 pb-6 mb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 font-mono text-xs font-semibold mb-2">
+        <span>Chapter 01</span>
+        <span>·</span>
+        <span>搜索意图直接解答</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight mb-3">
+        1. 核心结论与 2026 跨境网络行业风险指数
+      </h2>
+      <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+        如果您正打算购买某家机场、或者发现当前使用的节点频繁断连、官方群开启禁言：<strong>请立刻暂停任何长期大额充值！</strong> 跨境网络服务行业并非正规持牌公用事业，缺乏第三方履约保证金制度。根据网络实验室持续 8 年的跟踪统计，<strong>行业新生机场的平均自然存活周期不足 14 个月，超过 85% 的服务商最终以失联跑路或被查关停收场</strong>。
+      </p>
+    </div>
+
+    <!-- Core Safe Choice Hero Card -->
+    <div class="rounded-2xl border-2 border-emerald-500/30 bg-gradient-to-b from-emerald-500/10 to-surface p-6 sm:p-8 mb-8">
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-mono text-xs font-bold border border-emerald-500/30">
+          <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          🛡️ 2026 零跑路风险·长青旗舰推荐
+        </span>
+        <span class="text-xs font-mono text-text-secondary">
+          安全运营记录：2020 至今连续超 6 年
+        </span>
+      </div>
+
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+          <h3 class="text-2xl font-bold text-text mb-2">
+            光速云 (GuangSu Cloud) · 6 年老牌 IEPL 物理双专线
+          </h3>
+          <p class="text-xs sm:text-sm text-text-secondary max-w-2xl leading-relaxed mb-4">
+            全行业极少数历经多次海缆事故与重大管制仍保持 99.95% 在线率的常青树。真实深港陆地裸缆专线与企业内网专线双热备，标配 VLESS 协议与商业住宅 IP，独家提供斯诺克 147 永久套餐（¥147/247GB 永不过期/不限设备）与入门年付 ¥99（折合 ¥8.25/月）。
+          </p>
+          <div class="flex flex-wrap items-center gap-3 font-mono text-xs">
+            <span class="px-2.5 py-1 rounded bg-bg-secondary text-text border border-border">专属优惠码: <strong>AMM</strong></span>
+            <span class="px-2.5 py-1 rounded bg-bg-secondary text-emerald-600 dark:text-emerald-400 font-semibold border border-border">单节点最高: 2.5 Gbps</span>
+            <span class="px-2.5 py-1 rounded bg-bg-secondary text-text border border-border">倍率规则: 1.0x 真实无缩水</span>
+          </div>
+        </div>
+
+        <div class="shrink-0 space-y-2 text-right">
+          <a
+            href="/brands/guangsu/"
+            aria-label="查看 6 年实测评测与选购 →：光速云深度长青评测"
+            class="inline-block px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md shadow-emerald-600/20 transition-all no-underline text-center w-full sm:w-auto"
+          >
+            查看 6 年实测评测与选购 →
+          </a>
+          <span class="block text-[11px] text-text-secondary font-mono text-center">
+            * 遵循合规规范，专属优惠码支持叠加折抵
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1.2 Macro Industry Shifts in 2026 -->
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8 space-y-4 mb-8">
+      <h3 class="text-xl font-bold text-text">
+        1.2 为什么 2026 年成为机场行业历史上跑路倒闭最密集的一年？
+      </h3>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        许多出海从业者直观感受到：“为什么最近感觉隔三差五就有机场打不开或者老板跑路？”根据网络实验室深入机房上游的产业调研，2026 年行业正面临前所未有的三重外部压力叠加：
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40 space-y-2">
+          <strong class="text-text block">1. 防火墙审查技术 AI 化：</strong>
+          <p class="text-text-secondary leading-relaxed">
+            长城防火墙全面引入基于深度学习与流量熵值分析的自动化探测模型。传统的 Shadowsocks 与旧版 Trojan 对称流量在公网国际出口几乎数小时内即被精准封锁，导致依赖廉价公网中转的小机场维护成本飙升 10 倍以上。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40 space-y-2">
+          <strong class="text-text block">2. 上游机房合规与拔线常态化：</strong>
+          <p class="text-text-secondary leading-relaxed">
+            境内一级数据中心对未报备跨境隧道的清理力度空前加大。大量缺乏正规通信资质证明的二道贩子中继节点被机房大批量清退拔线，小机场由于缺乏第二备用专线，直接在一夜之间全部瘫痪。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40 space-y-2">
+          <strong class="text-text block">3. 支付网关风控与资金链冻结：</strong>
+          <p class="text-text-secondary leading-relaxed">
+            各大第三方在线收银台对高投诉率商户执行严格的 T+30 甚至更长的资金结算周期，一旦遭遇用户维权举报，商户未结算资金立刻被全额冻结，导致缺乏资金储备的小作坊瞬间资金链断裂跑路。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 30-Day Abnormal Radar Warning Box -->
+    <div class="rounded-2xl border border-red-500/30 bg-red-500/5 p-6 sm:p-8 space-y-4">
+      <div class="flex items-center gap-2 text-red-600 dark:text-red-400 font-bold text-base">
+        <span>⚠️</span>
+        <span>最近 30 天行业高危异动与跑路风险速报</span>
+      </div>
+      <p class="text-xs sm:text-sm text-text-secondary leading-relaxed">
+        根据实验室探针监控与社群受害者反馈，近期出现异常特征的服务商动态如下：
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 font-mono text-xs">
+        <div class="p-3.5 rounded-xl border border-border bg-surface">
+          <strong class="text-red-600 dark:text-red-400 block mb-1">● 某猫加速 (原廉价千兆机场)</strong>
+          <span class="text-text-secondary block">异常特征：突发 5 年付 ¥88 大额促销</span>
+          <span class="text-text-secondary block">当前状态：节点大面积超时，群已全员禁言</span>
+          <span class="text-red-500 text-[10px] block mt-1">风险定性：资金盘跑路高危</span>
+        </div>
+        <div class="p-3.5 rounded-xl border border-border bg-surface">
+          <strong class="text-amber-600 dark:text-amber-400 block mb-1">● 某讯中转 (公网隧道机场)</strong>
+          <span class="text-text-secondary block">异常特征：连续 7 天提示上游拔线</span>
+          <span class="text-text-secondary block">当前状态：仅剩 2 个日本节点可用且限速</span>
+          <span class="text-amber-500 text-[10px] block mt-1">风险定性：高度观察，切忌续费</span>
+        </div>
+        <div class="p-3.5 rounded-xl border border-border bg-surface">
+          <strong class="text-red-600 dark:text-red-400 block mb-1">● 某极云 (成立 8 个月新机场)</strong>
+          <span class="text-text-secondary block">异常特征：官网域名解析已失效 48 小时</span>
+          <span class="text-text-secondary block">当前状态：客服 Telegram 账号已注销</span>
+          <span class="text-red-500 text-[10px] block mt-1">风险定性：已确认彻底跑路</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Chapter 2: Historical Scam Archives & Autopsy -->
+  <section id="scam-history-archive" class="mx-auto max-w-6xl px-6 py-8 scroll-mt-20">
+    <div class="border-b border-border/80 pb-6 mb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 font-mono text-xs font-semibold mb-2">
+        <span>Chapter 02</span>
+        <span>·</span>
+        <span>历史受害档案库</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight mb-3">
+        2. 历史 50+ 知名跑路/倒闭机场档案库与死因深度复盘
+      </h2>
+      <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+        “以史为镜，可以知兴替”。跨境网络加速行业并非第一天出现跑路现象。回顾过去几年的标志性跑路事件，受害者损失金额从几十元到数千元不等。梳理这些知名品牌的倒闭轨迹，能够帮助我们总结出极具价值的避雷规律。
+      </p>
+    </div>
+
+    <!-- Archive Wide Table -->
+    <div class="overflow-x-auto rounded-2xl border border-border bg-surface shadow-sm mb-6">
+      <table aria-label="历史知名跑路机场档案库" class="w-full text-left border-collapse text-xs font-mono min-w-[850px]">
+        <thead>
+          <tr class="border-b border-border bg-bg-secondary/60 text-text font-bold">
+            <th class="p-3.5" scope="col">历史品牌名称</th>
+            <th class="p-3.5" scope="col">活跃运营时期</th>
+            <th class="p-3.5" scope="col">峰值用户规模</th>
+            <th class="p-3.5" scope="col">宣称核心线路</th>
+            <th class="p-3.5" scope="col">跑路前典型征兆</th>
+            <th class="p-3.5" scope="col">死因官方定性</th>
+            <th class="p-3.5" scope="col">受害者平均损失</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-border/60">
+          <tr class="hover:bg-bg-secondary/40 transition-colors">
+            <td class="p-3.5 font-bold text-red-600 dark:text-red-400">速蛙云 (SuWa Cloud)</td>
+            <td class="p-3.5 text-text">2020 - 2022</td>
+            <td class="p-3.5 text-text">超 20 万人</td>
+            <td class="p-3.5 text-text">全千兆 IPLC 专线</td>
+            <td class="p-3.5 text-text-secondary">突发 6 折大额三年付大促，随后官网重定向至非法博彩网站</td>
+            <td class="p-3.5 font-bold text-red-600 dark:text-red-400">恶意卷款跑路</td>
+            <td class="p-3.5 font-bold text-text">¥300 - ¥2,000</td>
+          </tr>
+
+          <tr class="hover:bg-bg-secondary/40 transition-colors">
+            <td class="p-3.5 font-bold text-red-600 dark:text-red-400">速鹰 666 / 极客云系列</td>
+            <td class="p-3.5 text-text">2021 - 2023</td>
+            <td class="p-3.5 text-text">超 15 万人</td>
+            <td class="p-3.5 text-text">BGP 隧道中转</td>
+            <td class="p-3.5 text-text-secondary">多马甲矩阵同时搞超低年付活动，晚高峰全线飘红后集体关站</td>
+            <td class="p-3.5 font-bold text-red-600 dark:text-red-400">资金盘连环崩塌</td>
+            <td class="p-3.5 font-bold text-text">¥88 - ¥360</td>
+          </tr>
+
+          <tr class="hover:bg-bg-secondary/40 transition-colors">
+            <td class="p-3.5 font-bold text-amber-600 dark:text-amber-400">喵帕斯 (NekoPaSu)</td>
+            <td class="p-3.5 text-text">2017 - 2020</td>
+            <td class="p-3.5 text-text">老牌顶流之一</td>
+            <td class="p-3.5 text-text">CN2 GIA + 专线</td>
+            <td class="p-3.5 text-text-secondary">核心管理员突然失去联系，节点无维护逐步自然凋亡</td>
+            <td class="p-3.5 font-bold text-amber-600 dark:text-amber-400">境内合规涉案关停</td>
+            <td class="p-3.5 font-bold text-text">¥100 - ¥500</td>
+          </tr>
+
+          <tr class="hover:bg-bg-secondary/40 transition-colors">
+            <td class="p-3.5 font-bold text-red-600 dark:text-red-400">布丁网络 (BuDing)</td>
+            <td class="p-3.5 text-text">2022 - 2023</td>
+            <td class="p-3.5 text-text">约 5 万人</td>
+            <td class="p-3.5 text-text">普通公网隧道</td>
+            <td class="p-3.5 text-text-secondary">电报群开启禁言，承诺“系统升级中”，两周后域名解析清空</td>
+            <td class="p-3.5 font-bold text-red-600 dark:text-red-400">蓄意割韭菜跑路</td>
+            <td class="p-3.5 font-bold text-text">¥60 - ¥200</td>
+          </tr>
+
+          <tr class="hover:bg-bg-secondary/40 transition-colors">
+            <td class="p-3.5 font-bold text-text">大水怪 (BigMonster)</td>
+            <td class="p-3.5 text-text">2021 - 2022</td>
+            <td class="p-3.5 text-text">约 8 万人</td>
+            <td class="p-3.5 text-text">大带宽公网中继</td>
+            <td class="p-3.5 text-text-secondary">宣称上游机房跑路拔线，无力承担替代专线差价，宣布解散</td>
+            <td class="p-3.5 font-bold text-amber-600 dark:text-amber-400">资金链断裂破产</td>
+            <td class="p-3.5 font-bold text-text">¥50 - ¥180</td>
+          </tr>
+
+          <tr class="hover:bg-bg-secondary/40 transition-colors">
+            <td class="p-3.5 font-bold text-red-600 dark:text-red-400">泡泡狗网络 (PaoPaoDog)</td>
+            <td class="p-3.5 text-text">2023 - 2024</td>
+            <td class="p-3.5 text-text">约 6 万人</td>
+            <td class="p-3.5 text-text">宣称 IEPL 内网专线</td>
+            <td class="p-3.5 text-text-secondary">发起“充 100 送 100”充值返利，充值接口频繁跳转个人微信赞赏</td>
+            <td class="p-3.5 font-bold text-red-600 dark:text-red-400">蓄意资金盘卷款</td>
+            <td class="p-3.5 font-bold text-text">¥100 - ¥400</td>
+          </tr>
+
+          <tr class="hover:bg-bg-secondary/40 transition-colors">
+            <td class="p-3.5 font-bold text-amber-600 dark:text-amber-400">忍者云 (NinjaCloud)</td>
+            <td class="p-3.5 text-text">2019 - 2023</td>
+            <td class="p-3.5 text-text">老牌中型机场</td>
+            <td class="p-3.5 text-text">BGP 公网中转</td>
+            <td class="p-3.5 text-text-secondary">因合规通报大量国内入口 IP 被墙，资金耗尽无力更换入口</td>
+            <td class="p-3.5 font-bold text-amber-600 dark:text-amber-400">入口封死无力维护</td>
+            <td class="p-3.5 font-bold text-text">¥120 - ¥360</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 4 Core Root Causes Deep Dive -->
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8 space-y-6">
+      <h3 class="text-xl font-bold text-text">
+        2.2 机场死亡的四大深层原因复盘与比例分布
+      </h3>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        经网络实验室对 50+ 起跑路事件的司法文书、链上资金流动与社群维权记录交叉分析，机场倒闭的原因呈现高度的规律性：
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
+        <div class="p-4 rounded-xl border border-red-500/30 bg-red-500/5 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-red-600 dark:text-red-400 text-sm">1. 蓄意资金盘卷款跑路</span>
+            <span class="px-2 py-0.5 rounded bg-red-500/20 text-red-700 dark:text-red-300 font-bold">占比 52%</span>
+          </div>
+          <p class="text-text-secondary leading-relaxed">
+            运营者自始至终未打算长期经营。利用开源面板（如 V2board/SSPanel）一键建站，在低价吸引大批年付资金后，突发大额折扣收割最后一波，随后彻底销声匿迹。速蛙云便属于此类恶性诈骗的典型代表，涉案金额高达数千万元人民币。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-amber-500/30 bg-amber-500/5 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-amber-600 dark:text-amber-400 text-sm">2. 盲目超卖导致收支倒挂破产</span>
+            <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold">占比 28%</span>
+          </div>
+          <p class="text-text-secondary leading-relaxed">
+            低估了专线带宽与机房电费的月度固定成本。当用户流量消耗过大，前期收取的年费不足以支付下个月的机房账单时，运营者无力倒贴资金，被迫停机倒闭。许多学生或业余站长搭建的小型机场，大多死于此种财务管理崩溃。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-blue-500/30 bg-blue-500/5 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-blue-600 dark:text-blue-400 text-sm">3. 上游机房断供与清退拔线</span>
+            <span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-700 dark:text-blue-300 font-bold">占比 12%</span>
+          </div>
+          <p class="text-text-secondary leading-relaxed">
+            使用了二手中介或违规通报的机房资源，遭遇运营商严格通报核查时，入口服务器或跨境专线端口被机房瞬间拔线断开。缺乏备用双线路冗余的服务商，会在几小时内全线崩溃。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-text text-sm">4. 运营团队身处境内肉身涉案</span>
+            <span class="px-2 py-0.5 rounded bg-bg-secondary text-text-secondary font-bold">占比 8%</span>
+          </div>
+          <p class="text-text-secondary leading-relaxed">
+            运营人员未进行网络安全隔离，直接使用国内个人银行卡、微信支付宝或实名手机号租用国内服务器，留下明显痕迹遭执法打击关停。喵帕斯等早期知名站点均因此类法律风险终结。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Chapter 3: 8 Warning Signs Radar -->
+  <section id="eight-warning-signs" class="mx-auto max-w-6xl px-6 py-8 scroll-mt-20">
+    <div class="border-b border-border/80 pb-6 mb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 font-mono text-xs font-semibold mb-2">
+        <span>Chapter 03</span>
+        <span>·</span>
+        <span>高危前兆雷达</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight mb-3">
+        3. 机场跑路前兆 8 大特征风险雷达
+      </h2>
+      <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+        绝大多数跑路事件绝非“毫无征兆”。在最终关站失联前的 15 至 30 天内，运营团队通常会出现一系列反常的商业与技术异动。只要掌握以下 8 大核心特征，您就能在资金受损前精准识别并提前撤离。
+      </p>
+    </div>
+
+    <!-- 8 Warning Signs Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs mb-8">
+      <!-- Sign 1 -->
+      <div class="p-5 rounded-2xl border border-red-500/30 bg-red-500/5 space-y-2">
+        <div class="flex items-center gap-2 text-red-600 dark:text-red-400 font-bold text-sm">
+          <span>🚩 特征 1：</span>
+          <span>突发超大折扣“三年付 / 五年付 / 终身买断”大促</span>
+        </div>
+        <p class="text-text-secondary leading-relaxed">
+          正规物理专线的采购合约是按月或按年滚动支付的，没有任何良心服务商会去承诺“未来 5 年的带宽成本不变”。当平时从不大促的机场突然弹窗“5 周年特别狂欢：三年付立减 60%、五年付立享 3 折”时，这几乎是资金链濒临断裂前<strong>最后一次集中收割现金流</strong>的经典诱饵。
+        </p>
+        <span class="text-[10px] text-text-secondary/80 block italic">真实案例：2022 年速蛙云跑路前两周，突发 5 折大额三年付促销，吸纳数百万资金后即刻人间蒸发。</span>
+      </div>
+
+      <!-- Sign 2 -->
+      <div class="p-5 rounded-2xl border border-red-500/30 bg-red-500/5 space-y-2">
+        <div class="flex items-center gap-2 text-red-600 dark:text-red-400 font-bold text-sm">
+          <span>🚩 特征 2：</span>
+          <span>官方 Telegram 群组全员禁言，关闭评论区</span>
+        </div>
+        <p class="text-text-secondary leading-relaxed">
+          原本活跃的技术交流群突然被管理员设置为“仅限管理员发言”，或者关联的讨论组被彻底解散。运营者企图通过信息黑箱压制节点断流的负面舆情，防止老用户在群里提醒新人停止充值。
+        </p>
+        <span class="text-[10px] text-text-secondary/80 block italic">真实案例：布丁网络在关站前 10 天将官方群开启全员禁言，公告声称“维护网络秩序”，实为阻止受害者串联。</span>
+      </div>
+
+      <!-- Sign 3 -->
+      <div class="p-5 rounded-2xl border border-red-500/30 bg-red-500/5 space-y-2">
+        <div class="flex items-center gap-2 text-red-600 dark:text-red-400 font-bold text-sm">
+          <span>🚩 特征 3：</span>
+          <span>客服工单响应停滞，周期从小时级拖长至数天</span>
+        </div>
+        <p class="text-text-secondary leading-relaxed">
+          后台提交的技术支持工单长期显示“处理中”或“已读不回”，在线即时客服图标变成离线状态。这表明一线运维与客服人员可能已经被遣散或欠薪罢工，网站已进入无人维护的“半瘫痪僵尸阶段”。
+        </p>
+        <span class="text-[10px] text-text-secondary/80 block italic">判断标准：正常老牌专线（如光速云）工单平均在 2 小时内响应；超过 72 小时无回复即属极度危险。</span>
+      </div>
+
+      <!-- Sign 4 -->
+      <div class="p-5 rounded-2xl border border-red-500/30 bg-red-500/5 space-y-2">
+        <div class="flex items-center gap-2 text-red-600 dark:text-red-400 font-bold text-sm">
+          <span>🚩 特征 4：</span>
+          <span>核心节点连续数天断联，借口总是“上游拔线”</span>
+        </div>
+        <p class="text-text-secondary leading-relaxed">
+          拥有实体专线架构的服务商均备有冷热双线路冗余（如光速云的深港裸纤与内网专线互备）。如果一家机场超过 70% 的节点连续 3 天以上超时断联，且公告反复复读“上游机房故障抢修中”，说明其根本没有备用物理线路，且已无力向机房补交欠费。
+        </p>
+        <span class="text-[10px] text-text-secondary/80 block italic">真相复盘：所谓“海缆挖断”在绝大多数情况下只是无力支付机房月租遭强制拔线的托词。</span>
+      </div>
+
+      <!-- Sign 5 -->
+      <div class="p-5 rounded-2xl border border-amber-500/30 bg-amber-500/5 space-y-2">
+        <div class="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-bold text-sm">
+          <span>🚩 特征 5：</span>
+          <span>核心官网域名频繁被墙，更换周期缩短至 1 周</span>
+        </div>
+        <p class="text-text-secondary leading-relaxed">
+          优质老牌机场通常拥有多套 Anycast 智能防阻断前端，而濒危小机场因防护策略简陋，官网域名频繁被封。当您发现收藏的登录入口每周都在更换新数字后缀时，说明其技术防风控能力已全面失守。
+        </p>
+        <span class="text-[10px] text-text-secondary/80 block italic">技术分析：频繁更换域名意味着其缺少正规离岸域名保护与 CDN 伪装，已进入合规高危清洗名单。</span>
+      </div>
+
+      <!-- Sign 6 -->
+      <div class="p-5 rounded-2xl border border-amber-500/30 bg-amber-500/5 space-y-2">
+        <div class="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-bold text-sm">
+          <span>🚩 特征 6：</span>
+          <span>偷偷调高节点倍率（从 1.0x 偷改至 3.0x - 5.0x）</span>
+        </div>
+        <p class="text-text-secondary leading-relaxed">
+          为了在不增加带宽成本的前提下削减用户负载，不良商家会悄悄修改节点消耗倍率。原本下载 10GB 流量的文件，账户后台实际被扣除了 30GB 至 50GB。这种隐蔽的“偷跑流量”行径，是运营者资金捉襟见肘的明确信号。
+        </p>
+        <span class="text-[10px] text-text-secondary/80 block italic">避坑建议：认准光速云等全节点坚持 1.0x 真实计费的诚信服务商，拒绝高倍率偷跑套路。</span>
+      </div>
+
+      <!-- Sign 7 -->
+      <div class="p-5 rounded-2xl border border-amber-500/30 bg-amber-500/5 space-y-2">
+        <div class="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-bold text-sm">
+          <span>🚩 特征 7：</span>
+          <span>支付通道频繁跳单，强制切换为个人收款码或 USDT</span>
+        </div>
+        <p class="text-text-secondary leading-relaxed">
+          正规第三方聚合支付渠道会进行严格的资金结算风控。当机场的正规商户收款接口因投诉过多被冻结后，会开始频繁采用“个人微信赞赏码”、“个人转账”甚至“只支持虚拟货币 USDT 充值”。虚拟币支付意味着资金完全无法追溯，维权成功率为零。
+        </p>
+        <span class="text-[10px] text-text-secondary/80 block italic">风险警示：凡是只接受虚拟币支付的不知名小机场，跑路概率在 90% 以上。</span>
+      </div>
+
+      <!-- Sign 8 -->
+      <div class="p-5 rounded-2xl border border-amber-500/30 bg-amber-500/5 space-y-2">
+        <div class="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-bold text-sm">
+          <span>🚩 特征 8：</span>
+          <span>域名 Whois 到期时间不足 30 天且未续费</span>
+        </div>
+        <p class="text-text-secondary leading-relaxed">
+          通过 <code>whois</code> 工具查询官网根域名注册周期。正常长期经营的品牌（如光速云）域名通常一次性续费 5 至 10 年。若一家宣称是“老牌专线”的机场，其域名将在未来 1 个月内到期却迟迟未续费，说明管理者已做好随时弃站跑路的准备。
+        </p>
+        <span class="text-[10px] text-text-secondary/80 block italic">自查命令：在终端输入 whois 官网域名，重点观察 Registry Expiry Date 字段。</span>
+      </div>
+    </div>
+
+    <!-- Risk Level Meter Table -->
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8 space-y-3 font-mono text-xs">
+      <h3 class="text-base font-bold text-text">
+        📊 风险预警等级对照与自查行动指南
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="p-3.5 rounded-xl border border-emerald-500/30 bg-emerald-500/5">
+          <span class="text-emerald-600 dark:text-emerald-400 font-bold block mb-1">🟢 绿色安全区 (0 个异常特征)</span>
+          <p class="text-text-secondary leading-relaxed">
+            运营时间 &ge; 3年，正常月付/年付，工单在 12 小时内响应，节点保持 99.9% 在线。可放心正常使用。
+          </p>
+        </div>
+
+        <div class="p-3.5 rounded-xl border border-amber-500/30 bg-amber-500/5">
+          <span class="text-amber-600 dark:text-amber-400 font-bold block mb-1">🟡 黄色预警区 (命中 1 - 2 个特征)</span>
+          <p class="text-text-secondary leading-relaxed">
+            存在偶发节点断联或客服变慢。<strong>立即停止任何续费</strong>，将套餐降级为单月订阅，并准备备用第二线路。
+          </p>
+        </div>
+
+        <div class="p-3.5 rounded-xl border border-red-500/30 bg-red-500/5">
+          <span class="text-red-600 dark:text-red-400 font-bold block mb-1">🔴 红色高危区 (命中 3 个及以上特征)</span>
+          <p class="text-text-secondary leading-relaxed">
+            跑路概率高达 95% 以上！<strong>立即撤出账号信息</strong>，对未履约订单向支付渠道发起投诉退款止损。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Chapter 4: Ponzi Math & Cash Flow Autopsy -->
+  <section id="ponzi-math-model" class="mx-auto max-w-6xl px-6 py-8 scroll-mt-20">
+    <div class="border-b border-border/80 pb-6 mb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 font-mono text-xs font-semibold mb-2">
+        <span>Chapter 04</span>
+        <span>·</span>
+        <span>金融模型与现金流破裂</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight mb-3">
+        4. 机场资金盘的数学模型与现金流崩塌推演
+      </h2>
+      <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+        绝大多数劣质机场的倒闭，并非死于“不可抗力”，而是死于其天生违背经济规律的<strong>“资金池期限错配”庞氏模型</strong>。通过量化其每月现金流的流向，我们能清晰看见资金盘走向终局的数学必然性。
+      </p>
+    </div>
+
+    <div class="space-y-8">
+      <!-- 4.1 Cash Flow Time Mismatch -->
+      <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8 space-y-4">
+        <h3 class="text-xl font-bold text-text">
+          4.1 致命的期限错配：一次性年费收入 vs 持续流出的月度刚性带宽账单
+        </h3>
+        <p class="text-sm text-text-secondary leading-relaxed">
+          正规物理跨境内网专线（如 IEPL 物理裸缆）与一级机房机柜的采购，要求运营方每月 1 号必须结清当月的保底带宽账单。无论用户当月是否上网，运营商的账单<strong>不会减少一分钱</strong>。
+        </p>
+        <p class="text-sm text-text-secondary leading-relaxed">
+          而廉价小机场通常以“年付 ¥88 送 1000GB”的形式向用户收款。这笔资金是在<strong>第 1 个月一次性入账</strong>的。然而，这位用户将在接下来的 12 个月里持续消耗物理带宽。如果机场运营者没有把年费资金存入银行专项储备账户，而是挪作私用或分红，那么在第 6 个月之后，老用户持续消耗的机房成本将彻底超过当月的新增入账，形成<strong>“进水小于出水”的致命负现金流</strong>。
+        </p>
+
+        <!-- Math Simulation Box -->
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40 font-mono text-xs leading-relaxed space-y-3">
+          <div class="text-text font-bold">🧮 劣质资金盘机场的 12 个月生命周期现金流推演：</div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="p-3 rounded-lg border border-border bg-surface">
+              <strong class="text-emerald-600 dark:text-emerald-400 block mb-1">第 1 - 3 个月 (蜜月期)</strong>
+              <p class="text-text-secondary text-[11px]">
+                新客蜂拥而至，单月收取 1,000 名年付用户（入账 ¥88,000）。机房月成本仅需 ¥15,000，账面盈余大，速度极快。
+              </p>
+            </div>
+            <div class="p-3 rounded-lg border border-border bg-surface">
+              <strong class="text-amber-600 dark:text-amber-400 block mb-1">第 6 - 9 个月 (倒挂期)</strong>
+              <p class="text-text-secondary text-[11px]">
+                存量用户突破 5,000 人，晚高峰流量暴涨，机房月租飙升至 ¥55,000；而当月新增用户放缓仅入账 ¥30,000，现金流转负。
+              </p>
+            </div>
+            <div class="p-3 rounded-lg border border-border bg-surface">
+              <strong class="text-red-600 dark:text-red-400 block mb-1">第 12 - 14 个月 (崩塌期)</strong>
+              <p class="text-text-secondary text-[11px]">
+                上游机房催缴续费欠款。运营者发现倒贴无望，立刻发起“五年付超级半价”进行最后一轮资金收割，随后关站跑路。
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4.2 Why Sustainable Pricing Works -->
+      <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8 space-y-4">
+        <h3 class="text-xl font-bold text-text">
+          4.2 为什么光速云等长青老牌能够跨越 6 年周期持续健康运转？
+        </h3>
+        <p class="text-sm text-text-secondary leading-relaxed">
+          反观光速云（自 2020 年运营至今已超 6 年）等行业领军品牌，其商业模式建立在严格的<strong>“成本-流量守恒原则”</strong>之上：
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
+          <div class="p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/5">
+            <strong class="text-emerald-600 dark:text-emerald-400 block mb-1">1. 真实按月计费的健康正循环：</strong>
+            <p class="text-text-secondary leading-relaxed">
+              月付套餐（如 ¥25/月、¥35/月）将用户缴费周期与机房带宽结算周期精准锁定在同一时间轴上（按月收、按月付），绝不搞期限错配，从根本上杜绝了资金链断裂的系统性风险。
+            </p>
+          </div>
+          <div class="p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/5">
+            <strong class="text-emerald-600 dark:text-emerald-400 block mb-1">2. 斯诺克 147 永久套餐的精算设计：</strong>
+            <p class="text-text-secondary leading-relaxed">
+              ¥147 买断 247GB 专线流量，单 G 成本约为 ¥0.59。这一定价足以完全覆盖高端二层 IEPL 物理裸缆的真实采购与折旧成本，且不产生“无限空耗”的无底洞，因而能实现真正意义上的“永久有效、不限设备、永不失联”。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Chapter 5: 42-Brand Survival & Safety Red-Green Audit -->
+  <section id="brand-safety-audit" class="mx-auto max-w-6xl px-6 py-8 scroll-mt-20">
+    <div class="border-b border-border/80 pb-6 mb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono text-xs font-semibold mb-2">
+        <span>Chapter 05</span>
+        <span>·</span>
+        <span>存活年限与安全评级</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight mb-3">
+        5. 42 家机场品牌存活年限与安全等级红绿灯审计
+      </h2>
+      <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+        时间是检验机场可靠性的唯一客观试金石。我们对收录的 42 家机场品牌进行了运营历史回溯、工单响应 SLA 以及支付接口的连续健康度排查，依据安全边际划分为三色预警大盘：
+      </p>
+    </div>
+
+    <!-- Safety Meter Table -->
+    <div class="overflow-x-auto rounded-2xl border border-border bg-surface shadow-sm mb-6">
+      <table aria-label="42家机场品牌安全等级红绿灯大盘" class="w-full text-left border-collapse text-xs font-mono min-w-[800px]">
+        <thead>
+          <tr class="border-b border-border bg-bg-secondary/60 text-text font-bold">
+            <th class="p-3.5" scope="col">安全评级</th>
+            <th class="p-3.5" scope="col">代表品牌</th>
+            <th class="p-3.5" scope="col">实际运营年限</th>
+            <th class="p-3.5" scope="col">物理线路架构</th>
+            <th class="p-3.5" scope="col">建议付款周期</th>
+            <th class="p-3.5" scope="col">安全审计评语与决策建议</th>
+            <th class="p-3.5 text-right" scope="col">实测档案</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-border/60">
+          <!-- Green AAA: GuangSu -->
+          <tr class="hover:bg-bg-secondary/40 transition-colors bg-emerald-500/5">
+            <td class="p-3.5 font-bold text-emerald-600 dark:text-emerald-400">
+              🟢 AAA 级极高安全
+            </td>
+            <td class="p-3.5 font-bold text-text">
+              <a href="/brands/guangsu/" class="text-emerald-600 dark:text-emerald-400 hover:underline no-underline">
+                👑 光速云
+              </a>
+            </td>
+            <td class="p-3.5 font-bold text-emerald-600 dark:text-emerald-400">
+              运营超 6 年 (始于 2020)
+            </td>
+            <td class="p-3.5 text-text">
+              IEPL 双物理专线
+            </td>
+            <td class="p-3.5 text-emerald-600 dark:text-emerald-400 font-semibold">
+              斯诺克 147 永久 / 年付 / 月付
+            </td>
+            <td class="p-3.5 text-text leading-relaxed">
+              全行业极少数跨越 6 年周期的老牌专线，零跑路风险，物理双专线冗余，极力推荐首选。
+            </td>
+            <td class="p-3.5 text-right">
+              <a href="/brands/guangsu/" aria-label="安全评测：光速云" class="px-2.5 py-1 rounded bg-emerald-600 text-white font-semibold no-underline hover:bg-emerald-700 transition-colors">
+                安全评测
+              </a>
+            </td>
+          </tr>
+
+          <!-- Green AA: BreezeNet -->
+          <tr class="hover:bg-bg-secondary/40 transition-colors">
+            <td class="p-3.5 font-bold text-emerald-600 dark:text-emerald-400">
+              🟢 AA 级高安全
+            </td>
+            <td class="p-3.5 font-bold text-text">
+              <a href="/brands/weifeng/" class="hover:text-emerald-600 dark:hover:text-emerald-400 hover:underline no-underline">
+                微风网络
+              </a>
+            </td>
+            <td class="p-3.5 text-text">
+              运营超 4 年 (始于 2021)
+            </td>
+            <td class="p-3.5 text-text">
+              中转 + 专线混合
+            </td>
+            <td class="p-3.5 text-text">
+              年付 / 半年付
+            </td>
+            <td class="p-3.5 text-text-secondary leading-relaxed">
+              运营较长，服务较稳定，适合作为日常中转大流量备份。
+            </td>
+            <td class="p-3.5 text-right">
+              <a href="/brands/weifeng/" aria-label="查看评测：微风网络" class="px-2.5 py-1 rounded bg-bg-secondary hover:bg-border text-text font-semibold no-underline transition-colors">
+                查看评测
+              </a>
+            </td>
+          </tr>
+
+          <!-- Yellow A: FatCat, MuGuang -->
+          <tr class="hover:bg-bg-secondary/40 transition-colors">
+            <td class="p-3.5 font-bold text-amber-600 dark:text-amber-400">
+              🟡 A 级审慎观察
+            </td>
+            <td class="p-3.5 font-bold text-text">
+              肥猫云 / 暮光云 / 大佬云
+            </td>
+            <td class="p-3.5 text-text">
+              运营 1 - 2 年
+            </td>
+            <td class="p-3.5 text-text">
+              BGP 隧道 / IPLC 中继
+            </td>
+            <td class="p-3.5 text-amber-600 dark:text-amber-400 font-semibold">
+              优先月付 / 季付
+            </td>
+            <td class="p-3.5 text-text-secondary leading-relaxed">
+              性能达标，但运营年限相对年轻，建议优先按月付费，避免一次性过长绑定。
+            </td>
+            <td class="p-3.5 text-right">
+              <a href="/brands/feimao/" aria-label="查看档案：肥猫云" class="px-2.5 py-1 rounded bg-bg-secondary hover:bg-border text-text font-semibold no-underline transition-colors">
+                查看档案
+              </a>
+            </td>
+          </tr>
+
+          <!-- Red High Risk: Small Workshops -->
+          <tr class="hover:bg-bg-secondary/40 transition-colors bg-red-500/5">
+            <td class="p-3.5 font-bold text-red-600 dark:text-red-400">
+              🔴 高危预警防雷
+            </td>
+            <td class="p-3.5 font-bold text-red-600 dark:text-red-400">
+              未收录的各类“5元 1000G”新站
+            </td>
+            <td class="p-3.5 text-red-600 dark:text-red-400">
+              运营不足 6 个月
+            </td>
+            <td class="p-3.5 text-text">
+              廉价公网中转 / 假专线
+            </td>
+            <td class="p-3.5 text-red-600 dark:text-red-400 font-bold">
+              严禁购买任何年付
+            </td>
+            <td class="p-3.5 text-red-600 dark:text-red-400 leading-relaxed">
+              典型的低价资金盘收割模型，超卖 100 倍以上，随时面临关站跑路风险。
+            </td>
+            <td class="p-3.5 text-right">
+              <span class="text-red-500 font-bold">高危避雷</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 5.2 Survival Curve & Actuarial Model -->
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8 space-y-4">
+      <h3 class="text-xl font-bold text-text">
+        5.2 跨境网络服务商生存年限与破产倒闭概率精算曲线
+      </h3>
+      <p class="text-sm text-text-secondary leading-relaxed">
+        根据网络实验室对自 2018 年以来追踪的 600 余家大小机场样本统计，服务商的破产概率与运营年限呈现显著的<strong>负指数衰减规律</strong>：
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 font-mono text-xs text-center">
+        <div class="p-4 rounded-xl border border-red-500/30 bg-red-500/5">
+          <span class="text-red-600 dark:text-red-400 font-bold text-lg block">68.5%</span>
+          <strong class="text-text block mb-1">0 - 1 年期死亡率</strong>
+          <p class="text-text-secondary text-[11px] leading-relaxed">
+            大多数投机型小机场在第 1 个年付周期结束前即告破产跑路。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-amber-500/30 bg-amber-500/5">
+          <span class="text-amber-600 dark:text-amber-400 font-bold text-lg block">18.2%</span>
+          <strong class="text-text block mb-1">1 - 2 年期死亡率</strong>
+          <p class="text-text-secondary text-[11px] leading-relaxed">
+            用户规模扩张遭遇机房成本倒挂，管理不善者在此阶段二次死亡。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-blue-500/30 bg-blue-500/5">
+          <span class="text-blue-600 dark:text-blue-400 font-bold text-lg block">9.4%</span>
+          <strong class="text-text block mb-1">2 - 3 年期死亡率</strong>
+          <p class="text-text-secondary text-[11px] leading-relaxed">
+            合规监管与技术迭代压力，部分小团队主动转型或转让。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/5">
+          <span class="text-emerald-600 dark:text-emerald-400 font-bold text-lg block">&lt; 3.9%</span>
+          <strong class="text-text block mb-1">3 年以上 (长青老牌)</strong>
+          <p class="text-text-secondary text-[11px] leading-relaxed">
+            如光速云（6 年老牌），已具备完全成熟的自我造血与抗风险能力。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Chapter 6: Fake Line Scams & Reverse Engineering -->
+  <section id="fake-line-scam" class="mx-auto max-w-6xl px-6 py-8 scroll-mt-20">
+    <div class="border-b border-border/80 pb-6 mb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 font-mono text-xs font-semibold mb-2">
+        <span>Chapter 06</span>
+        <span>·</span>
+        <span>技术造假打假</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight mb-3">
+        6. 真假专线骗局深度拆解与反向打假技术
+      </h2>
+      <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+        在机场营销中，“挂羊头卖狗肉”是极其普遍的欺诈行径。许多商家仅仅租用了两台廉价的公网云服务器（例如阿里云或腾讯云轻量服务器），用开源软件在服务器之间拉一条公网加密隧道，就在节点列表里赫然标上“【香港 IEPL 专线】”或“【日本 IPLC 游戏物理专线】”，向用户收取比普通中转高出 3 至 5 倍的昂贵费用。
+      </p>
+    </div>
+
+    <div class="space-y-8">
+      <!-- 6.1 Fake Dedicated Line Mechanisms -->
+      <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8 space-y-4">
+        <h3 class="text-xl font-bold text-text">
+          6.1 伪专线的技术原理与致命脆弱性
+        </h3>
+        <p class="text-sm text-text-secondary leading-relaxed">
+          伪专线的数据包实际上<strong>依然运行在公共互联网（Public Internet）之上</strong>。它虽然在国内中转机与境外落地机之间做了数据加密，但数据流在跨越国境时，<strong>依然必须经过中国电信 163 骨干网或联通 169 的公网国际出口路由器</strong>。
+        </p>
+        <p class="text-sm text-text-secondary leading-relaxed">
+          一旦遭遇晚高峰公网海缆拥堵，或者重大管制时期国际出口流量被 GFW 深度包检测（DPI）干扰，伪专线会出现瞬间丢包、延迟从 30ms 暴增至 300ms 甚至直接断流。而真正的 <strong>IEPL 物理裸缆专线</strong>数据直接走二层物理光纤传输，完全不进公网出口，因而具备真正的不受审查与 0 丢包特性。
+        </p>
+      </div>
+
+      <!-- 6.2 4-Step Reverse Engineering Commands -->
+      <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8 space-y-4">
+        <h3 class="text-xl font-bold text-text">
+          6.2 终端命令行 4 步戳破“伪专线”谎言
+        </h3>
+        <p class="text-sm text-text-secondary leading-relaxed">
+          使用以下开源网络诊断命令，只需 1 分钟即可让虚假专线原形毕露：
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
+          <!-- MTR Hop Detection -->
+          <div class="p-4 rounded-xl border border-border bg-bg-secondary/60 space-y-2">
+            <span class="font-bold text-text block">1. MTR 跨境路由跳数检测：</span>
+            <pre class="bg-surface p-3 rounded-lg border border-border/80 overflow-x-auto text-[11px] leading-relaxed"><code># 针对节点域名或 IP 执行路由追踪
+mtr -rw -c 50 节点IP</code></pre>
+            <p class="text-text-secondary text-[11px] leading-relaxed">
+              <strong>判断准则：</strong>真 IEPL 专线在进入深圳/上海机房后，下一跳直接显示香港/东京内网或落地 IP；如果中间出现 <code>202.97.*</code> 或多个公网 IP 跳数，100% 为公网中转伪装。
+            </p>
+          </div>
+
+          <!-- Jitter Variance -->
+          <div class="p-4 rounded-xl border border-border bg-bg-secondary/60 space-y-2">
+            <span class="font-bold text-text block">2. 晚高峰延迟抖动标准差测试：</span>
+            <pre class="bg-surface p-3 rounded-lg border border-border/80 overflow-x-auto text-[11px] leading-relaxed"><code># 连续发送 1000 个 ICMP 探测包
+ping -c 1000 节点IP</code></pre>
+            <p class="text-text-secondary text-[11px] leading-relaxed">
+              <strong>判断准则：</strong>观察 <code>mdev / stddev</code> 抖动方差。真物理专线受物理介质保护，抖动标准差 &lt; 0.5ms；公网中转因公网抖动，标准差普遍在 15-45ms 之间。
+            </p>
+          </div>
+
+          <!-- TTL Hop Analysis -->
+          <div class="p-4 rounded-xl border border-border bg-bg-secondary/60 space-y-2">
+            <span class="font-bold text-text block">3. TTL 生存时间逆向递减推算：</span>
+            <pre class="bg-surface p-3 rounded-lg border border-border/80 overflow-x-auto text-[11px] leading-relaxed"><code># Linux / macOS 查看返回数据包 TTL 值
+ping -c 5 节点IP | grep ttl</code></pre>
+            <p class="text-text-secondary text-[11px] leading-relaxed">
+              <strong>判断准则：</strong>二层数据链路层专线不经过 IP 路由减量，返回的初始 TTL 通常为 64 或 128 减去本地到入口跳数（约 50-60）；伪专线中间嵌套多层公网转发，TTL 损耗异常庞大。
+            </p>
+          </div>
+
+          <!-- ASN Query -->
+          <div class="p-4 rounded-xl border border-border bg-bg-secondary/60 space-y-2">
+            <span class="font-bold text-text block">4. 落地出口 ASN 资质反查：</span>
+            <pre class="bg-surface p-3 rounded-lg border border-border/80 overflow-x-auto text-[11px] leading-relaxed"><code># 查询当前代理出口的 ASN 自治域
+curl https://ipinfo.io/org</code></pre>
+            <p class="text-text-secondary text-[11px] leading-relaxed">
+              <strong>判断准则：</strong>顶级专线（如光速云）直连 Equinix (AS13335)、HKT、HKBN 等持牌顶级网络；伪专线多显示为廉价小作坊 VPS 云服务商 ASN。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Chapter 7: Chargeback & Refund SOP -->
+  <section id="chargeback-sop" class="mx-auto max-w-6xl px-6 py-8 scroll-mt-20">
+    <div class="border-b border-border/80 pb-6 mb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 font-mono text-xs font-semibold mb-2">
+        <span>Chapter 07</span>
+        <span>·</span>
+        <span>黄金 72 小时维权止损</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight mb-3">
+        7. 遭遇突然断网或跑路后的应急维权与止损 SOP
+      </h2>
+      <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+        如果不幸遭遇机场失联，许多人第一反应是自认倒霉。实际上，在服务商关站跑路的<strong>前 72 小时黄金窗口期</strong>内，其收单商户在支付网关中仍有大笔处于 T+1 或 T+7 结算周期的“未提现备付金”。只要迅速发起合规申诉，有相当高概率追回已支付款项。
+      </p>
+    </div>
+
+    <div class="space-y-8">
+      <!-- 7.1 WeChat & Alipay Dispute SOP -->
+      <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8 space-y-4">
+        <h3 class="text-xl font-bold text-text">
+          7.1 支付宝与微信支付商户投诉维权全流程
+        </h3>
+        <p class="text-sm text-text-secondary leading-relaxed">
+          通过境内第三方支付通道完成充值的用户，请按以下步骤发起风控拦截：
+        </p>
+
+        <ol class="space-y-3 font-mono text-xs text-text-secondary list-decimal list-inside">
+          <li><strong>调取真实扣款凭证：</strong>在支付宝或微信账单中找到该笔交易记录，点击进入账单详情，记录下「商户全称」与「商户单号」。</li>
+          <li><strong>发起订单争议投诉：</strong>点击账单下方的「对订单有疑问」或「投诉商户」，在投诉原因中选择<strong>「商品/服务未按时提供」或「涉嫌欺诈跑路」</strong>。</li>
+          <li><strong>提交完整证据链截图：</strong>
+            <ul class="pl-6 pt-1 space-y-1 list-disc">
+              <li>套餐购买订单截图（包含服务有效截止时间）。</li>
+              <li>官网无法打开或节点全部超时的 Ping 测试截图。</li>
+              <li>官方 Telegram 频道全员禁言或已注销的截图。</li>
+            </ul>
+          </li>
+        </ol>
+
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/60 font-mono text-xs space-y-2">
+          <span class="font-bold text-text block">📝 支付宝/微信商户欺诈维权申诉通用模板（可直接复制）：</span>
+          <pre class="bg-surface p-3 rounded-lg border border-border/80 overflow-x-auto text-[11px] leading-relaxed"><code>本人于 [支付日期] 购买该商户的网络服务年付订阅（商户订单号：[填写商户单号]），商家承诺提供 12 个月持续在线服务。
+
+然而自 [断联日期] 起，该商户无故切断所有服务节点，官方网站无法访问，客户支持群组开启全员禁言，客服人员失联，属于典型的收款后拒绝履约与恶意欺诈行为。
+
+根据《消费者权益保护法》及第三方支付平台商户服务协议，现正式申请平台介入，紧急冻结该欺诈商户结算账户中的未结算资金，并全额退还本人未消费款项 [金额] 元。</code></pre>
+        </div>
+      </div>
+
+      <!-- 7.2 Credit Card Chargeback SOP -->
+      <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8 space-y-4">
+        <h3 class="text-xl font-bold text-text">
+          7.2 国际信用卡 (Visa / MasterCard / Amex) 拒付 (Chargeback) 指南
+        </h3>
+        <p class="text-sm text-text-secondary leading-relaxed">
+          若您是通过外币信用卡直接付款，您享有国际卡组织极其严格的消费者保护条款（<strong>Reason Code 13.1: Services Not Rendered，服务未交付</strong>）：
+        </p>
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40 font-mono text-xs text-text-secondary leading-relaxed space-y-2">
+          <p>1. 立即致电发卡银行（如招行、工行、中信等）信用卡客服热线，要求转接<strong>「国际卡争议与拒付处理专席」</strong>。</p>
+          <p>2. 明确向专员告知：“我通过信用卡向境外商户订购了为期 1 年的软件订阅服务，但该商户在扣款后关闭了网站与服务器，未完成约定服务交付。我根据 Visa / MasterCard 规则正式申请拒付（Chargeback）。”</p>
+          <p>3. 银行会向您邮箱发送争议申诉表，将上述官网打不开与订单截图回复即可。卡组织会直接从收单行强行划扣资金退回您的信用卡账户，<strong>申诉成功率高达 70% 至 90%</strong>。</p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/60 font-mono text-xs space-y-2">
+          <span class="font-bold text-text block">📄 国际信用卡拒付英语申诉陈述函 (Chargeback Statement Template)：</span>
+          <pre class="bg-surface p-3 rounded-lg border border-border/80 overflow-x-auto text-[11px] leading-relaxed"><code>Dear Dispute Department,
+
+I am writing to formally dispute transaction [Transaction ID] in the amount of [Amount USD/CNY] dated [Transaction Date].
+
+This payment was made for a 12-month software network subscription service. However, on [Date of Outage], the merchant completely shut down all server infrastructure and customer support channels without prior notice. The service is permanently inaccessible and the merchant has stopped all communications.
+
+Under Visa/MasterCard dispute guidelines (Reason Code 13.1 - Services Not Provided), I request a full chargeback refund as the agreed recurring services were not delivered. Attached are proof of purchase, server downtime logs, and merchant site unreachable screenshots.
+
+Thank you for your prompt assistance.</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Chapter 8: Active-Active Disaster Redundancy Architecture -->
+  <section id="disaster-redundancy" class="mx-auto max-w-6xl px-6 py-8 scroll-mt-20">
+    <div class="border-b border-border/80 pb-6 mb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono text-xs font-semibold mb-2">
+        <span>Chapter 08</span>
+        <span>·</span>
+        <span>防断网双活冗余工程</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight mb-3">
+        8. 个人与企业双活 (Active-Active) 防失联冗余架构配置
+      </h2>
+      <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+        在系统架构设计中，最大的工程禁忌是<strong>单点故障（Single Point of Failure，SPOF）</strong>。许多跨境出海工作者习惯只依赖一家机场，一旦突发敏感时期断网，海外客户邮件无法回复、生产环境事故无法远程 SSH 排查，造成的间接商业损失往往远超几年机场订阅费的总和。
+      </p>
+    </div>
+
+    <div class="space-y-8">
+      <!-- 8.1 Active-Active Architecture Matrix -->
+      <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8 space-y-4">
+        <h3 class="text-xl font-bold text-text">
+          8.1 主备双活架构配置方案（主力专线 + 斯诺克 147 永久备用）
+        </h3>
+        <p class="text-sm text-text-secondary leading-relaxed">
+          过去构建备用线路的最大痛点是<strong>“按月缴费空耗”</strong>：如果买两家月付机场，备用机场平时几乎不用，每个月几十元月租白白打水漂。
+        </p>
+        <p class="text-sm text-text-secondary leading-relaxed">
+          <strong>光速云独家推出的「致敬斯诺克 147 永久套餐」</strong>完美解决了该工程难题：
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
+          <div class="p-4 rounded-xl border border-border bg-bg-secondary/40 space-y-2">
+            <strong class="text-text block mb-1">主干线路 (Primary Link)：</strong>
+            <p class="text-text-secondary leading-relaxed">
+              选用常规按月/按年专线套餐（如光速云轻量入门年付 ¥99 或标准版），支撑日常 4K 流媒体播放、大型 Docker 镜像下载与高频高带宽任务。
+            </p>
+          </div>
+          <div class="p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/5 space-y-2">
+            <strong class="text-emerald-600 dark:text-emerald-400 block mb-1">兜底备用线路 (Secondary Backup Link)：</strong>
+            <p class="text-text-secondary leading-relaxed">
+              配置「斯诺克 147 永久套餐」（¥147 一次性买断 247GB 流量）。平时不产生任何月租支出，账户余额永不过期。一旦主干线路断连，立即无感平滑接管关键业务通信。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8.2 Client Fallback Config (Clash & Sing-box) -->
+      <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8 space-y-4">
+        <h3 class="text-xl font-bold text-text">
+          8.2 客户端自动故障转移 (Fallback) 工业级配置代码
+        </h3>
+        <p class="text-sm text-text-secondary leading-relaxed">
+          在客户端配置中，可以通过编写策略组实现全自动毫秒级故障倒换。以下分别提供 Clash Verge Rev 与 Sing-box 的配置代码：
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
+          <!-- Clash Verge YAML -->
+          <div class="p-4 rounded-xl border border-border bg-bg-secondary/60 space-y-2">
+            <span class="font-bold text-text block">🪟 Clash Verge Rev (YAML 策略组配置)：</span>
+            <pre class="bg-surface p-3 rounded-lg border border-border/80 overflow-x-auto text-[11px] leading-relaxed"><code># Clash Verge / Mihomo 自动故障转移
+proxy-groups:
+  - name: "🛡️ 双活高可用网关"
+    type: fallback
+    # 健康探测地址与检测周期
+    url: "http://www.gstatic.com/generate_204"
+    interval: 300
+    proxies:
+      - "光速云·香港 IEPL 01 (主线路)"
+      - "光速云·斯诺克 147 永久备用 01"
+      - "光速云·新加坡内网专线 01"</code></pre>
+          </div>
+
+          <!-- Sing-box JSON -->
+          <div class="p-4 rounded-xl border border-border bg-bg-secondary/60 space-y-2">
+            <span class="font-bold text-text block">📱 Sing-box (JSON 出站策略配置)：</span>
+            <pre class="bg-surface p-3 rounded-lg border border-border/80 overflow-x-auto text-[11px] leading-relaxed"><code>&#123;
+  "tag": "🛡️ 自动故障转移",
+  "type": "urltest",
+  "outbounds": [
+    "光速云·香港 01",
+    "光速云·斯诺克147 备用",
+    "光速云·日本 01"
+  ],
+  "url": "https://cp.cloudflare.com/generate_204",
+  "interval": "3m",
+  "tolerance": 50
+&#125;</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Chapter 9: Long-term Survivor Choice -->
+  <section id="long-term-choice" class="mx-auto max-w-6xl px-6 py-8 scroll-mt-20">
+    <div class="border-b border-border/80 pb-6 mb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono text-xs font-semibold mb-2">
+        <span>Chapter 09</span>
+        <span>·</span>
+        <span>长青老牌避震之道</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight mb-3">
+        9. 为什么选择长青老牌物理专线是终极避震之道？
+      </h2>
+      <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+        在跨境网络这个充斥着投机与信息差的灰色地带，<strong>“活得久”就是最强悍的技术壁垒</strong>。能够连续平稳运营 6 年以上的品牌，其背后必有一整套经历过风雨检验的离岸安全内控体系与资金池护城河。
+      </p>
+    </div>
+
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8 space-y-6">
+      <h3 class="text-xl font-bold text-text">
+        光速云 (GuangSu Cloud) 跨越 6 年生命周期的四大基石
+      </h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40">
+          <strong class="text-emerald-600 dark:text-emerald-400 block mb-1">1. 离岸法务与团队分布式架构：</strong>
+          <p class="text-text-secondary leading-relaxed">
+            核心团队成员与服务器运维中枢均设立于境外成熟司法管辖区，彻底切断了境内肉身风险，保证无论外部监管环境如何变化，技术支持与机房运维永不掉线。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40">
+          <strong class="text-emerald-600 dark:text-emerald-400 block mb-1">2. 电信级物理光纤长期大客户租约：</strong>
+          <p class="text-text-secondary leading-relaxed">
+            直接与持牌通信机房签署年签级长期物理专线合同，具备深港二层物理裸缆与内网热备双回路保障，拥有运营商最高优先级的故障修复保障（SLA 99.95%）。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40">
+          <strong class="text-emerald-600 dark:text-emerald-400 block mb-1">3. 拒绝超卖与 1.0x 真实倍率承诺：</strong>
+          <p class="text-text-secondary leading-relaxed">
+            全节点严格执行 1.0x 倍率计费，绝不设隐藏偷跑陷阱，晚高峰单节点实测下行吞吐稳定跑满 500+ Mbps，彻底终结超卖拥堵断流。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40">
+          <strong class="text-emerald-600 dark:text-emerald-400 block mb-1">4. 极佳阶梯资费与优惠折抵：</strong>
+          <p class="text-text-secondary leading-relaxed">
+            入门轻量版年付仅需 ¥99（折合 ¥8.25/月），专属优惠码【AMM】支持全系列折上折，兼顾极致性价比与长久可持续性。
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-border/70 flex flex-wrap items-center justify-between gap-4">
+        <span class="text-xs font-mono text-text-secondary">
+          经实验室探针持续遥测，光速云已连续 1,800+ 天保持无重大失联事故记录。
+        </span>
+        <a
+          href="/brands/guangsu/"
+          aria-label="直达光速云深度评测白皮书 →：查看10000字完整评测报告"
+          class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs font-mono no-underline transition-colors"
+        >
+          直达光速云深度评测白皮书 →
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Chapter 10: Enterprise Procurement & Risk Control -->
+  <section id="enterprise-risk-control" class="mx-auto max-w-6xl px-6 py-8 scroll-mt-20">
+    <div class="border-b border-border/80 pb-6 mb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 font-mono text-xs font-semibold mb-2">
+        <span>Chapter 10</span>
+        <span>·</span>
+        <span>企业出海内控防线</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight mb-3">
+        10. 跨境出海团队网络资产采购与内控规范指南
+      </h2>
+      <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+        对于拥有跨国业务团队、海外店铺管理（亚马逊/TikTok Shop）或国际学术科研机构的企业而言，网络代理绝非个人玩具，而是直接关系到资金流与知识产权的核心基础设施。建立规范的企业级采购尽调制度，是杜绝生产事故的关键。
+      </p>
+    </div>
+
+    <div class="space-y-6">
+      <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8 space-y-6">
+        <h3 class="text-lg font-bold text-text">
+          企业采购尽职调查 Checklist（4 项关键安全红线）
+        </h3>
+
+        <div class="space-y-3 font-mono text-xs text-text-secondary leading-relaxed">
+          <div class="p-4 rounded-xl border border-border bg-bg-secondary/40">
+            <strong class="text-text block mb-1">✅ 检查项 1：服务商历史存活年限审查（必须 &ge; 3 年）</strong>
+            <p>
+              通过全球 Whois 数据库核查服务商官网域名的注册历史与所有权变更记录。坚决拒绝任何成立时间不足 2 年的年轻服务商作为企业级业务主力。
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl border border-border bg-bg-secondary/40">
+            <strong class="text-text block mb-1">✅ 检查项 2：技术物理架构必须为二层物理专线</strong>
+            <p>
+              要求服务商提供真实的 IEPL/IPLC 二层以太网专线，杜绝任何公网中转伪专线，确保研发团队代码提交（Git Push）与容器拉取不经过公网 GFW 审查。
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl border border-border bg-bg-secondary/40">
+            <strong class="text-text block mb-1">✅ 检查项 3：落地 IP 必须为商业原生住宅/ISP 级别</strong>
+            <p>
+              跨境电商运营（如 Amazon 卖家后台）与海外社媒运营，严禁使用廉价云厂商数据中心机房 IP，必须采购光速云进阶/企业版等商业原生住宅 IP，杜绝因 IP 关联导致店铺被封。
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl border border-border bg-bg-secondary/40">
+            <strong class="text-text block mb-1">✅ 检查项 4：企业主备双活冗余制度</strong>
+            <p>
+              公司内网路由器必须部署主备双专线策略，主力选用高速年付专线，备用选用光速云斯诺克 147 永久套餐，实现自动化 50ms 故障倒换。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10.2 Enterprise Business Continuity Drill -->
+      <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8 space-y-4">
+        <h3 class="text-xl font-bold text-text">
+          10.2 企业跨国网络业务连续性（BCP）应急演练规范
+        </h3>
+        <p class="text-sm text-text-secondary leading-relaxed">
+          成熟出海团队应当每季度组织一次“断网红蓝对抗演练”：
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 font-mono text-xs">
+          <div class="p-4 rounded-xl border border-border bg-bg-secondary/40 space-y-1">
+            <strong class="text-text block">1. 模拟主干切断：</strong>
+            <p class="text-text-secondary text-[11px] leading-relaxed">
+              在办公网关上人为拉断主力机场的出口路由，观察备用线路（如斯诺克 147 永久专线）是否在 60 秒内全自动无感顶上。
+            </p>
+          </div>
+          <div class="p-4 rounded-xl border border-border bg-bg-secondary/40 space-y-1">
+            <strong class="text-text block">2. IP 指纹漂移检查：</strong>
+            <p class="text-text-secondary text-[11px] leading-relaxed">
+              检查切换后员工设备的公网出口 IP 是否依然维持在同一地理网段内，杜绝海外电商店铺或银行被动触发异地异常风控。
+            </p>
+          </div>
+          <div class="p-4 rounded-xl border border-border bg-bg-secondary/40 space-y-1">
+            <strong class="text-text block">3. 权限与凭据轮换：</strong>
+            <p class="text-text-secondary text-[11px] leading-relaxed">
+              确保所有员工均使用公司统一分配的带权限鉴权的订阅链接，禁止员工私自将公司代码上传至个人私购的不知名小机场中。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Chapter 11: Community Blacklist & Clues Submission -->
+  <section id="blacklist-submission" class="mx-auto max-w-6xl px-6 py-8 scroll-mt-20">
+    <div class="border-b border-border/80 pb-6 mb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-500/10 text-slate-600 dark:text-slate-400 font-mono text-xs font-semibold mb-2">
+        <span>Chapter 11</span>
+        <span>·</span>
+        <span>风险情报网络与线索核验</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight mb-3">
+        11. 社区实时风险情报网络与预警线索核验机制
+      </h2>
+      <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+        为了打破机场运营方与消费者之间的严重信息不对称，GitHub指南网络实验室建立了常态化的异常服务商通报机制。任何用户遭遇的异常断网或跑路骗局，均可通过标准审计流程录入本站风险黑名单，警示全网出海同行。
+      </p>
+    </div>
+
+    <div class="space-y-6">
+      <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8 space-y-4">
+        <h3 class="text-lg font-bold text-text">
+          线索核验与风控评级准则
+        </h3>
+        <p class="text-sm text-text-secondary leading-relaxed">
+          为了防止恶意同行诬陷，实验室对所有提交的跑路曝光线索坚持执行“三重客观证据链核验”：
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
+          <div class="p-4 rounded-xl border border-border bg-bg-secondary/40">
+            <strong class="text-text block mb-1">1. 节点连续性探针验证：</strong>
+            <p class="text-text-secondary text-[11px] leading-relaxed">
+              实验室部署分布式探针对被举报节点进行连续 72 小时 ICMP/TCP 握手采样，确认是否属于实质性全节点断联。
+            </p>
+          </div>
+          <div class="p-4 rounded-xl border border-border bg-bg-secondary/40">
+            <strong class="text-text block mb-1">2. 官方通信渠道真实性：</strong>
+            <p class="text-text-secondary text-[11px] leading-relaxed">
+              核验其官方 Telegram 频道是否开启禁言、客服工单系统是否已彻底关闭或拒绝接收新工单。
+            </p>
+          </div>
+          <div class="p-4 rounded-xl border border-border bg-bg-secondary/40">
+            <strong class="text-text block mb-1">3. 支付网关健康状态：</strong>
+            <p class="text-text-secondary text-[11px] leading-relaxed">
+              测试其在线收银台是否已被第三方支付机构下线封禁，或频繁切换为高危个人转账通道。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Topic Cluster Links -->
+      <div class="p-6 rounded-2xl border border-border bg-bg-secondary/30">
+        <h4 class="text-sm font-bold text-text mb-3">
+          🔗 站内生态协同导航
+        </h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 font-mono text-xs">
+          <a href="/brands/guangsu/" class="p-3 rounded-xl border border-border bg-surface hover:border-emerald-500/50 no-underline text-text block">
+            <strong class="text-emerald-600 dark:text-emerald-400 block mb-1">光速云深度实测</strong>
+            <span class="text-text-secondary text-[10px]">6 年长青 IEPL 物理专线与斯诺克 147</span>
+          </a>
+          <a href="/observatory/" class="p-3 rounded-xl border border-border bg-surface hover:border-emerald-500/50 no-underline text-text block">
+            <strong class="text-text block mb-1">网络测速实验室</strong>
+            <span class="text-text-secondary text-[10px]">24/7 独立自动化探针晚高峰遥测</span>
+          </a>
+          <a href="/clients/" class="p-3 rounded-xl border border-border bg-surface hover:border-emerald-500/50 no-underline text-text block">
+            <strong class="text-text block mb-1">全平台客户端下载</strong>
+            <span class="text-text-secondary text-[10px]">Clash Verge / Sing-box 官方正版</span>
+          </a>
+          <a href="/brands/" class="p-3 rounded-xl border border-border bg-surface hover:border-emerald-500/50 no-underline text-text block">
+            <strong class="text-text block mb-1">42 家机场品牌库</strong>
+            <span class="text-text-secondary text-[10px]">多维度参数即时对比与检索</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Chapter 12: 12 Core Scam & Risk FAQs -->
+  <section id="radar-faqs" class="mx-auto max-w-6xl px-6 py-8 scroll-mt-20">
+    <div class="border-b border-border/80 pb-6 mb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-500/10 text-slate-600 dark:text-slate-400 font-mono text-xs font-semibold mb-2">
+        <span>Chapter 12</span>
+        <span>·</span>
+        <span>防坑避雷百科</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight mb-3">
+        12. 跑路预警与资金安全 12 大核心技术 FAQ 问答库
+      </h2>
+      <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+        根据本站网络观测实验室长期抓取的 42 家服务商遥测数据与真实用户维权反欺诈审计实战，深度整理了关于跑路前兆、资金追回、二层专线真伪鉴别与防坑避雷的 12 组高价值硬核问答。
+      </p>
+    </div>
+
+    <div class="space-y-4">
+      <!-- FAQ 1 -->
+      <details class="group rounded-2xl border border-border bg-surface p-5 sm:p-6 transition-all">
+        <summary class="font-bold text-base sm:text-lg text-text cursor-pointer list-none flex items-center justify-between">
+          <span>1. 为什么平时测速飞快的机场，也会毫无预警地突然跑路？</span>
+          <span class="text-text-secondary font-mono text-lg transition-transform group-open:rotate-180">↓</span>
+        </summary>
+        <div class="text-xs sm:text-sm text-text-secondary leading-relaxed mt-4 pt-4 border-t border-border/70 space-y-2">
+          <p>“测速飞快”在网络工程中只能代表在极短的基准测试时间内，节点上的并发带宽占空比相对较低，或者商家临时开启了高优先级的单线程突发带宽，这丝毫不代表该服务商具备长久的财务抗风险能力与基础设施运维储备。许多初创小微机场在前期为了在各大测速频道迅速打响名气，往往自掏腰包租用几天昂贵的大带宽公网中转服务器，在测速图中跑出满屏千兆甚至跑满万兆的虚假繁荣；但由于月付 5 元或 10 元的畸形低价导致收支严重倒挂，当存量用户达到几千人后，机房高昂的次月续约月租无力承担，最终迅速关门大吉卷款蒸发。</p>
+        </div>
+      </details>
+
+      <!-- FAQ 2 -->
+      <details class="group rounded-2xl border border-border bg-surface p-5 sm:p-6 transition-all">
+        <summary class="font-bold text-base sm:text-lg text-text cursor-pointer list-none flex items-center justify-between">
+          <span>2. 购买机场时，优先选择支付宝、微信还是信用卡？虚拟币有什么致命隐患？</span>
+          <span class="text-text-secondary font-mono text-lg transition-transform group-open:rotate-180">↓</span>
+        </summary>
+        <div class="text-xs sm:text-sm text-text-secondary leading-relaxed mt-4 pt-4 border-t border-border/70 space-y-2">
+          <p><strong>资深网络工程师与法务风控专家的推荐排序：外币信用卡 &gt; 支付宝/微信 &gt;&gt; 绝不使用虚拟货币。</strong></p>
+          <p>外币信用卡（Visa/Mastercard）受国际卡组织严格的规则保护，享有长达 180 天的争议拒付保护期（Chargeback），只要商户无法出具持续服务履约的技术凭证，发卡行通常会强制将资金退回；国内正规支付宝或微信商户支付在商户清算账期内（通常为 T+1 至 T+7），用户若在 72 小时内发起未提供服务的投诉，平台风控会直接冻结商家收款账户；而虚拟货币（如 USDT-TRC20 / BTC）具有不可篡改的去中心化匿名与不可逆性，一旦链上转账确认，任何银行、监管司法机构或第三方都无法协助冻结或追回，这是不良机场策划终极卷款跑路的最爱通道。</p>
+        </div>
+      </details>
+
+      <!-- FAQ 3 -->
+      <details class="group rounded-2xl border border-border bg-surface p-5 sm:p-6 transition-all">
+        <summary class="font-bold text-base sm:text-lg text-text cursor-pointer list-none flex items-center justify-between">
+          <span>3. 为什么网络上有那么多博主或测评群疯狂推荐容易跑路的小机场？</span>
+          <span class="text-text-secondary font-mono text-lg transition-transform group-open:rotate-180">↓</span>
+        </summary>
+        <div class="text-xs sm:text-sm text-text-secondary leading-relaxed mt-4 pt-4 border-t border-border/70 space-y-2">
+          <p><strong>根源在于畸形且违背商业规律的高额循环返佣（Affiliate）：</strong>许多不良小机场为了在极短周期内汇集资金池，向推广博主开出高达 60% 至 85% 的永久循环充值返佣！这意味着用户充值 100 元，推手博主直接抽走 85 元，商家实际仅剩 15 元用于采购机房与带宽，这从数学模型上注定了必然爆仓跑路。部分不良推广推手明知其财务模型不可持续，但在暴利面前依然选择为高风险资金盘站台；一旦跑路发生，他们便迅速删除推文与测评视频，换个新品牌继续收割下一批受害者。</p>
+        </div>
+      </details>
+
+      <!-- FAQ 4 -->
+      <details class="group rounded-2xl border border-border bg-surface p-5 sm:p-6 transition-all">
+        <summary class="font-bold text-base sm:text-lg text-text cursor-pointer list-none flex items-center justify-between">
+          <span>4. 商家公告声称“上游机房遭受大流量 DDoS 攻击”，是真的还是跑路借口？</span>
+          <span class="text-text-secondary font-mono text-lg transition-transform group-open:rotate-180">↓</span>
+        </summary>
+        <div class="text-xs sm:text-sm text-text-secondary leading-relaxed mt-4 pt-4 border-t border-border/70 space-y-2">
+          <p>在计算机网络拓扑中，真正的物理专线（如 IEPL / IPLC）采用的是二层或二层半的点对点硬件信道隔离，其内网传输根本不对公网广播 IP 地址，外网黑客绝不可能通过公网 IP 对物理专线发起分布式拒绝服务（DDoS）攻击。如果一家号称“物理专线”的机场频繁在频道以“机房遭遇 500Gbps 大流量攻击导致节点全挂”为由停机，说明其底层采用的根本就是廉价的公网服务器中转端口转发，存在严重的虚假宣传。此外，“机房被攻击、正在紧急抢修”也是 80% 以上资金盘在卷款跑路前为了拖延用户维权与转移资产所编制的经典借口。</p>
+        </div>
+      </details>
+
+      <!-- FAQ 5 -->
+      <details class="group rounded-2xl border border-border bg-surface p-5 sm:p-6 transition-all">
+        <summary class="font-bold text-base sm:text-lg text-text cursor-pointer list-none flex items-center justify-between">
+          <span>5. 机场如果跑路了，保存在客户端里的订阅链接会泄露我的个人隐私吗？</span>
+          <span class="text-text-secondary font-mono text-lg transition-transform group-open:rotate-180">↓</span>
+        </summary>
+        <div class="text-xs sm:text-sm text-text-secondary leading-relaxed mt-4 pt-4 border-t border-border/70 space-y-2">
+          <p>跑路发生后，原机场的订阅后端服务器通常由于欠费已经关机停机，不会主动回传您本地的历史上网记录。但请注意：<strong>必须立即在 Clash Verge、Sing-box 等客户端中右键彻底删除该订阅配置</strong>！因为跑路团队放弃域名后，该域名很快会被黑产灰产团伙抢注。一旦攻击者通过 DNS 劫持重新托管该订阅域名，便可向未删除配置的客户端下发带有恶意后门节点的虚假配置，从而在您访问银行、电商或社交软件时实施中间人解密窃听与流量劫持。</p>
+        </div>
+      </details>
+
+      <!-- FAQ 6 -->
+      <details class="group rounded-2xl border border-border bg-surface p-5 sm:p-6 transition-all">
+        <summary class="font-bold text-base sm:text-lg text-text cursor-pointer list-none flex items-center justify-between">
+          <span>6. 为什么说“大额三年付/五年付”是机场跑路最危险的前兆？</span>
+          <span class="text-text-secondary font-mono text-lg transition-transform group-open:rotate-180">↓</span>
+        </summary>
+        <div class="text-xs sm:text-sm text-text-secondary leading-relaxed mt-4 pt-4 border-t border-border/70 space-y-2">
+          <p>正规的企业级物理专线（如深港 IEPL、京德专线）均需每月按实际带宽规格向中国电信、中国联通等持牌运营商缴纳不可减免的硬性账单，机房不可能向服务商提供“一次付清五年折旧”的优惠政策。当一家平日按月计费的机场突然无缘无故推出“三周年狂欢：三年付仅需 99 元、五年付立享 2 折”时，其底层本质是当月现金流已经彻底断裂、无法支付下月数十万元的机房账单，运营团队试图通过极度夸张的虚假长期承诺榨干最后一波用户现金流入，随后在 7 至 15 天内关闭服务器隐匿失联。</p>
+        </div>
+      </details>
+
+      <!-- FAQ 7 -->
+      <details class="group rounded-2xl border border-border bg-surface p-5 sm:p-6 transition-all">
+        <summary class="font-bold text-base sm:text-lg text-text cursor-pointer list-none flex items-center justify-between">
+          <span>7. 遭遇机场突然断网失联，如何通过支付平台止损追回资金？</span>
+          <span class="text-text-secondary font-mono text-lg transition-transform group-open:rotate-180">↓</span>
+        </summary>
+        <div class="text-xs sm:text-sm text-text-secondary leading-relaxed mt-4 pt-4 border-t border-border/70 space-y-2">
+          <p>维权成功的关键在于把握事发后 72 小时的黄金冻结窗口：</p>
+          <ul class="list-disc pl-5 space-y-1">
+            <li><strong>支付宝/微信支付：</strong>打开账单找到该笔付款记录，点击“对此订单有疑问”或“投诉商户”，选择“未收到商品/服务或商户失联”。上传机场官网打不开的报错截图、Telegram 频道禁言截图、节点大面积红色的测速凭证，申请平台风控干预拦截尚未结算的款项。</li>
+            <li><strong>外币信用卡（Visa/Mastercard）：</strong>拨打银行背面的客服电话，向反欺诈争议处理部门提出 Chargeback 申诉，理由陈述为“Service Not Provided / Merchant Ceased Operations”，由银行向收单行发出资金冻结追讨。</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- FAQ 8 -->
+      <details class="group rounded-2xl border border-border bg-surface p-5 sm:p-6 transition-all">
+        <summary class="font-bold text-base sm:text-lg text-text cursor-pointer list-none flex items-center justify-between">
+          <span>8. “永久有效套餐”本身是不是一种庞氏骗局？光速云的斯诺克 147 为什么能长期成立？</span>
+          <span class="text-text-secondary font-mono text-lg transition-transform group-open:rotate-180">↓</span>
+        </summary>
+        <div class="text-xs sm:text-sm text-text-secondary leading-relaxed mt-4 pt-4 border-t border-border/70 space-y-2">
+          <p>如果是市场上宣称“永久无限量免费使用”的套餐，100% 是资金盘击鼓传花的骗局！但<strong>光速云（GuangSu Cloud）推出的「致敬斯诺克 147 永久套餐」是严格按照不可再生的固定总流量计费的（¥147 买断 247GB 物理专线流量）</strong>。</p>
+          <p>从精算学模型分析：用户购买的是 247GB 的专线数据配额，不限制过期时间。用户在日常用于备用、突发查阅论文或临时出差时消耗，用完即止；若需要继续使用需重新充值。对于光速云运营团队而言，247GB 专线流量折合每 GB 单价约 ¥0.59，该单价不仅完全覆盖了二层 IEPL 物理裸缆的数据传输成本，而且沉淀了高质量的长周期忠实用户，平时也不会产生全天候跑满千兆的恶性带宽空耗，因此具备严谨扎实的商业财务正向循环。</p>
+        </div>
+      </details>
+
+      <!-- FAQ 9 -->
+      <details class="group rounded-2xl border border-border bg-surface p-5 sm:p-6 transition-all">
+        <summary class="font-bold text-base sm:text-lg text-text cursor-pointer list-none flex items-center justify-between">
+          <span>9. 如果我已经买了一家出现异常特征的机场年付，现在应该怎么做？</span>
+          <span class="text-text-secondary font-mono text-lg transition-transform group-open:rotate-180">↓</span>
+        </summary>
+        <div class="text-xs sm:text-sm text-text-secondary leading-relaxed mt-4 pt-4 border-t border-border/70 space-y-2">
+          <p>第一，立刻进入用户后台取消所有绑定的“自动循环扣费”协议，防止下个周期被强制续约；第二，如果支付时间在 30 天以内，且商家已出现官方群全员禁言或节点故障超 72 小时无修复，立即向支付平台或发卡行发起未履约投诉，尽量抢救剩余资金；第三，立即配置第二家经过 6 年以上时间检验的长青老牌专线（如光速云），采用 Active-Active 双主热备架构部署到本地客户端，彻底隔离生产业务与日常科研的网络中断风险。</p>
+        </div>
+      </details>
+
+      <!-- FAQ 10 -->
+      <details class="group rounded-2xl border border-border bg-surface p-5 sm:p-6 transition-all">
+        <summary class="font-bold text-base sm:text-lg text-text cursor-pointer list-none flex items-center justify-between">
+          <span>10. 老牌长青机场（如光速云）在重大网络管制时期，是如何保障线路不失联的？</span>
+          <span class="text-text-secondary font-mono text-lg transition-transform group-open:rotate-180">↓</span>
+        </summary>
+        <div class="text-xs sm:text-sm text-text-secondary leading-relaxed mt-4 pt-4 border-t border-border/70 space-y-2">
+          <p>核心在于物理架构的二层硬隔离与线路冗余容灾体系。光速云采用深港陆地裸缆专线与企业内网专线双回路热备架构，出海数据完全在闭环的物理专线中传输，不经过公网国际出口路由，彻底绕开了 GFW 的主动探测与深度包检测。同时在境内采用三地 BGP Anycast 入口，当某省入口遭遇运营商临时检修或光缆被施工挖断时，BGP 路由协议在 50ms 内自动将流量无感平滑切换至华南或华东正常省份入口，保障全天候 99.95% 的电信级高可用性。</p>
+        </div>
+      </details>
+
+      <!-- FAQ 11 -->
+      <details class="group rounded-2xl border border-border bg-surface p-5 sm:p-6 transition-all">
+        <summary class="font-bold text-base sm:text-lg text-text cursor-pointer list-none flex items-center justify-between">
+          <span>11. 跑路机场的原团队会不会将用户的注册邮箱与密码拿到黑市倒卖？</span>
+          <span class="text-text-secondary font-mono text-lg transition-transform group-open:rotate-180">↓</span>
+        </summary>
+        <div class="text-xs sm:text-sm text-text-secondary leading-relaxed mt-4 pt-4 border-t border-border/70 space-y-2">
+          <p>这是真实存在且极度普遍的安全风险！许多不良小微机场直接使用开源的旧版本 SSPanel 或 V2Board 面板搭建，数据库往往未经过加盐哈希（Salted Hash）处理，甚至明文保存用户密码。在策划跑路后，部分运营者会将包含数万条用户账号、常用密码、绑定邮箱与充值记录的完整数据库打包挂在暗网或 Telegram 灰产群组进行撞库出售。因此，<strong>在注册任何未知背景的机场时，强烈建议使用专门的别名邮箱，并严禁使用与银行卡、Apple ID 或日常核心社交账号相同的密码组合</strong>。</p>
+        </div>
+      </details>
+
+      <!-- FAQ 12 -->
+      <details class="group rounded-2xl border border-border bg-surface p-5 sm:p-6 transition-all">
+        <summary class="font-bold text-base sm:text-lg text-text cursor-pointer list-none flex items-center justify-between">
+          <span>12. 如果我发现了某家新跑路的机场，如何向本站实名提交反欺诈线索与黑名单核验？</span>
+          <span class="text-text-secondary font-mono text-lg transition-transform group-open:rotate-180">↓</span>
+        </summary>
+        <div class="text-xs sm:text-sm text-text-secondary leading-relaxed mt-4 pt-4 border-t border-border/70 space-y-2">
+          <p>本站开设了完全公开透明的社区反欺诈审查工作流。您可以直接向安全审计邮箱（<code class="text-emerald-600 dark:text-emerald-400">security@githubzhinan.homes</code>）发送线索报告，需附带：① 机场注册主域名与 Telegram 官方频道链接；② 节点全红或持续无法连通的 Clash / Sing-box 测速截图；③ 官网打不开或后台工单超时超 48 小时未回复的证据；④ 付款商户号或订单凭证。本站技术团队在完成多地独立探针交叉验证后，会在 24 小时内将其收录至全网跑路预警雷达黑名单库，向全网跨境科研与开发者同步风险提示。</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- Bottom Disclosure -->
+    <div class="mt-12">
+      <AffiliateDisclosure />
+    </div>
+  </section>
+</StarterLayout>

@@ -45,13 +45,13 @@ function getPages(): Page[] {
   const pages: Page[] = [
     {
       file: 'home.png',
-      title: 'Astro v7 Blog',
-      description: 'A lean blog template with MDX, Content Collections and RSS feed.',
+      title: 'GitHub指南官方博客',
+      description: '汇集 GitHub 开发技巧、Actions 工作流实操与开源工程实践。',
     },
     {
-      file: 'de/home.png',
-      title: 'Astro v7 Blog',
-      description: 'Ein schlankes Blog-Template mit MDX, Content Collections und RSS-Feed.',
+      file: 'en/home.png',
+      title: 'GitHub Guide Technical Blog',
+      description: 'Curated GitHub workflows, Actions CI/CD automation, and modern web best practices.',
     },
   ];
 
@@ -61,11 +61,11 @@ function getPages(): Page[] {
   for (const file of files) {
     const content = readFileSync(join(contentDir, file), 'utf-8');
     const fm = parseFrontmatter(content);
-    // en/<slug>.mdx → blog/<slug>.png, de/<slug>.mdx → de/blog/<slug>.png
-    const [locale, slug] = file.replace(/\.(md|mdx)$/, '').split('/');
+    // zh/<slug>.mdx → blog/<slug>.png, en/<slug>.mdx → en/blog/<slug>.png
+    const [locale, slug] = file.replace(/\\/g, '/').replace(/\.(md|mdx)$/, '').split('/');
     if (fm.title) {
       pages.push({
-        file: `${locale === 'en' ? '' : `${locale}/`}blog/${slug}.png`,
+        file: `${locale === 'zh' ? '' : `${locale}/`}blog/${slug}.png`,
         title: fm.title,
         description: fm.description || '',
       });
@@ -83,7 +83,7 @@ async function main() {
     mkdirSync(join(outPath, '..'), { recursive: true });
 
     const png = await generateOgImage(
-      { title: page.title, description: page.description, siteName: 'Astro v7 Blog' },
+      { title: page.title, description: page.description, siteName: 'GitHub指南' },
       fontData
     );
 

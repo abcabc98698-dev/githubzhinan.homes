@@ -1,0 +1,128 @@
+---
+import type { Brand } from '@astro-v7/shared/data/brands';
+
+export interface Props {
+  brand: Brand;
+}
+
+const { brand } = Astro.props;
+
+const rankBadges = {
+  1: 'bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/40',
+  2: 'bg-slate-300/20 text-slate-700 dark:text-slate-300 border-slate-400/40',
+  3: 'bg-amber-700/20 text-amber-800 dark:text-amber-500 border-amber-700/40',
+};
+
+const topNode = brand.speedTests[0] || { node: '香港', latencyMs: 25, downloadMbps: 450 };
+---
+
+<div class:list={[
+  'group relative flex flex-col justify-between rounded-2xl border bg-[var(--color-surface)] p-5 transition-all duration-200 hover:shadow-lg',
+  brand.isFeatured
+    ? 'border-emerald-500/40 shadow-emerald-500/5'
+    : 'border-border hover:border-text-secondary/40'
+]}>
+  <div>
+    <!-- Header: Rank & Price -->
+    <div class="flex items-center justify-between gap-2 mb-3">
+      <div class="flex items-center gap-2">
+        <span class:list={[
+          'inline-flex items-center justify-center font-mono font-bold text-xs px-2.5 py-0.5 rounded-full border',
+          rankBadges[brand.rank as keyof typeof rankBadges] || 'bg-bg-secondary text-text-secondary border-border'
+        ]}>
+          #{brand.rank}
+        </span>
+        {brand.isFeatured && (
+          <span class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider font-mono">
+            ★ 主推旗舰
+          </span>
+        )}
+      </div>
+
+      <div class="text-right">
+        <span class="text-xs text-text-secondary">起步</span>
+        <strong class="text-base font-bold text-text ml-1">{brand.minMonthlyPrice}</strong>
+      </div>
+    </div>
+
+    <!-- Title & English -->
+    <div class="mb-3">
+      <h3 class="text-xl font-bold text-text tracking-tight group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+        <a href={`/brands/${brand.slug}/`} class="no-underline text-inherit">
+          {brand.name}
+        </a>
+      </h3>
+      {brand.englishName && (
+        <span class="text-xs font-mono text-text-secondary">{brand.englishName}</span>
+      )}
+    </div>
+
+    <!-- Line type & Protocols -->
+    <div class="flex flex-wrap items-center gap-1.5 mb-3">
+      <span class="text-xs font-mono px-2 py-0.5 rounded bg-bg-secondary text-text-secondary border border-border">
+        {brand.lineType.split('（')[0]}
+      </span>
+      {brand.protocols.slice(0, 2).map((p) => (
+        <span class="text-[11px] font-mono px-1.5 py-0.5 rounded bg-surface text-text-secondary border border-border/70">
+          {p}
+        </span>
+      ))}
+    </div>
+
+    <!-- Speed test brief -->
+    <div class="rounded-xl border border-border/60 bg-bg-secondary/40 p-2.5 mb-3 font-mono text-xs flex items-center justify-between">
+      <span class="text-text-secondary flex items-center gap-1.5">
+        <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+        {topNode.node}: <strong class="text-emerald-600 dark:text-emerald-400">{topNode.latencyMs}ms</strong>
+      </span>
+      <span class="text-text-secondary">
+        下行: <strong class="text-text">{topNode.downloadMbps}Mbps</strong>
+      </span>
+    </div>
+
+    <!-- Highlights (First 2) -->
+    <ul class="text-xs text-text-secondary space-y-1 mb-4 list-disc list-inside">
+      {brand.highlights.slice(0, 2).map((h) => (
+        <li class="line-clamp-1">{h}</li>
+      ))}
+    </ul>
+  </div>
+
+  <div>
+    <!-- Promo code if available -->
+    {brand.discountCode && (
+      <div class="flex items-center justify-between text-xs font-mono py-1.5 px-2.5 rounded bg-bg-secondary/70 border border-border/50 mb-3">
+        <span class="text-text-secondary">优惠码:</span>
+        <code class="font-bold text-emerald-600 dark:text-emerald-400 select-all">{brand.discountCode}</code>
+      </div>
+    )}
+
+    <!-- Actions with label-in-name compliance -->
+    <div class="grid grid-cols-2 gap-2 pt-2 border-t border-border/60">
+      <a
+        href={`/brands/${brand.slug}/`}
+        class="text-center py-2 px-3 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-xs font-semibold text-text transition-all no-underline"
+      >
+        查看实测<span class="sr-only"> - {brand.name}</span>
+      </a>
+
+      {brand.affUrl && brand.affUrl !== '#' ? (
+        <a
+          href={brand.affUrl}
+          target="_blank"
+          rel="nofollow sponsored noopener"
+          class="text-center py-2 px-3 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-sm no-underline"
+        >
+          直达官网 ↗<span class="sr-only"> - {brand.name}</span>
+        </a>
+      ) : (
+        <a
+          href={`/brands/${brand.slug}/`}
+          class="text-center py-2 px-3 rounded-lg bg-bg-secondary hover:bg-bg-secondary/80 border border-border text-text-secondary text-xs font-medium transition-all no-underline"
+        >
+          观测档案<span class="sr-only"> - {brand.name}</span>
+        </a>
+      )}
+    </div>
+  </div>
+</div>

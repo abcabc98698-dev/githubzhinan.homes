@@ -91,28 +91,28 @@ export default defineConfig({
       security: securityTxt(env.PUBLIC_SECURITY_CONTACT, env.PUBLIC_SITE_URL),
       // The English feed keeps its Astro RSS route; this demonstrates build-time RSS.
       rss: {
-        filename: 'de/rss.xml',
-        title: `${env.PUBLIC_SITE_NAME} — Deutsch`,
+        filename: 'en/rss.xml',
+        title: `${env.PUBLIC_SITE_NAME} — English`,
         description: 'Demo-Artikel über Astro, Tailwind und die Funktionen dieses Templates.',
-        language: 'de-DE',
-        getItems: () => getBlogRssItems('de'),
+        language: 'en-US',
+        getItems: () => getBlogRssItems('en'),
       },
       llms: {
         title: env.PUBLIC_SITE_NAME,
-        description: 'A blog template built with Astro v7, MDX and Content Collections.',
+        description: 'GitHub指南官方博客与技术实践专栏。',
         details:
-          'This bilingual demo blog contains example articles, not a real editorial publication. English posts live under /blog/ and German posts under /de/blog/. Drafts are omitted. robots.txt controls crawler preferences independently of this overview.',
-        sources: [() => getBlogLlmsSection('en'), () => getBlogLlmsSection('de')],
+          'GitHub指南技术博客，汇集 Git 工作流、GitHub Actions 自动化、开源项目最佳实践与开发技巧。',
+        sources: [() => getBlogLlmsSection('zh'), () => getBlogLlmsSection('en')],
         sections: [
           {
             title: 'Pages',
             links: [
               { title: 'Home', url: '/', description: 'Blog template overview.' },
-              { title: 'German home', url: '/de/', description: 'German localized homepage.' },
+              { title: 'English home', url: '/en/', description: 'Blog English homepage.' },
               { title: 'English RSS', url: '/rss.xml', description: 'Published English articles.' },
               {
-                title: 'German RSS',
-                url: '/de/rss.xml',
+                title: 'English RSS',
+                url: '/en/rss.xml',
                 description: 'Published German articles.',
               },
             ],

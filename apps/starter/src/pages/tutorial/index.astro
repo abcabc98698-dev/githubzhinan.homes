@@ -1,0 +1,410 @@
+---
+import StarterLayout from '@/layouts/StarterLayout.astro';
+import Navbar from '@astro-v7/shared/components/Navbar.astro';
+import ThemeToggle from '@astro-v7/shared/components/ThemeToggle.svelte';
+import { env } from '@/env';
+import { getFeaturedBrand } from '@astro-v7/shared/data/brands';
+import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
+import '@/styles/app.css';
+
+const featuredBrand = getFeaturedBrand(); // 光速云
+
+const pageTitle = '跨平台网络客户端使用教程：Windows/macOS/iOS/Android/Linux配置指南 - GitHub指南';
+const pageDescription = '2026最新跨平台网络客户端全流程使用教程：涵盖 Windows (Clash Verge Rev)、macOS (Sing-box/Clash)、iOS (Shadowrocket/Stash)、Android (v2rayNG/Clash Meta) 及 Linux 核心配置、订阅导入与TUN虚拟网卡避坑指南。';
+
+const links = [
+  { href: '/', label: '首页' },
+  { href: '/vpn/', label: 'VPN推荐' },
+  { href: '/jichang/', label: '机场推荐' },
+  { href: '/clash/', label: 'Clash教程' },
+  { href: '/nodes/', label: '节点测速' },
+  { href: '/tizi/', label: '梯子避坑' },
+  { href: '/free/', label: '免费资源' },
+  { href: '/brands/', label: '42家品牌库' },
+];
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'TechArticle',
+      '@id': 'https://githubzhinan.homes/tutorial/#webpage',
+      'url': 'https://githubzhinan.homes/tutorial/',
+      'name': pageTitle,
+      'description': pageDescription,
+      'isPartOf': { '@id': 'https://githubzhinan.homes/#website' },
+      'inLanguage': 'zh-CN',
+      'datePublished': '2026-10-19',
+      'dateModified': '2026-10-31',
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': 'https://githubzhinan.homes/tutorial/#breadcrumbs',
+      'itemListElement': [
+        {
+          '@type': 'ListItem',
+          'position': 1,
+          'name': '首页',
+          'item': 'https://githubzhinan.homes/'
+        },
+        {
+          '@type': 'ListItem',
+          'position': 2,
+          'name': '使用教程',
+          'item': 'https://githubzhinan.homes/tutorial/'
+        }
+      ]
+    },
+    {
+      '@type': 'HowTo',
+      '@id': 'https://githubzhinan.homes/tutorial/#howto',
+      'name': '跨平台客户端三步极速配置流程',
+      'step': [
+        {
+          '@type': 'HowToStep',
+          'position': 1,
+          'name': '获取并复制订阅 URL',
+          'text': '登录服务商后台，复制适用于目标客户端的通用订阅链接或一键导入命令。'
+        },
+        {
+          '@type': 'HowToStep',
+          'position': 2,
+          'name': '导入客户端并解析节点',
+          'text': '打开客户端添加订阅配置，点击更新获取全部节点列表，并进行批量延迟连通性测试。'
+        },
+        {
+          '@type': 'HowToStep',
+          'position': 3,
+          'name': '启用规则分流或 TUN 虚拟网卡',
+          'text': '选择延迟最低的节点，开启系统代理或全局 TUN 模式，确保国内外流量精准分流。'
+        }
+      ]
+    }
+  ]
+};
+
+const clientPlatforms = [
+  {
+    os: 'Windows 10 / 11',
+    icon: '💻',
+    primary: 'Clash Verge Rev (Mihomo内核)',
+    alternatives: 'Mihomo Party, v2rayN, Sing-box',
+    features: '原生 64 位支持、内置 TUN 虚拟网卡驱动、DNS 漏解析拦截、支持复杂 YAML 脚本。',
+    difficulty: '入门友好'
+  },
+  {
+    os: 'macOS (Apple Silicon / Intel)',
+    icon: '🍏',
+    primary: 'Clash Verge Rev for Mac',
+    alternatives: 'Surge Mac, Sing-box, Stash for Mac',
+    features: '完美适配 M1/M2/M3/M4 芯片架构，低功耗后台常驻，完美兼容系统级 Keychain 证书。',
+    difficulty: '入门友好'
+  },
+  {
+    os: 'iOS / iPadOS',
+    icon: '📱',
+    primary: 'Shadowrocket (小火箭)',
+    alternatives: 'Stash, Loon, Quantumult X',
+    features: 'App Store 美区独立下载，支持二维码一键扫码导入、重写规则与按 App 分流。',
+    difficulty: '中等 (需外区账号)'
+  },
+  {
+    os: 'Android (安卓系统)',
+    icon: '🤖',
+    primary: 'Clash Meta for Android (CMFA)',
+    alternatives: 'v2rayNG, Sing-box for Android, Matsuri',
+    features: '开源免费、支持分应用代理、原生支持 VLESS/Reality 与 Shadowsocks-2022 协议。',
+    difficulty: '极简安装'
+  },
+  {
+    os: 'Linux / OpenWrt 软路由',
+    icon: '🐧',
+    primary: 'Mihomo Core (CLI) / ShellClash',
+    alternatives: 'OpenClash, PassWall, HomeProxy',
+    features: '全屋智能家居与游戏主机无感透明网关代理，极致榨干硬件千兆吞吐性能。',
+    difficulty: '极客高阶'
+  }
+];
+
+const troubleshootingFaqs = [
+  {
+    q: '导入订阅后提示“Network Error”或“Fetch Failed”？',
+    a: '通常是由于本地网络对订阅服务器域名存在 DNS 污染。对策：在手机热点网络下重试，或者在服务商后台开启“订阅转换”备用链接，亦可下载订阅 YAML 文件后采用“本地文件导入”模式。'
+  },
+  {
+    q: '节点全部显示“Timeout / 红色超时”，但群组里别人正常？',
+    a: '第一步检查本地电脑系统时间，如果误差超过 90 秒，TLS 握手协议会自动判定证书失效并拒绝连接；第二步检查是否开启了杀毒软件防火墙拦截了 Mihomo/Clash 核心网络权限。'
+  },
+  {
+    q: '开启代理后，国内网站（如百度、淘宝）打不开或变慢？',
+    a: '请检查代理运行模式是否误设为了“Global (全局模式)”。务必切换为“Rule (规则分流)”模式，让国内流量直接直连（Direct），海外流量才走代理。'
+  },
+  {
+    q: 'TUN 模式开启后无法上网甚至断网？',
+    a: '通常是因为未以管理员权限安装 TUN 网卡服务，或与其他 VPN 软件（如 Cisco AnyConnect/蒲公英）的虚拟网卡驱动产生冲突。请在设置中重新点击“安装核心服务/Service Mode”。'
+  }
+];
+---
+
+<StarterLayout
+  title={pageTitle}
+  description={pageDescription}
+  canonical="https://githubzhinan.homes/tutorial/"
+  structuredData={structuredData}
+>
+  <Navbar
+    slot="header"
+    siteName={env.PUBLIC_SITE_NAME || 'GitHub指南'}
+    homeUrl="/"
+    links={links}
+    currentPath="/tutorial/"
+  >
+    <ThemeToggle client:load />
+  </Navbar>
+
+  <div class="min-h-screen bg-background text-text">
+    <!-- Breadcrumb Bar -->
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 text-xs text-text-secondary border-b border-border/40" aria-label="Breadcrumb">
+      <ol class="flex items-center space-x-2">
+        <li>
+          <a href="/" class="hover:text-primary transition-colors">首页</a>
+        </li>
+        <li class="select-none text-border">/</li>
+        <li class="text-text font-medium" aria-current="page">跨平台客户端使用教程</li>
+      </ol>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-semibold mb-4">
+        <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+        全终端覆盖 · 跨平台快速上手百科
+      </div>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-text mb-4">
+        跨平台网络客户端使用与配置教程中心
+      </h1>
+      <p class="text-base sm:text-lg text-text-secondary max-w-3xl leading-relaxed mb-6">
+        针对 Windows、macOS、iOS、Android 以及 Linux/软路由系统，为您梳理主流开源与第三方网络客户端的优缺点、下载源、订阅导入流程与常见报错排障方案。
+      </p>
+
+      <!-- Key Quick Facts -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+        <div class="p-5 rounded-2xl bg-surface border border-border">
+          <div class="text-xs text-text-secondary mb-1">桌面端首选</div>
+          <div class="text-xl font-bold text-emerald-600 dark:text-emerald-400">Clash Verge Rev</div>
+          <div class="text-xs text-text-secondary mt-1">内置 TUN 虚拟网卡免配置</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-surface border border-border">
+          <div class="text-xs text-text-secondary mb-1">iOS 端首选</div>
+          <div class="text-xl font-bold text-blue-600 dark:text-blue-400">Shadowrocket</div>
+          <div class="text-xs text-text-secondary mt-1">美区 App Store 必备工具</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-surface border border-border">
+          <div class="text-xs text-text-secondary mb-1">Android 端首选</div>
+          <div class="text-xl font-bold text-amber-600 dark:text-amber-400">Clash Meta (CMFA)</div>
+          <div class="text-xs text-text-secondary mt-1">开源免费 · 支持最新协议</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-surface border border-border">
+          <div class="text-xs text-text-secondary mb-1">配置上手耗时</div>
+          <div class="text-xl font-bold text-purple-600 dark:text-purple-400 font-mono">&lt; 3 分钟</div>
+          <div class="text-xs text-text-secondary mt-1">三步极速导入即刻畅联</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <article class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <!-- Section 1: 3-Step Universal Setup Flow -->
+      <section class="mb-14 p-6 sm:p-8 rounded-3xl bg-surface border border-border">
+        <h2 class="text-2xl font-bold text-text mb-4">
+          通用 3 步极速上手流程
+        </h2>
+        <p class="text-sm text-text-secondary mb-8">
+          无论使用何种客户端，底层的代理协议接入逻辑完全一致：
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-6 rounded-2xl bg-surface-secondary/40 border border-border relative">
+            <span class="absolute top-4 right-4 text-3xl font-black text-emerald-500/20 font-mono">01</span>
+            <div class="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 mb-2">STEP 1</div>
+            <h3 class="text-lg font-bold text-text mb-2">获取节点订阅链接</h3>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              登录您的网络服务后台（如光速云），在“仪表盘”或“订阅中心”复制属于您账号的通用订阅 URL（支持 Clash / V2Ray / Sing-box 等格式）。
+            </p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-surface-secondary/40 border border-border relative">
+            <span class="absolute top-4 right-4 text-3xl font-black text-emerald-500/20 font-mono">02</span>
+            <div class="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 mb-2">STEP 2</div>
+            <h3 class="text-lg font-bold text-text mb-2">导入客户端并刷新</h3>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              打开客户端中的“配置 / 订阅”界面，粘贴刚才复制的 URL 并保存。点击“更新 / 刷新”，客户端将自动下载最新的几千个专线节点配置。
+            </p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-surface-secondary/40 border border-border relative">
+            <span class="absolute top-4 right-4 text-3xl font-black text-emerald-500/20 font-mono">03</span>
+            <div class="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 mb-2">STEP 3</div>
+            <h3 class="text-lg font-bold text-text mb-2">开启代理与规则分流</h3>
+            <p class="text-xs text-text-secondary leading-relaxed">
+              选择测速延迟最低的绿色节点（如香港或日本），在主界面打开“系统代理开关”或“TUN 虚拟网卡模式”，即刻畅游全球互联网络。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Platform Matrix Breakdown -->
+      <section class="mb-14">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 class="text-2xl font-bold text-text">全系统客户端选型推荐矩阵</h2>
+            <p class="text-sm text-text-secondary mt-1">按操作系统平台划分的主流客户端特性与优劣评估</p>
+          </div>
+          <a href="/clients/" class="text-xs text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 font-semibold">
+            查看客户端官方下载聚合 &rarr;
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {clientPlatforms.map(platform => (
+            <div class="p-6 rounded-2xl bg-surface border border-border hover:border-emerald-500/40 transition-all flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-2xl">{platform.icon}</span>
+                  <span class="text-xs font-mono px-2 py-0.5 rounded bg-surface-secondary text-text-secondary border border-border">
+                    {platform.difficulty}
+                  </span>
+                </div>
+                <h3 class="text-lg font-bold text-text mb-1">{platform.os}</h3>
+                <div class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 mb-3">
+                  旗舰主选：{platform.primary}
+                </div>
+                <p class="text-xs text-text-secondary leading-relaxed mb-4">
+                  {platform.features}
+                </p>
+              </div>
+              <div class="pt-3 border-t border-border/40 text-xs text-text-secondary">
+                <span class="font-medium text-text">备选软件：</span>{platform.alternatives}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Section 3: Detailed Clash Verge Rev Link -->
+      <section class="mb-14 p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-blue-500/10 via-surface to-surface border border-blue-500/30">
+        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+          <div>
+            <span class="inline-block px-3 py-1 rounded-full bg-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-bold mb-3">
+              专著级深度教程推荐
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-text mb-2">
+              Clash Verge Rev 完整使用指南与 TUN 模式深度解析
+            </h2>
+            <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+              若您在寻找专为 Windows 与 macOS 量身定制的单篇万字级实操指南，欢迎查阅我们编写的 Clash 专题教程，深入学习分流规则定制与 DNS 防污染方案。
+            </p>
+          </div>
+          <div>
+            <a
+              href="/clash/"
+              class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm transition-all shadow-lg shadow-blue-500/20 no-underline inline-flex items-center gap-2 whitespace-nowrap"
+            >
+              阅读 Clash 完整指南 &rarr;
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Troubleshooting FAQ -->
+      <section class="mb-14">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 class="text-2xl font-bold text-text">客户端常见故障与快速排障 FAQ</h2>
+            <p class="text-sm text-text-secondary mt-1">新手在初次配置时高频遇到的报错与对应解决方案</p>
+          </div>
+          <a href="/faq/" class="text-xs text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 font-semibold">
+            进入完整 FAQ 知识库 &rarr;
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {troubleshootingFaqs.map(item => (
+            <div class="p-6 rounded-2xl bg-surface border border-border">
+              <h3 class="text-base font-bold text-text mb-3 flex items-start gap-2">
+                <span class="text-emerald-500 font-mono font-bold">Q:</span>
+                <span>{item.q}</span>
+              </h3>
+              <p class="text-xs text-text-secondary leading-relaxed pl-6 border-l-2 border-emerald-500/30">
+                {item.a}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Section 5: Recommended Verified Provider -->
+      {featuredBrand && (
+        <section class="mb-14 p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-surface to-surface border border-emerald-500/30">
+          <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+            <div>
+              <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold mb-3">
+                一键订阅配置支持 · 全平台完美兼容
+              </span>
+              <h2 class="text-2xl sm:text-3xl font-extrabold text-text mb-2">
+                {featuredBrand.name} - 原生支持全平台客户端一键导入
+              </h2>
+              <p class="text-sm text-text-secondary max-w-2xl leading-relaxed">
+                无需手动复制冗长配置，后台直接提供“一键导入 Clash Verge / Shadowrocket / Quantumult X”捷径按钮，新手 30 秒内快速建立连接。
+              </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-4">
+              <a
+                href={featuredBrand.affUrl}
+                target="_blank"
+                rel="nofollow sponsored noopener"
+                class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm transition-all shadow-lg shadow-emerald-500/20 no-underline inline-flex items-center gap-2"
+              >
+                前往光速云官网一键配置 &rarr;
+              </a>
+              <a
+                href={`/brands/${featuredBrand.slug}/`}
+                class="px-6 py-3 rounded-xl bg-surface border border-border hover:border-emerald-500/50 text-text font-semibold text-sm transition-all no-underline"
+              >
+                查看完整评测档案
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <!-- Section 6: Internal Link Navigation Matrix -->
+      <section class="p-6 sm:p-8 rounded-3xl bg-surface border border-border">
+        <h3 class="text-lg font-bold text-text mb-4">相关专题与技术导航</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <a href="/clash/" class="p-4 rounded-xl border border-border bg-surface-secondary/30 hover:border-emerald-500/50 transition-all no-underline block">
+            <span class="block text-sm font-bold text-text mb-1">🛠️ Clash Verge Rev 指南</span>
+            <span class="text-xs text-text-secondary leading-relaxed">桌面端首选代理工具专著级实操教程。</span>
+          </a>
+          <a href="/jichang/" class="p-4 rounded-xl border border-border bg-surface-secondary/30 hover:border-emerald-500/50 transition-all no-underline block">
+            <span class="block text-sm font-bold text-text mb-1">⚡ 2026 机场横评推荐</span>
+            <span class="text-xs text-text-secondary leading-relaxed">TOP 10 核心品牌晚高峰速率与协议支持深度横评。</span>
+          </a>
+          <a href="/nodes/" class="p-4 rounded-xl border border-border bg-surface-secondary/30 hover:border-emerald-500/50 transition-all no-underline block">
+            <span class="block text-sm font-bold text-text mb-1">📡 全球节点测速基准</span>
+            <span class="text-xs text-text-secondary leading-relaxed">香港、日本、新加坡及美西机房晚高峰实测数据。</span>
+          </a>
+          <a href="/faq/" class="p-4 rounded-xl border border-border bg-surface-secondary/30 hover:border-emerald-500/50 transition-all no-underline block">
+            <span class="block text-sm font-bold text-text mb-1">❓ 常见问题排障 FAQ</span>
+            <span class="text-xs text-text-secondary leading-relaxed">网络断联、DNS污染、TUN模式冲突全面解答。</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Bottom Disclosure -->
+      <div class="mt-8">
+        <AffiliateDisclosure />
+      </div>
+    </article>
+  </div>
+</StarterLayout>

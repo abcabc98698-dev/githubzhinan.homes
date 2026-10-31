@@ -1,0 +1,129 @@
+---
+import StarterLayout from '@/layouts/StarterLayout.astro';
+import Navbar from '@astro-v7/shared/components/Navbar.astro';
+import ThemeToggle from '@astro-v7/shared/components/ThemeToggle.svelte';
+import { env } from '@/env';
+import '@/styles/app.css';
+
+const pageTitle = '服务条款与中立免责声明 - GitHub指南';
+const pageDescription = 'GitHub指南 (githubzhinan.homes) 用户服务协议、知识产权保护、合规使用准则与中立第三方评测免责声明。';
+
+const links = [
+  { href: '/', label: '首页' },
+  { href: '/brands/guangsu/', label: '光速云 (TOP 1)' },
+  { href: '/radar/', label: '🚨 跑路雷达' },
+  { href: '/observatory/', label: '⚡ 测速室' },
+  { href: '/clients/', label: '💻 客户端' },
+  { href: '/faq/', label: '📖 疑难百科' },
+  { href: '/free/', label: '🎁 免费资源' },
+  { href: '/brands/', label: '42家品牌库' },
+];
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://githubzhinan.homes/terms/#webpage',
+      'url': 'https://githubzhinan.homes/terms/',
+      'name': pageTitle,
+      'description': pageDescription,
+      'isPartOf': { '@id': 'https://githubzhinan.homes/#website' },
+      'inLanguage': 'zh-CN',
+      'datePublished': '2026-10-19',
+      'dateModified': '2026-10-31',
+    }
+  ]
+};
+---
+
+<StarterLayout
+  title={pageTitle}
+  description={pageDescription}
+  structuredData={structuredData}
+>
+  <Navbar
+    slot="header"
+    siteName={env.PUBLIC_SITE_NAME || 'GitHub指南'}
+    homeUrl="/"
+    links={links}
+    currentPath="/terms/"
+  >
+    <ThemeToggle client:load />
+  </Navbar>
+
+  <div class="min-h-screen bg-bg text-text py-12 px-4 sm:px-6">
+    <article class="mx-auto max-w-4xl">
+      <!-- Breadcrumb -->
+      <nav aria-label="Breadcrumb" class="mb-6 flex items-center gap-2 text-xs text-text-secondary font-mono">
+        <a href="/" class="hover:text-text no-underline">首页</a>
+        <span>/</span>
+        <span class="text-text font-semibold">服务条款</span>
+      </nav>
+
+      <!-- Header -->
+      <header class="border-b border-border pb-8 mb-10">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-mono font-semibold mb-4 border border-amber-500/20">
+          <span>TERMS OF SERVICE & DISCLAIMER</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-black tracking-tight text-text mb-4">
+          服务条款与中立免责声明
+        </h1>
+        <p class="text-text-secondary text-base leading-relaxed">
+          生效日期：2026年10月19日 · 最近修订：2026年10月31日
+        </p>
+      </header>
+
+      <!-- Content -->
+      <div class="space-y-8 text-sm text-text-secondary leading-relaxed font-sans">
+        <section>
+          <h2 class="text-xl font-bold text-text mb-3">一、 网站性质与信息定位</h2>
+          <p class="mb-3">
+            GitHub指南 (githubzhinan.homes) 是一个致力于<strong>开源技术交流、跨国网络链路可观测性基准测试与开发者效率工具链导航</strong>的非营利性技术资讯网站。
+          </p>
+          <p>
+            本站<strong>本身不搭建、不出售、不分发任何虚拟专用网络（VPN）或商业代理服务器服务</strong>。网站展示的所有延迟、吞吐及测评结论仅代表特定探针在特定测试周期（如 2026-10-19 晚高峰抽样）下的物理采样记录，不构成对任何第三方服务终身可用性或稳定性的商业担保。
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-bold text-text mb-3">二、 第三方服务连通性与资金安全免责</h2>
+          <div class="p-4 rounded-xl border border-rose-500/30 bg-rose-500/5 space-y-2 text-xs leading-relaxed">
+            <p class="font-bold text-rose-600 dark:text-rose-400">⚠️ 关键资金与运营风险须知：</p>
+            <p>
+              第三方网络提供商（机场服务商）属于独立民事运营主体，其网络连通性受国际海缆状况、物理机房供电、出口带宽调度及不可抗力因素影响。若因第三方服务商倒闭、跑路、遭受 DDoS 攻击或节点维护导致您的网络中断或资金受损，<strong>本站不承担任何直接或连带法律责任</strong>。
+            </p>
+            <p>
+              我们强烈建议您参阅本站 <a href="/radar/" class="text-emerald-600 dark:text-emerald-400 font-bold underline">跑路预警雷达</a>，切勿一次性大额年付未知小作坊，坚持“小额按月测试”的安全原则。
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-bold text-text mb-3">三、 合规使用与法律边界</h2>
+          <p class="mb-3">
+            本站倡导遵守所有适用的国家与地区法律法规。网站所介绍之开源客户端（如 Clash Verge Rev、Sing-box、Shadowrocket 等）均为合法开源网络调试与系统路由管理工具：
+          </p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li>所有网络技术讨论仅限于合法学术科研、海外开源技术追踪、正当跨境电商与跨国软件开发协作。</li>
+            <li>严禁任何机构或个人利用本站发布的信息从事侵害国家安全、网络黑客攻击、电信诈骗、传播非法音视频等任何违法犯罪活动。</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-bold text-text mb-3">四、 知识产权与原创保护</h2>
+          <p>
+            本站包含的深度实测白皮书、跑路雷达预警模型、原创对比表格与排版代码均享有完整的知识产权保护。任何第三方在未经书面许可的情况下，不得通过自动化爬虫大规模恶意抓取用于洗稿、站群搬运或虚假商业宣传。合法转载引用需保留原始出处链接与作者署名。
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-bold text-text mb-3">五、 条款接受与争议解决</h2>
+          <p>
+            您访问、浏览或使用本网站，即视为您已完全阅读、理解并同意受本服务条款之全部约束。如您不同意本条款之任何部分，请立即停止访问并关闭本网站。
+          </p>
+        </section>
+      </div>
+    </article>
+  </div>
+</StarterLayout>

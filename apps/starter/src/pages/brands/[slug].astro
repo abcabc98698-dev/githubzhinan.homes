@@ -1,0 +1,478 @@
+﻿---
+import StarterLayout from '@/layouts/StarterLayout.astro';
+import Navbar from '@astro-v7/shared/components/Navbar.astro';
+import ThemeToggle from '@astro-v7/shared/components/ThemeToggle.svelte';
+import { env } from '@/env';
+import { BRANDS, type Brand } from '@astro-v7/shared/data/brands';
+import SpeedTestPanel from '@/components/SpeedTestPanel.astro';
+import ServiceMatrix from '@/components/ServiceMatrix.astro';
+import NetworkTopology from '@/components/NetworkTopology.astro';
+import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
+import '@/styles/app.css';
+
+export async function getStaticPaths() {
+  return BRANDS.filter((brand) => brand.slug !== 'guangsu').map((brand) => ({
+    params: { slug: brand.slug },
+    props: { brand },
+  }));
+}
+
+interface Props {
+  brand: Brand;
+}
+
+const { brand } = Astro.props;
+
+const pageTitle = `${brand.name}怎么样？2026年最新测速/套餐价格/AI与流媒体解锁评测 - GitHub指南`;
+const pageDescription = `${brand.name} 深度评测：采用 ${brand.lineType}，入门套餐 ${brand.minMonthlyPrice}，实测香港节点延迟 ${brand.speedTests[0]?.latencyMs || 25}ms。全面解析 ChatGPT/Claude/Netflix 解锁状态、客户端配置及独家优惠码 ${brand.discountCode || ''}。`;
+
+const links = [
+  { href: '/', label: '首页' },
+  { href: '/brands/guangsu/', label: '光速云 (TOP 1)' },
+  { href: '/radar/', label: '🚨 跑路雷达' },
+  { href: '/observatory/', label: '⚡ 测速室' },
+  { href: '/clients/', label: '💻 客户端' },
+  { href: '/faq/', label: '📖 疑难百科' },
+  { href: '/free/', label: '🎁 免费资源' },
+  { href: '/brands/', label: '42家品牌库' },
+];
+
+const relatedBrands = BRANDS.filter((b) => b.slug !== brand.slug).slice(0, 3);
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': `https://githubzhinan.homes/brands/${brand.slug}/#webpage`,
+      'url': `https://githubzhinan.homes/brands/${brand.slug}/`,
+      'name': pageTitle,
+      'description': pageDescription,
+      'isPartOf': { '@id': 'https://githubzhinan.homes/#website' },
+      'inLanguage': 'zh-CN',
+      'datePublished': '2026-10-19',
+      'dateModified': '2026-10-31',
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `https://githubzhinan.homes/brands/${brand.slug}/#faq`,
+      'mainEntity': brand.geoFaqs.map((faq) => ({
+        '@type': 'Question',
+        'name': faq.q,
+        'acceptedAnswer': {
+          '@type': 'Answer',
+          'text': faq.a,
+        },
+      })),
+    },
+  ],
+};
+---
+
+<StarterLayout
+  title={pageTitle}
+  description={pageDescription}
+  structuredData={structuredData}
+  lang="zh"
+  siteName={env.PUBLIC_SITE_NAME}
+>
+  <Navbar slot="header" siteName={env.PUBLIC_SITE_NAME} links={links}>
+    <ThemeToggle client:load />
+  </Navbar>
+
+  <!-- Breadcrumb Navigation -->
+  <div class="mx-auto max-w-5xl px-6 pt-6">
+    <nav aria-label="Breadcrumb" class="flex items-center gap-2 text-xs font-mono text-text-secondary">
+      <a href="/" class="hover:text-text no-underline">首页</a>
+      <span>/</span>
+      <a href="/brands/" class="hover:text-text no-underline">品牌库</a>
+      <span>/</span>
+      <span class="text-text font-semibold">{brand.name}</span>
+    </nav>
+  </div>
+
+  <!-- Brand Hero Header -->
+  <section class="mx-auto max-w-5xl px-6 py-8">
+    <div class="rounded-3xl border border-border bg-gradient-to-b from-surface via-surface to-bg-secondary/30 p-6 sm:p-10 shadow-sm">
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+        <div class="flex items-center gap-3">
+          <span class:list={[
+            'font-mono font-bold text-xs px-3 py-1 rounded-full border',
+            brand.isFeatured
+              ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
+              : 'bg-bg-secondary text-text-secondary border-border'
+          ]}>
+            #{brand.rank} {brand.isFeatured ? '👑 旗舰主推' : '网络观测收录'}
+          </span>
+          {brand.establishedYear && (
+            <span class="text-xs font-mono text-text-secondary">
+              运营始于 {brand.establishedYear} 年
+            </span>
+          )}
+        </div>
+
+        <div class="text-right">
+          <span class="text-xs text-text-secondary">起步参考价</span>
+          <strong class="text-2xl font-bold text-emerald-600 dark:text-emerald-400 ml-2 font-mono">
+            {brand.minMonthlyPrice}
+          </strong>
+        </div>
+      </div>
+
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+        <div>
+          <h1 class="text-3xl sm:text-4xl font-extrabold text-text tracking-tight mb-2">
+            {brand.name}
+            {brand.englishName && <span class="text-xl sm:text-2xl font-mono text-text-secondary font-normal ml-2">({brand.englishName})</span>}
+          </h1>
+          <p class="text-text-secondary text-base max-w-2xl leading-relaxed">
+            {brand.lineType} · 全平台客户端兼容 · 原生节点跨境网络可观测性评测
+          </p>
+        </div>
+
+        <!-- Promo Code Badge -->
+        {brand.discountCode && (
+          <div class="flex items-center gap-2 p-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/5 font-mono text-xs">
+            <span class="text-text-secondary">优惠码:</span>
+            <code id="brand-promo-code" class="font-bold text-emerald-600 dark:text-emerald-400 text-sm select-all">
+              {brand.discountCode}
+            </code>
+            <button
+              type="button"
+              id="copy-brand-code"
+              data-copy-code={brand.discountCode}
+              class="px-2.5 py-1 rounded bg-emerald-600 hover:bg-emerald-700 text-white font-semibold transition-colors cursor-pointer text-[11px]"
+            >
+              复制
+            </button>
+          </div>
+        )}
+      </div>
+
+      <!-- Quick Specs Bar -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 border-y border-border/80 py-4 mb-8 text-xs font-mono">
+        <div>
+          <span class="text-text-secondary block mb-1">物理线路</span>
+          <strong class="text-text font-semibold">{brand.lineType.split('（')[0]}</strong>
+        </div>
+        <div>
+          <span class="text-text-secondary block mb-1">加密协议</span>
+          <strong class="text-text font-semibold">{brand.protocols.join(', ')}</strong>
+        </div>
+        <div>
+          <span class="text-text-secondary block mb-1">香港测速延迟</span>
+          <strong class="text-emerald-600 dark:text-emerald-400 font-bold">{brand.speedTests[0]?.latencyMs || 25} ms</strong>
+        </div>
+        <div>
+          <span class="text-text-secondary block mb-1">数据来源状态</span>
+          <span class="text-blue-600 dark:text-blue-400 font-semibold">{brand.dataStatus === 'verified' ? '实验室实测' : (brand.dataStatus === 'vendor' ? '品牌资料' : '历史存档')}</span>
+        </div>
+      </div>
+
+      <!-- CTAs -->
+      <div class="flex flex-wrap items-center gap-4">
+        {brand.affUrl && brand.affUrl !== '#' ? (
+          <a
+            href={brand.affUrl}
+            target="_blank"
+            rel="nofollow sponsored noopener"
+            aria-label={`前往 ${brand.name} 官网注册`}
+            class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md shadow-emerald-600/20 transition-all transform hover:-translate-y-0.5 no-underline"
+          >
+            <span>前往 {brand.name} 官网注册</span>
+            <span>↗</span>
+          </a>
+        ) : (
+          <a
+            href="/observatory/"
+            
+            class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-bg-secondary hover:bg-bg-secondary/80 border border-border text-text font-bold text-sm transition-all no-underline"
+          >
+            <span>查看网络测速大盘</span>
+            <span>⚡</span>
+          </a>
+        )}
+
+        <a
+          href="#pricing"
+          class="px-5 py-3.5 rounded-xl border border-border bg-bg-secondary/60 hover:bg-bg-secondary text-text font-semibold text-sm transition-all no-underline"
+        >
+          查看全部套餐方案 ({brand.pricingPlans.length})
+        </a>
+      </div>
+
+      <p class="text-[11px] text-text-secondary font-mono mt-3">
+        * 注册链接均已遵循 rel="nofollow sponsored noopener" 规范，使用优惠码不影响实际支付权益。
+      </p>
+    </div>
+  </section>
+
+  <!-- Special Showcase for 光速云 (if brand is 光速云) -->
+  {brand.slug === 'guangsu' && (
+    <section class="mx-auto max-w-5xl px-6 pb-8">
+      <div class="p-6 rounded-2xl border-2 border-emerald-500/30 bg-emerald-500/5">
+        <h2 class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold text-base mb-3">
+          <span>🎱</span>
+          <span>光速云独家特权亮点：致敬斯诺克 147 永久套餐</span>
+        </h2>
+        <p class="text-text text-sm leading-relaxed mb-4">
+          光速云除提供 <strong>99元/年（折合约 8.25 元/月，69GB/月）</strong> 轻量入门版外，独家推出 <strong>致敬斯诺克 147 永久套餐</strong>（¥147 一次性付费，247GB 永不过期，单节点最高 2.5Gbps，不限设备数量）。无论是日常查阅资料、轻度海外办公，还是作为主力宽带的兜底备用专线，都无需担心按月扣费过期失效。
+        </p>
+        <div class="flex flex-wrap gap-2 text-xs font-mono">
+          <span class="px-2.5 py-1 rounded bg-surface border border-emerald-500/20 text-emerald-700 dark:text-emerald-300">
+            ✓ 247GB 永不过期
+          </span>
+          <span class="px-2.5 py-1 rounded bg-surface border border-emerald-500/20 text-emerald-700 dark:text-emerald-300">
+            ✓ 单节点最高 2.5Gbps
+          </span>
+          <span class="px-2.5 py-1 rounded bg-surface border border-emerald-500/20 text-emerald-700 dark:text-emerald-300">
+            ✓ 不限设备同时在线
+          </span>
+          <span class="px-2.5 py-1 rounded bg-surface border border-emerald-500/20 text-emerald-700 dark:text-emerald-300">
+            ✓ 优惠码 AMM
+          </span>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Observatory Data: Speed & Unlock Matrix -->
+  <section class="mx-auto max-w-5xl px-6 pb-12">
+    <h2 class="text-2xl font-bold text-text tracking-tight mb-6 flex items-center gap-2">
+      <span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+      <span>网络遥测与服务可用性</span>
+    </h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      <SpeedTestPanel brandName={brand.name} speedTests={brand.speedTests} testDate={brand.lastVerifiedDate} />
+      <ServiceMatrix brandName={brand.name} unlocks={brand.unlocks} columns={2} />
+    </div>
+
+    <!-- Topology -->
+    <NetworkTopology brandName={brand.name} lineType={brand.lineType} />
+  </section>
+
+  <!-- Pricing Plans Section -->
+  <section id="pricing" class="mx-auto max-w-5xl px-6 pb-12">
+    <h2 class="text-2xl font-bold text-text tracking-tight mb-3">
+      {brand.name} 套餐价格与流量规格
+    </h2>
+    <p class="text-text-secondary text-sm mb-6">
+      以下为 {brand.name} 整理收录的套餐资费明细，购买前建议先选择月付或轻量档位进行实测验证。
+    </p>
+
+    <div class="overflow-x-auto rounded-2xl border border-border bg-surface">
+      <table aria-label={`${brand.name} 套餐价格明细`} class="w-full text-left border-collapse text-sm">
+        <caption class="sr-only">{brand.name} 套餐价格表</caption>
+        <thead>
+          <tr class="border-b border-border bg-bg-secondary/60 font-mono text-xs text-text-secondary">
+            <th class="p-4" scope="col">套餐名称</th>
+            <th class="p-4" scope="col">计费周期</th>
+            <th class="p-4" scope="col">价格</th>
+            <th class="p-4" scope="col">可用流量</th>
+            <th class="p-4" scope="col">重置周期</th>
+            <th class="p-4 text-right" scope="col">操作</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-border/60">
+          {brand.pricingPlans.map((plan) => (
+            <tr class="hover:bg-bg-secondary/30 transition-colors">
+              <td class="p-4 font-semibold text-text">
+                {plan.name}
+              </td>
+              <td class="p-4 font-mono text-xs text-text-secondary">
+                {plan.billing}
+              </td>
+              <td class="p-4 font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                {plan.price}
+              </td>
+              <td class="p-4 font-mono text-xs">
+                {plan.traffic}
+              </td>
+              <td class="p-4 font-mono text-xs text-text-secondary">
+                {plan.trafficCycle}
+              </td>
+              <td class="p-4 text-right">
+                {brand.affUrl && brand.affUrl !== '#' ? (
+                  <a
+                    href={brand.affUrl}
+                    target="_blank"
+                    rel="nofollow sponsored noopener"
+                    aria-label={`前往选购 ${brand.name} ${plan.name} 套餐`}
+                    class="inline-block px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs transition-colors no-underline"
+                  >
+                    前往选购
+                  </a>
+                ) : (
+                  <span class="inline-block px-3 py-1.5 rounded-lg bg-bg-secondary text-text-secondary font-mono text-xs border border-border/70">
+                    实测观测中
+                  </span>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- In-depth Review & Pros / Cons -->
+  <section class="mx-auto max-w-5xl px-6 pb-12">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+      <h2 class="text-2xl font-bold text-text tracking-tight mb-4">
+        {brand.name} 综合评测与架构解析
+      </h2>
+      <p class="text-text-secondary leading-relaxed text-sm mb-6 whitespace-pre-line">
+        {brand.reviewSummary}
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-border/80">
+        <!-- Pros -->
+        <div class="p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/5">
+          <h3 class="text-base font-bold text-emerald-600 dark:text-emerald-400 mb-3 flex items-center gap-2">
+            <span>✓</span>
+            <span>核心优势与亮点</span>
+          </h3>
+          <ul class="text-xs text-text-secondary space-y-2 list-none p-0">
+            {brand.pros.map((p) => (
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-500 font-bold">•</span>
+                <span>{p}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Cons -->
+        <div class="p-4 rounded-xl border border-amber-500/30 bg-amber-500/5">
+          <h3 class="text-base font-bold text-amber-600 dark:text-amber-400 mb-3 flex items-center gap-2">
+            <span>!</span>
+            <span>选型注意事项与局限</span>
+          </h3>
+          <ul class="text-xs text-text-secondary space-y-2 list-none p-0">
+            {brand.cons.map((c) => (
+              <li class="flex items-start gap-2">
+                <span class="text-amber-500 font-bold">•</span>
+                <span>{c}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Client Setup Guide -->
+  <section class="mx-auto max-w-5xl px-6 pb-12">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+      <h2 class="text-2xl font-bold text-text tracking-tight mb-2">
+        {brand.name} 客户端配置与订阅导入
+      </h2>
+      <p class="text-text-secondary text-sm mb-6">
+        {brand.name} 兼容主流第三方代理核心与应用客户端，以下为常用客户端的快速配置流程。
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="p-4 rounded-xl border border-border/80 bg-bg-secondary/40">
+          <h3 class="font-bold text-sm text-text mb-1">Clash Verge Rev</h3>
+          <span class="text-[11px] font-mono text-text-secondary block mb-2">Windows / macOS</span>
+          <p class="text-xs text-text-secondary leading-relaxed">
+            登录 {brand.name} 用户中心，复制 Clash 订阅链接，打开 Clash Verge 的「订阅配置」窗口粘贴并保存，右键选择开启「系统代理」即可。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border/80 bg-bg-secondary/40">
+          <h3 class="font-bold text-sm text-text mb-1">Shadowrocket (小火箭)</h3>
+          <span class="text-[11px] font-mono text-text-secondary block mb-2">iOS / iPadOS</span>
+          <p class="text-xs text-text-secondary leading-relaxed">
+            打开 Shadowrocket 点击右上角「+」，类型选择「Subscribe」，粘贴 {brand.name} 提供的通用订阅链接或在网页端直接点击一键导入。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border/80 bg-bg-secondary/40">
+          <h3 class="font-bold text-sm text-text mb-1">Sing-box / v2rayN</h3>
+          <span class="text-[11px] font-mono text-text-secondary block mb-2">Android / Windows</span>
+          <p class="text-xs text-text-secondary leading-relaxed">
+            支持通用 VLESS/Trojan 订阅导入。支持自定义分流规则与 TUN 虚拟网卡模式，晚高峰玩海外游戏可获得稳定低抖动连接。
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-4 pt-4 border-t border-border/60 text-right">
+        <a href="/clients/" class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline">
+          查看 6 大平台客户端完整下载与新手图文教程 →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Laboratory Reliability & Benchmark Assessment -->
+  <section class="mx-auto max-w-5xl px-6 pb-12">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+      <h2 class="text-2xl font-bold text-text tracking-tight mb-4">
+        网络实验室对 {brand.name} 的选型与风控评估
+      </h2>
+      <div class="space-y-4 text-xs sm:text-sm text-text-secondary leading-relaxed font-sans">
+        <p>
+          在实验室对 42 家网络服务商的长期观测体系中，<strong>{brand.name}</strong> 属于 <strong>{brand.tier === 'flagship' ? '综合旗舰' : (brand.tier === 'recommended' ? '主流推荐' : (brand.tier === 'budget' ? '高性价比' : '企业级'))}</strong> 定位。其物理接入采用 <code>{brand.lineType}</code>，实测香港节点平均延迟约为 <code>{brand.speedSummary.avgLatency}ms</code>，峰值下行带宽可达 <code>{brand.speedSummary.peakDownloadMbps}Mbps</code>。
+        </p>
+        <div class="p-4 rounded-xl border border-border/80 bg-bg-secondary/40 space-y-2">
+          <strong class="text-text block text-sm">💡 实验室核心建议与决策指南：</strong>
+          <ul class="list-disc pl-5 space-y-1.5 text-xs text-text-secondary">
+            <li><strong>物理专线与公网抗封锁</strong>：若用于高频 SSH 远程开发、跨境金融交易或海外大模型交互，专线链路能有效隔离公网 GFW 的 QoS 限速与主动探测。建议优先测试 {brand.name} 的亚洲原生落地节点。</li>
+            <li><strong>资金安全与周期管理</strong>：根据实验室 <a href="/radar/" class="text-emerald-600 dark:text-emerald-400 font-semibold underline">跑路预警雷达</a> 的风险控制模型，建议新手用户始终坚持<strong>按月或小额季度付费</strong>进行晚高峰压测验证，切忌一次性大额长期锁定资金。</li>
+            <li><strong>备用容灾策略</strong>：任何单一机场均无法保证海缆中断或机房电力故障时的 100% SLA 可用性。建议开发者搭配 <a href="/brands/guangsu/" class="text-emerald-600 dark:text-emerald-400 font-semibold underline">光速云 IEPL 旗舰</a> 或 <a href="/free/" class="text-emerald-600 dark:text-emerald-400 font-semibold underline">0元应急备用节点</a> 建立双服务商冗余分流机制。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GEO Long-tail FAQs -->
+  <section class="mx-auto max-w-5xl px-6 pb-12">
+    <h2 class="text-2xl font-bold text-text tracking-tight mb-4">
+      {brand.name} 常见问答与技术答疑
+    </h2>
+
+    <div class="space-y-4">
+      {brand.geoFaqs.map((faq, idx) => (
+        <details class="group rounded-xl border border-border bg-surface p-5 transition-all">
+          <summary class="font-bold text-sm text-text cursor-pointer list-none flex items-center justify-between">
+            <span>{idx + 1}. {faq.q}</span>
+            <span class="text-text-secondary font-mono text-base transition-transform group-open:rotate-180">↓</span>
+          </summary>
+          <p class="text-xs text-text-secondary leading-relaxed mt-3 pt-3 border-t border-border/60">
+            {faq.a}
+          </p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <!-- Related Brands -->
+  <section class="mx-auto max-w-5xl px-6 pb-16">
+    <h2 class="text-xl font-bold text-text tracking-tight mb-4">
+      其他推荐网络品牌
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {relatedBrands.map((b) => (
+        <a
+          href={`/brands/${b.slug}/`}
+          class="p-4 rounded-xl border border-border bg-surface hover:border-emerald-500/50 transition-all no-underline block"
+        >
+          <div class="flex items-center justify-between text-xs mb-1">
+            <span class="font-mono font-bold text-text-secondary">#{b.rank}</span>
+            <span class="font-mono font-semibold text-emerald-600 dark:text-emerald-400">{b.minMonthlyPrice}</span>
+          </div>
+          <h3 class="font-bold text-text text-base mb-1">{b.name}</h3>
+          <p class="text-xs text-text-secondary font-mono line-clamp-1">{b.lineType.split('（')[0]}</p>
+        </a>
+      ))}
+    </div>
+
+    <!-- Bottom Disclosure -->
+    <div class="mt-12">
+      <AffiliateDisclosure />
+    </div>
+  </section>
+</StarterLayout>

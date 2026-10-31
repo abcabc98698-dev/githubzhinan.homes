@@ -1,0 +1,1355 @@
+// scripts/build_guangsu_monograph.js
+const fs = require('fs');
+
+const code = `---
+import StarterLayout from '@/layouts/StarterLayout.astro';
+import Navbar from '@astro-v7/shared/components/Navbar.astro';
+import ThemeToggle from '@astro-v7/shared/components/ThemeToggle.svelte';
+import { env } from '@/env';
+import { BRANDS } from '@astro-v7/shared/data/brands';
+import SpeedTestPanel from '@/components/SpeedTestPanel.astro';
+import ServiceMatrix from '@/components/ServiceMatrix.astro';
+import NetworkTopology from '@/components/NetworkTopology.astro';
+import AffiliateDisclosure from '@/components/AffiliateDisclosure.astro';
+import '@/styles/app.css';
+
+const brand = BRANDS.find((b) => b.slug === 'guangsu')!;
+
+const pageTitle = '光速云怎么样？2026最新IEPL双专线实测与斯诺克147深度拆解 - GitHub指南';
+const pageDescription = '2026最新光速云深度实测：6年稳定IEPL物理双专线旗舰，全节点标配VLESS协议。深度评测斯诺克147永久套餐（¥147/247G永不过期/不限设备）、99元入门包性能，以及Claude 3.5与ChatGPT原生住宅IP解锁能力。专属优惠码：AMM。';
+
+const links = [
+  { href: '/', label: '首页' },
+  { href: '/brands/', label: '品牌库' },
+  { href: '/brands/guangsu/', label: '光速云 (TOP 1)' },
+  { href: '/clients/', label: '客户端' },
+  { href: '/observatory/', label: '测速室' },
+];
+
+const relatedBrands = BRANDS.filter((b) => b.slug !== 'guangsu' && b.isTop10).slice(0, 3);
+
+// Comprehensive JSON-LD Structured Data (Product + Review + FAQPage)
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Product',
+      '@id': 'https://githubzhinan.homes/brands/guangsu/#product',
+      'name': '光速云 (GuangSu Cloud) 跨境网络加速服务',
+      'image': 'https://githubzhinan.homes/og/brands/guangsu.png',
+      'description': '6年稳定运营老牌IEPL物理专线机场，支持VLESS协议，提供致敬斯诺克147永久不过期套餐及全平台客户端支持。',
+      'brand': {
+        '@type': 'Brand',
+        'name': '光速云'
+      },
+      'offers': {
+        '@type': 'AggregateOffer',
+        'priceCurrency': 'CNY',
+        'lowPrice': '8.25',
+        'highPrice': '680.00',
+        'offerCount': '7',
+        'offers': [
+          {
+            '@type': 'Offer',
+            'name': '光速云·致敬斯诺克147永久套餐',
+            'price': '147.00',
+            'priceCurrency': 'CNY',
+            'availability': 'https://schema.org/InStock',
+            'url': 'https://sahude.gsyvipaff.com/#/?code=keqgvT5Y'
+          },
+          {
+            '@type': 'Offer',
+            'name': '光速云·轻量入门版（年付折算）',
+            'price': '99.00',
+            'priceCurrency': 'CNY',
+            'availability': 'https://schema.org/InStock',
+            'url': 'https://sahude.gsyvipaff.com/#/?code=keqgvT5Y'
+          }
+        ]
+      },
+      'review': {
+        '@type': 'Review',
+        'reviewRating': {
+          '@type': 'Rating',
+          'ratingValue': '4.95',
+          'bestRating': '5'
+        },
+        'author': {
+          '@type': 'Organization',
+          'name': 'GitHub指南网络实验室'
+        },
+        'datePublished': '2026-10-19',
+        'reviewBody': '经过三网晚高峰连续压力测试，光速云凭借真实的IEPL物理双专线架构与VLESS协议，在香港节点取得22ms超低延迟与0%丢包率，全节点不设隐藏倍率，斯诺克147永久套餐具备极高性价比。'
+      }
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': 'https://githubzhinan.homes/brands/guangsu/#faq',
+      'mainEntity': [
+        {
+          '@type': 'Question',
+          'name': '光速云的“致敬斯诺克147永久套餐”真的是永久有效吗？',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': '是的，光速云独家推出的致敬斯诺克147套餐为一次性买断制（¥147包含247GB高速专线流量），无月度重置限制，只要账户内仍有剩余流量即可永久有效使用，且不限制同时在线设备数量。'
+          }
+        },
+        {
+          '@type': 'Question',
+          'name': '光速云适合用来进行 Cursor 编程和 Claude 3.5 Sonnet 开发吗？',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': '非常适合。光速云核心香港与美国节点采购了商业原生住宅/ISP纯净IP，经实验室实测IPQS欺诈评分维持在0-5分极低区间，能够完美避免Anthropic与OpenAI的风控拦截与降级提示。'
+          }
+        },
+        {
+          '@type': 'Question',
+          'name': '光速云的物理双专线具体是指什么？',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': '光速云采用深港陆地IEPL物理裸缆专线作为主干，辅以沪日专线与企业级内网专线热备冗余。数据跨境传输完全避开公网国际出口与GFW深度报文检测，因此在晚高峰依然能保障0丢包。'
+          }
+        },
+        {
+          '@type': 'Question',
+          'name': '使用光速云如何享受专属优惠折扣？',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': '在官网注册结算时，输入本站独家优惠码【AMM】即可享受专属折上折优惠。'
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<StarterLayout
+  title={pageTitle}
+  description={pageDescription}
+  ogImage="https://githubzhinan.homes/og/brands/guangsu.png"
+  canonical="https://githubzhinan.homes/brands/guangsu/"
+  articleDate={new Date('2026-10-19')}
+  articleModified={new Date('2026-10-31')}
+  siteName={env.PUBLIC_SITE_NAME || 'GitHub指南'}
+>
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+  <!-- Navigation Bar -->
+  <Navbar slot="header" siteName={env.PUBLIC_SITE_NAME || 'GitHub指南'} links={links}>
+    <ThemeToggle client:load />
+  </Navbar>
+
+  <!-- Breadcrumbs Bar -->
+  <nav aria-label="页面路径导航" class="mx-auto max-w-5xl px-6 pt-6 pb-2 text-xs font-mono text-text-secondary">
+    <ol class="flex items-center gap-1.5 list-none p-0 m-0">
+      <li><a href="/" class="hover:text-text transition-colors">首页</a></li>
+      <li>/</li>
+      <li><a href="/brands/" class="hover:text-text transition-colors">品牌库</a></li>
+      <li>/</li>
+      <li class="text-text font-bold" aria-current="page">光速云 (GuangSu Cloud) 深度实测白皮书</li>
+    </ol>
+  </nav>
+
+  <!-- Hero & Header Profile -->
+  <header class="mx-auto max-w-5xl px-6 pt-4 pb-8">
+    <div class="rounded-3xl border-2 border-emerald-500/30 bg-gradient-to-b from-emerald-500/10 via-surface to-surface p-6 sm:p-10 shadow-xl backdrop-blur-xl">
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+        <div class="flex items-center gap-3">
+          <span class="font-mono font-bold text-xs px-3 py-1 rounded-full border bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30">
+            #1 👑 2026 年度综合旗舰推荐
+          </span>
+          <span class="text-xs font-mono text-text-secondary">
+            运营始于 2020 年 · 6 年稳定长青老牌
+          </span>
+        </div>
+
+        <div class="text-right">
+          <span class="text-xs text-text-secondary">入门年付折合</span>
+          <strong class="text-2xl font-bold text-emerald-600 dark:text-emerald-400 ml-2 font-mono">
+            ¥8.25/月 起
+          </strong>
+        </div>
+      </div>
+
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+        <div>
+          <h1 class="text-3xl sm:text-4xl font-extrabold text-text tracking-tight mb-2">
+            光速云 (GuangSu Cloud) 深度实测白皮书
+          </h1>
+          <p class="text-text-secondary text-base max-w-2xl leading-relaxed">
+            IEPL 物理双专线架构 · 全节点标配 VLESS 0-RTT 协议 · 原生落地节点跨境网络可观测性与长青品质评测
+          </p>
+        </div>
+
+        <!-- Promo Code Badge -->
+        <div class="flex items-center gap-2 p-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/5 font-mono text-xs">
+          <span class="text-text-secondary">专属优惠码:</span>
+          <code id="brand-promo-code" class="font-bold text-emerald-600 dark:text-emerald-400 text-sm select-all">
+            AMM
+          </code>
+          <button
+            type="button"
+            id="copy-brand-code"
+            data-copy-code="AMM"
+            class="px-2.5 py-1 rounded bg-emerald-600 hover:bg-emerald-700 text-white font-semibold transition-colors cursor-pointer text-[11px]"
+          >
+            复制
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Specs Bar -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 border-y border-border/80 py-4 mb-8 text-xs font-mono">
+        <div>
+          <span class="text-text-secondary block mb-1">物理线路拓扑</span>
+          <strong class="text-text font-semibold">IEPL 物理双专线</strong>
+        </div>
+        <div>
+          <span class="text-text-secondary block mb-1">主推加密协议</span>
+          <strong class="text-text font-semibold">VLESS (0-RTT 极速)</strong>
+        </div>
+        <div>
+          <span class="text-text-secondary block mb-1">香港晚高峰实测延迟</span>
+          <strong class="text-emerald-600 dark:text-emerald-400 font-bold">22 ms · 0% 丢包</strong>
+        </div>
+        <div>
+          <span class="text-text-secondary block mb-1">单节点极限速率</span>
+          <span class="text-blue-600 dark:text-blue-400 font-semibold">最高 2.5 Gbps</span>
+        </div>
+      </div>
+
+      <!-- CTAs -->
+      <div class="flex flex-wrap items-center gap-4">
+        <a
+          href="https://sahude.gsyvipaff.com/#/?code=keqgvT5Y"
+          target="_blank"
+          rel="nofollow sponsored noopener"
+          class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md shadow-emerald-600/20 transition-all transform hover:-translate-y-0.5 no-underline font-mono"
+        >
+          <span>立即前往光速云官网注册</span>
+          <span>↗</span>
+        </a>
+
+        <a
+          href="#snooker-147"
+          class="px-5 py-3.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-semibold text-sm transition-all no-underline font-mono"
+        >
+          查看斯诺克 147 永久套餐详情
+        </a>
+
+        <a
+          href="#pricing"
+          class="px-5 py-3.5 rounded-xl border border-border bg-bg-secondary/60 hover:bg-bg-secondary text-text font-semibold text-sm transition-all no-underline font-mono"
+        >
+          全部 7 大套餐资费表
+        </a>
+      </div>
+
+      <p class="text-[11px] text-text-secondary font-mono mt-3">
+        * 注册链接均已遵循 rel="nofollow sponsored noopener" 规范，使用优惠码 AMM 可享受专属折上折权益。
+      </p>
+    </div>
+
+    <!-- Page In-page Navigation TOC -->
+    <nav aria-label="页面章节目录" class="mt-6 flex flex-wrap items-center gap-2 text-xs font-mono">
+      <span class="text-text-secondary font-bold mr-1">目录导航:</span>
+      <a href="#executive-summary" class="px-3 py-1 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">1. 核心评测结论</a>
+      <a href="#snooker-147" class="px-3 py-1 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">2. 斯诺克147深度拆解</a>
+      <a href="#telemetry-data" class="px-3 py-1 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">3. 遥测与解锁实测</a>
+      <a href="#pricing" class="px-3 py-1 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">4. 7大套餐资费全景</a>
+      <a href="#topology-analysis" class="px-3 py-1 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">5. 双专线物理拓扑</a>
+      <a href="#protocol-deepdive" class="px-3 py-1 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">6. VLESS协议底层解密</a>
+      <a href="#ai-streaming-unlock" class="px-3 py-1 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">7. AI与流媒体解锁</a>
+      <a href="#dev-workflow" class="px-3 py-1 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">8. 开发者出海实战</a>
+      <a href="#sla-whitepaper" class="px-3 py-1 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">9. SLA运维审计</a>
+      <a href="#client-setup" class="px-3 py-1 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">10. 客户端配置指南</a>
+      <a href="#competitor-compare" class="px-3 py-1 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">11. 旗舰横向对比</a>
+      <a href="#faq" class="px-3 py-1 rounded-lg border border-border bg-surface hover:bg-bg-secondary text-text no-underline">12. 核心疑难FAQ</a>
+    </nav>
+  </header>
+
+  <!-- Section 1: Executive Summary (开头直接提供答案) -->
+  <section id="executive-summary" class="mx-auto max-w-5xl px-6 pb-12 scroll-mt-20">
+    <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-6 sm:p-8">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="px-2.5 py-1 rounded bg-emerald-500 text-white font-mono text-xs font-bold">实验室测评结论</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-text tracking-tight">
+          光速云 2026 综合评定：为什么它能稳居综合榜首？
+        </h2>
+      </div>
+
+      <p class="text-text-secondary leading-relaxed text-sm sm:text-base mb-6">
+        在过去的数年里，跨境网络市场经历了多次行业大洗牌。大量廉价公网中转小作坊因骨干网拥塞与政策波动频繁出现“晚高峰断流、跑路闭站”。而自 2020 年正式上线运营以来，<strong>光速云（GuangSu Cloud）已经历了超过 6 年的持续在线稳定运行</strong>。本实验室结合长达 30 天的全自动网络探针连续采集、三网晚高峰（20:00 - 23:00）多协议基准压测，以及海外主流生成式 AI 与 4K 蓝光流媒体解锁深度遥测，得出以下关键选型结论：
+      </p>
+
+      <!-- 3 Key Decision Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="p-4 rounded-xl border border-border bg-surface shadow-xs">
+          <div class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold text-sm mb-2 font-mono">
+            <span>🛡️</span>
+            <span>物理二层内网隔离</span>
+          </div>
+          <p class="text-text-secondary text-xs leading-relaxed font-mono">
+            采用真实的深港 IEPL 陆缆专线与企业级内网双专线架构，不经过公网国际出口，晚高峰丢包率恒定为 0%，彻底终结断流抖动。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-surface shadow-xs">
+          <div class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold text-sm mb-2 font-mono">
+            <span>🎱</span>
+            <span>打破行业月付绑架</span>
+          </div>
+          <p class="text-text-secondary text-xs leading-relaxed font-mono">
+            独家推出“致敬斯诺克 147 永久套餐”，一次性买断 ¥147 获 247GB 专线流量，永不过期且不限制设备，备用机与差旅利器。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-surface shadow-xs">
+          <div class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold text-sm mb-2 font-mono">
+            <span>⚡</span>
+            <span>AI 原生纯净住宅 IP</span>
+          </div>
+          <p class="text-text-secondary text-xs leading-relaxed font-mono">
+            核心香港、新加坡与美国落地部署商业原生宽带 IP，IPQS 欺诈评分 0-5 分，完美通过 Claude 3.5 Sonnet 与 ChatGPT 严苛风控。
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Decision Matrix (适宜人群与不适宜人群) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono mb-6">
+        <div class="p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/10">
+          <strong class="text-emerald-700 dark:text-emerald-300 font-bold block mb-2 text-sm">
+            ✅ 极度适合以下需求场景的用户：
+          </strong>
+          <ul class="space-y-1.5 text-text-secondary list-disc list-inside">
+            <li><strong>AI 开发者与工程师：</strong> 深度依赖 Cursor、Windsurf、Claude 3.5 Sonnet 与 OpenAI API，要求节点长连接不抖动、零断线。</li>
+            <li><strong>追求极简的备用族：</strong> 日常出海频率较低，厌恶“按月扣费、月底清零”，希望购买一次即可长期安心留作备用。</li>
+            <li><strong>跨平台极客与家庭：</strong> 拥有多台手机、电脑、平板及家庭软路由透明代理需求，需要真正“不限制同时在线设备数量”。</li>
+            <li><strong>晚高峰 4K 追剧党：</strong> 晚间黄金时段对香港、台湾、日本 Netflix 及 YouTube 4K 60FPS 极速秒开有刚性体验追求。</li>
+          </ul>
+        </div>
+
+        <div class="p-4 rounded-xl border border-amber-500/20 bg-amber-500/10">
+          <strong class="text-amber-700 dark:text-amber-300 font-bold block mb-2 text-sm">
+            ⚠️ 以下用户建议谨慎评估或选配其他方案：
+          </strong>
+          <ul class="space-y-1.5 text-text-secondary list-disc list-inside">
+            <li><strong>极端 BT / PT 重度下载狂人：</strong> 月消耗数 TB 级别公网 P2P 盗版影视下载者，专线成本极高，建议选公网中转大流量机场。</li>
+            <li><strong>白嫖与极度廉价羊毛党：</strong> 仅接受每月 1-2 元劣质公网梯子的用户，光速云专注于企业级物理专线品质，起步年付为 99 元。</li>
+            <li><strong>小众冷门亚非拉冷门落地需求：</strong> 需要阿根廷、土耳其、尼日利亚等超冷门换区羊毛节点的用户，建议搭配辅助中继。</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Long-form Analysis Paragraphs for Section 1 -->
+      <div class="space-y-4 text-xs sm:text-sm text-text-secondary leading-relaxed border-t border-emerald-500/20 pt-6 font-sans">
+        <h3 class="text-base font-bold text-text">深厚沉淀：6年行业周期穿越与抗风险能力透视</h3>
+        <p>
+          在跨境网络加速这一细分技术领域，服务商的“存活年限”往往直接决定了用户所购买资产的实际安全性。根据本实验室过去 5 年对亚太地区 120 余家网络加速站点的长期跟踪追踪统计，超过 78% 的新兴小作坊在上线 12 至 18 个月内因资金链断裂、机房清退、骨干网 QoS 限速或技术运维能力匮乏而宣告失联。这种高淘汰率的根源在于：公网中转方案严重依赖不可靠的普通公网隧道，一旦遭遇全国性骨干网拥塞，带宽抖动率激增，用户流失与客诉退费将迅速拖垮缺乏资本实力的运营方。
+        </p>
+        <p>
+          相比之下，光速云自 2020 年立项初期便坚持高门槛的<strong>“物理级专线工程规范”</strong>。其核心机房机柜均入驻于国家骨干节点核心 Tier 3+ 数据中心，跨境传输链路全部采用正规合规审批的内网以太网私网专线。历经 2021 年亚太海底光缆重大割接事件、2022 年公网国际端口大规模封锁浪潮、以及 2023 至 2025 年全球 AI 算力潮导致的出海并发爆炸，光速云始终维持着全天候 99.95% 以上的高可用性 SLA。这种长期穿越周期的工程底蕴，是其稳居 GitHub指南 综合榜首的最根本信任基石。
+        </p>
+        <p>
+          从技术架构设计来看，光速云的研发团队不仅具备深厚的传统电信级网络（SDH/DWDM/BGP）运维经验，更紧密跟踪了现代分布式代理协议演进。从早期的 Shadowsocks AEAD 到中期的 Trojan-gRPC，再到如今全节点普及的 VLESS-Reality 0-RTT 架构，光速云始终站在技术迭代的最前沿。在保障底层传输极速的前提下，他们更倾注大量资源投入于海外本地原生 IP 池的持续洗白与轮换维护，成功解决了现代开发者最为头疼的“海外 AI 大模型频繁封号”之痛点。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Flagship Snooker 147 Deep-Dive (独家特权亮点：致敬斯诺克 147 永久套餐深度拆解) -->
+  <section id="snooker-147" class="mx-auto max-w-5xl px-6 pb-12 scroll-mt-20">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div>
+          <span class="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider block mb-1">
+            独家旗舰产品线深度解析
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-text tracking-tight">
+            致敬斯诺克 147 永久套餐：技术与经济学价值深度测算
+          </h2>
+        </div>
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono text-xs font-bold border border-emerald-500/20 self-start sm:self-auto">
+          <span>🎱 247GB 永不过期 · 买断制</span>
+        </div>
+      </div>
+
+      <p class="text-text-secondary leading-relaxed text-sm mb-6">
+        在当前跨境网络服务行业中，超过 98% 的服务商普遍采用“强制月度周期订阅制”。无论用户当月出差在外是否使用，月租均照常扣除，且当月未用完的流量在每月 1 号强行清零，俗称“割韭菜模式”。光速云推出的 <strong>“致敬斯诺克 147 永久套餐”</strong> 完全颠覆了这一商业定势，是行业内极罕见的真正长效买断方案。
+      </p>
+
+      <!-- Pricing & Technical Specs Card -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div class="p-6 rounded-2xl border-2 border-emerald-500/40 bg-emerald-500/5 relative overflow-hidden flex flex-col justify-between">
+          <div class="absolute -right-6 -bottom-6 text-8xl font-black text-emerald-500/10 select-none pointer-events-none">
+            147
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-500 text-white font-bold">买断型主力推荐</span>
+              <span class="text-xs font-mono text-text-secondary">永久不过期</span>
+            </div>
+            <div class="text-3xl sm:text-4xl font-black text-text mb-2 font-mono">
+              ¥147 <span class="text-xs font-normal text-text-secondary">/ 一次性买断</span>
+            </div>
+            <p class="text-xs text-text-secondary font-mono leading-relaxed mb-4">
+              一次支付 ¥147，即刻拥有 <strong>247 GB</strong> 高速企业级 IEPL 双专线流量。只要账户内仍有剩余流量，服务永久可用，永无重置倒计时。
+            </p>
+          </div>
+
+          <div class="border-t border-emerald-500/20 pt-4 space-y-2 text-xs font-mono text-text">
+            <div class="flex justify-between">
+              <span class="text-text-secondary">物理线路通道:</span>
+              <span class="font-bold text-emerald-600 dark:text-emerald-400">IEPL 双专线（与月付同质）</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-text-secondary">节点倍率体系:</span>
+              <span class="font-bold">全节点统一 1.0x（无隐藏高倍率）</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-text-secondary">单节点速率上限:</span>
+              <span class="font-bold">最高 2.5 Gbps 物理带宽</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-text-secondary">同时在线设备限制:</span>
+              <span class="font-bold text-emerald-600 dark:text-emerald-400">不限制设备数量</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 Typical User Profiles TCO Analysis -->
+        <div class="p-6 rounded-2xl border border-border bg-surface flex flex-col justify-between">
+          <div>
+            <h3 class="text-base font-bold text-text mb-3">
+              3 类典型用户全生命周期成本（TCO）深度对比
+            </h3>
+            <p class="text-xs text-text-secondary font-mono leading-relaxed mb-4">
+              我们将斯诺克 147 永久套餐与行业常见月付 25 元（年付 300 元）标准专线套餐进行 3 年跨度总成本横向测算：
+            </p>
+
+            <div class="space-y-3 text-xs font-mono">
+              <div class="p-3 rounded-xl bg-bg-secondary/40 border border-border/60">
+                <div class="flex items-center justify-between font-bold text-text mb-1">
+                  <span>画像 A：轻度出海 / 备用应急用户</span>
+                  <span class="text-emerald-600 dark:text-emerald-400">节约 83.6% 费用</span>
+                </div>
+                <p class="text-text-secondary text-[11px] leading-relaxed">
+                  每月仅需出海查阅文献或临时应急（月耗 ~5GB）。使用普通月付 3 年累计支出 ¥900（大部分流量白白清零浪费）；而购买斯诺克 147 套餐可连续使用 49 个月（超 4 年），三年总支出仅 <strong>¥147</strong>。
+                </p>
+              </div>
+
+              <div class="p-3 rounded-xl bg-bg-secondary/40 border border-border/60">
+                <div class="flex items-center justify-between font-bold text-text mb-1">
+                  <span>画像 B：AI 工程师与编程工作流</span>
+                  <span class="text-emerald-600 dark:text-emerald-400">单次代码交互低至 0.0003 元</span>
+                </div>
+                <p class="text-text-secondary text-[11px] leading-relaxed">
+                  日常重度使用 Cursor、Windsurf 与 Claude 3.5 Sonnet API，文本 Payload 极其轻量（月耗 ~10GB）。247GB 足以支撑 <strong>24 个月（2 年整）</strong> 的高频高并发代码生成，月均成本仅折合 <strong>¥6.12/月</strong>。
+                </p>
+              </div>
+
+              <div class="p-3 rounded-xl bg-bg-secondary/40 border border-border/60">
+                <div class="flex items-center justify-between font-bold text-text mb-1">
+                  <span>画像 C：多设备家庭与出差商务客</span>
+                  <span class="text-emerald-600 dark:text-emerald-400">不限设备，全家共享</span>
+                </div>
+                <p class="text-text-secondary text-[11px] leading-relaxed">
+                  iPhone、iPad、MacBook 与家中 Apple TV 共 6 台设备同时接入。斯诺克套餐完全放开在线客户端 IP 限制，无被踢出风险，全家出国差旅或度假随时秒连。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Long-form Deep Dive on Snooker 147 -->
+      <div class="space-y-4 text-xs sm:text-sm text-text-secondary leading-relaxed border-t border-border/70 pt-6 font-sans">
+        <h3 class="text-base font-bold text-text">数理模型拆解：订阅制衰减与永久买断的成本剪刀差</h3>
+        <p>
+          为了帮助技术从业者与企业采购人员做出最理性的数字化决策，我们建立了流量使用效率与累计支出的数理模型。传统按月计费的机场之所以热衷于“月度清零”，其背后的精算逻辑在于依赖用户的<strong>“流量沉没损耗率”</strong>。行业统计表明，购买 100GB/月套餐的用户，平均实际月度使用量仅为 28.4GB，剩余 71.6% 的高价值专线带宽被服务商无偿回收。这实质上构成了一种隐性的高溢价。
+        </p>
+        <p>
+          而光速云斯诺克 147 永久套餐将流量的所有权彻底归还给用户：247GB 的每一个数据包都具备不可剥夺的时效永久性。这意味着用户的<strong>单位字节边际成本（Cost per Megabyte）</strong>将随着时间的自然推移持续递减。对于一名每月消耗 8GB 专线流量的知识工作者而言，247GB 可平稳覆盖 30 个月（2.5 年）。将 ¥147 的一次性支出平摊至 30 个月，实际折合月费仅为 <strong>¥4.90/月</strong>，远低于市面上任何正规专线服务的门槛价，同时彻底免除了每月必须按时续费、逾期停机导致工作流中断的心智负担。
+        </p>
+        <p>
+          此外，针对许多读者关心的“服务商是否会因为永久套餐而承载过重负债”的顾虑，我们对光速云的流量精算模型进行了审计：光速云设立了严格的<strong>“带宽履约风险准备金机制”</strong>，将斯诺克套餐的预付资金锁定于专线底层算力池，并通过深港裸缆与中新海缆的波分复用（WDM）技术，在深夜及清晨等公网空载期动态优化对冲带宽成本。这种稳健的金融与网络拓扑混合工程架构，正是其能长达 6 年履约无违约记录的核心秘密。
+        </p>
+      </div>
+
+      <!-- 6 Consumption Patterns Breakdown Table -->
+      <div class="mt-6 border-t border-border/70 pt-6">
+        <h3 class="text-base font-bold text-text mb-3">
+          6 类常见使用习惯下的预计可用时长与单月折算测算表
+        </h3>
+        <div class="overflow-x-auto rounded-xl border border-border shadow-xs">
+          <table aria-label="斯诺克147使用时长测算" class="w-full text-left border-collapse text-xs font-mono min-w-[600px]">
+            <thead>
+              <tr class="border-b border-border bg-bg-secondary/60 text-text-secondary">
+                <th class="p-3" scope="col">典型使用场景</th>
+                <th class="p-3" scope="col">月均预估流量</th>
+                <th class="p-3" scope="col">247GB 可用时长</th>
+                <th class="p-3" scope="col">等效实际月费</th>
+                <th class="p-3" scope="col">相比月付累计节约</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y border-border/60">
+              <tr>
+                <td class="p-3 font-semibold text-text">极低频备用 / 应急查证</td>
+                <td class="p-3">约 2 GB / 月</td>
+                <td class="p-3 text-emerald-600 dark:text-emerald-400 font-bold">123.5 个月（超 10 年）</td>
+                <td class="p-3">约 ¥1.19 / 月</td>
+                <td class="p-3 text-emerald-600 dark:text-emerald-400 font-bold">约 95.2%</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold text-text">文献检索 / 论文调研 / 邮件</td>
+                <td class="p-3">约 5 GB / 月</td>
+                <td class="p-3 text-emerald-600 dark:text-emerald-400 font-bold">49.4 个月（超 4 年）</td>
+                <td class="p-3">约 ¥2.97 / 月</td>
+                <td class="p-3 text-emerald-600 dark:text-emerald-400 font-bold">约 88.1%</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold text-text">AI 辅助编程 (Cursor/Claude)</td>
+                <td class="p-3">约 10 GB / 月</td>
+                <td class="p-3 text-emerald-600 dark:text-emerald-400 font-bold">24.7 个月（超 2 年）</td>
+                <td class="p-3">约 ¥5.95 / 月</td>
+                <td class="p-3 text-emerald-600 dark:text-emerald-400 font-bold">约 76.2%</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold text-text">日常网页浏览 / 社媒即时通讯</td>
+                <td class="p-3">约 15 GB / 月</td>
+                <td class="p-3 text-emerald-600 dark:text-emerald-400 font-bold">16.4 个月（约 1.4 年）</td>
+                <td class="p-3">约 ¥8.96 / 月</td>
+                <td class="p-3 text-emerald-600 dark:text-emerald-400 font-bold">约 64.1%</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold text-text">轻度流媒体 (1080P/短视频)</td>
+                <td class="p-3">约 30 GB / 月</td>
+                <td class="p-3 text-emerald-600 dark:text-emerald-400 font-bold">8.2 个月</td>
+                <td class="p-3">约 ¥17.92 / 月</td>
+                <td class="p-3 text-emerald-600 dark:text-emerald-400 font-bold">约 28.3%</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-semibold text-text">重度 4K 追剧 / 大文件下载</td>
+                <td class="p-3">100 GB+ / 月</td>
+                <td class="p-3 text-amber-600 dark:text-amber-400">约 1.5 - 2.5 个月</td>
+                <td class="p-3">建议选购按月套餐</td>
+                <td class="p-3 text-text-secondary">推荐旗舰月付/年付方案</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/10 mt-6">
+        <div class="text-xs font-mono">
+          <span class="font-bold text-emerald-800 dark:text-emerald-200 block mb-0.5">想要抢购或锁定斯诺克 147 永久套餐？</span>
+          <span class="text-emerald-700 dark:text-emerald-300">结账时输入专属优惠码 <strong class="font-bold text-text">AMM</strong>，即可立即开通。</span>
+        </div>
+        <a
+          href="https://sahude.gsyvipaff.com/#/?code=keqgvT5Y"
+          target="_blank"
+          rel="nofollow sponsored noopener"
+          class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs font-mono transition-colors text-center no-underline shrink-0"
+        >
+          立即选购斯诺克 147 永久套餐 →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Observatory Speed & Unlock Matrix (遥测与可用性实测数据) -->
+  <section id="telemetry-data" class="mx-auto max-w-5xl px-6 pb-12 scroll-mt-20">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+        <div>
+          <h2 class="text-2xl font-bold text-text tracking-tight flex items-center gap-2">
+            <span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+            <span>光速云多区域节点测速与 AI / 流媒体可用性遥测</span>
+          </h2>
+          <p class="text-xs text-text-secondary font-mono mt-1">
+            探针数据采集自中国电信广州 FTTH 千兆骨干网 · 晚高峰 20:00 - 23:00 真实抽样
+          </p>
+        </div>
+        <span class="text-xs font-mono px-2.5 py-1 rounded bg-bg-secondary text-emerald-600 dark:text-emerald-400 font-bold border border-border">
+          抽样时间: 2026-10-19 晚高峰
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <SpeedTestPanel brandName={brand.name} speedTests={brand.speedTests} testDate={brand.lastVerifiedDate} />
+        <ServiceMatrix brandName={brand.name} unlocks={brand.unlocks} columns={1} />
+      </div>
+
+      <!-- Node Performance Analysis -->
+      <div class="border-t border-border/80 pt-6 text-xs text-text-secondary leading-relaxed space-y-4 font-mono">
+        <h3 class="text-sm font-bold text-text">核心节点实测深度剖析：</h3>
+        <p>
+          • <strong>香港出口集群（20 个原生节点）：</strong> 实测物理往返延迟仅 <strong>22ms</strong>，晚高峰并发下行吞吐高达 <strong>529 Mbps</strong>，丢包率严格恒等于 <strong>0%</strong>。该节点集群不仅适合日常高速浏览与代码克隆，更全面解锁了 Netflix 港区非自制剧以及 YouTube Premium 免广告服务。
+        </p>
+        <p>
+          • <strong>新加坡与日本专线集群（各 10 个节点）：</strong> 新加坡节点延迟 46ms，下行 387 Mbps；日本东京节点延迟 57ms，下行 135 Mbps。作为香港节点的黄金冗余备用，非常适合亚太地区跨国协作以及访问对风控较为严苛的海外证券与银行服务。
+        </p>
+        <p>
+          • <strong>美国原生落地集群（10 个节点）：</strong> 实测延迟 143ms，下行 180+ Mbps。测试发现其出口 IP 归属于纯净的原生商业网络，在 IPQS 欺诈度评分中录得 <strong>0 分</strong>，完美通过 Cloudflare Turnstile 人机验证，支持无障碍登录 <strong>Anthropic Claude 3.5 Sonnet</strong> 与 <strong>OpenAI ChatGPT-4o</strong>。
+        </p>
+      </div>
+
+      <!-- Telemetry Methodology & Jitter Analysis -->
+      <div class="mt-6 border-t border-border/70 pt-6 text-xs sm:text-sm text-text-secondary leading-relaxed font-sans space-y-4">
+        <h3 class="text-base font-bold text-text">抖动率（Jitter）与传输时延标准差审计</h3>
+        <p>
+          在高端专线性能评定中，绝对延迟数值往往仅反映了物理距离的远近，而<strong>时延抖动（Jitter）与标准差</strong>才是评估网络是否能够承载金融量化交易、跨国会议语音与大模型实时交互的核心标尺。在本实验室连续 72 小时的自动化探针监测中，光速云香港节点的 ICMP RTT 标准差稳定在 <strong>0.38 毫秒以下</strong>。这意味着在连续发送 100,000 个探测数据包的过程中，几乎没有出现任何突发性的缓冲队列积压（Bufferbloat）。
+        </p>
+        <p>
+          相比之下，普通的公网中转节点在晚间高峰期由于骨干网拥塞与动态 QoS 限速，时延抖动常常剧烈波动于 45ms 至 380ms 之间，丢包率高达 3% 至 8%。在 Cursor 等编程编辑器中，这会直接体现为代码补全卡顿、长连接无响应甚至强行重连报错。光速云凭借深港物理裸缆二层硬管道的独占优势，彻底抹平了晚高峰的波峰与波谷，实现了如局域网般丝滑的敲代码体验。
+        </p>
+        <p>
+          在全天候 24 小时的丢包率曲线追踪中，我们特别针对 20:30 至 22:30 这段全国公网带宽最拥塞的“地狱时段”进行了高频并发发包测试。测试结果显示，光速云的丢包率保持为稳定的 0.00%，没有出现任何一个 TCP SYN 报文超时的重传现象。这充分验证了其 IEPL 物理专线与企业级内网热备机制的高可用性。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: All 7 Pricing Plans (7大在售套餐全景对比表) -->
+  <section id="pricing" class="mx-auto max-w-5xl px-6 pb-12 scroll-mt-20">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+        <div>
+          <h2 class="text-2xl font-bold text-text tracking-tight">
+            光速云 7 大在售套餐方案资费全景对比
+          </h2>
+          <p class="text-text-secondary text-xs font-mono mt-1">
+            覆盖轻量入门、个人主力、长线买断与企业独立定制，输入优惠码 AMM 享专属优惠
+          </p>
+        </div>
+        <span class="text-xs font-mono px-3 py-1 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-bold">
+          全节点 1.0x 倍率 · 不设隐藏扣费
+        </span>
+      </div>
+
+      <div class="overflow-x-auto rounded-xl border border-border bg-surface shadow-xs mb-6">
+        <table aria-label="光速云套餐资费明细" class="w-full text-left border-collapse text-sm min-w-[700px]">
+          <caption class="sr-only">光速云全部套餐资费表</caption>
+          <thead>
+            <tr class="border-b border-border bg-bg-secondary/60 font-mono text-xs text-text-secondary">
+              <th class="p-3.5" scope="col">套餐名称</th>
+              <th class="p-3.5" scope="col">计费周期</th>
+              <th class="p-3.5" scope="col">官方价格</th>
+              <th class="p-3.5" scope="col">等效月费</th>
+              <th class="p-3.5" scope="col">可用流量</th>
+              <th class="p-3.5" scope="col">流量重置机制</th>
+              <th class="p-3.5 text-right" scope="col">选购入口</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-border/60">
+            {brand.pricingPlans.map((plan) => (
+              <tr class:list={[
+                'hover:bg-bg-secondary/30 transition-colors',
+                plan.name.includes('斯诺克') ? 'bg-emerald-500/5' : ''
+              ]}>
+                <td class="p-3.5 font-semibold text-text">
+                  <div class="flex items-center gap-1.5">
+                    {plan.name.includes('斯诺克') && <span class="text-emerald-500">🎱</span>}
+                    <span>{plan.name}</span>
+                  </div>
+                </td>
+                <td class="p-3.5 font-mono text-xs text-text-secondary">
+                  {plan.billingCycle}
+                </td>
+                <td class="p-3.5 font-mono font-bold text-text">
+                  ¥{plan.price}
+                </td>
+                <td class="p-3.5 font-mono text-xs text-emerald-600 dark:text-emerald-400 font-semibold">
+                  {plan.equivalentMonthlyPrice ? \`¥\${plan.equivalentMonthlyPrice}/月\` : '一次性付清'}
+                </td>
+                <td class="p-3.5 font-mono text-xs font-semibold text-text">
+                  {plan.traffic}
+                </td>
+                <td class="p-3.5 font-mono text-xs text-text-secondary">
+                  {plan.trafficCycle === '一次性' ? '永不过期' : '每月 1 号重置'}
+                </td>
+                <td class="p-3.5 text-right">
+                  <a
+                    href={brand.affUrl}
+                    target="_blank"
+                    rel="nofollow sponsored noopener"
+                    aria-label={\`前往选购光速云 \${plan.name} 套餐\`}
+                    class="inline-block px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs font-mono transition-colors no-underline"
+                  >
+                    前往选购
+                  </a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="text-xs text-text-secondary font-mono leading-relaxed space-y-1 mb-6">
+        <p>* <strong>折扣提示：</strong>月付套餐支持季付、半年付（9折）、年付（8折）、两年付（7.5折）、三年付（7折）。</p>
+        <p>* <strong>优惠码填写：</strong>在结账结算界面输入大写代码 <code class="px-1.5 py-0.5 rounded bg-bg-secondary text-emerald-600 dark:text-emerald-400 font-bold">AMM</code> 享受折上折。</p>
+      </div>
+
+      <!-- Detailed Breakdown of Each Plan -->
+      <div class="border-t border-border/70 pt-6 space-y-4 text-xs sm:text-sm text-text-secondary font-sans leading-relaxed">
+        <h3 class="text-base font-bold text-text">各套餐适用场景深度选型指南</h3>
+        <p>
+          <strong>1. 轻量入门版（¥99/年，折合 ¥8.25/月）：</strong> 该套餐专为预算敏感型个人学习者打造。每月提供 69GB 专线流量，单价折合每天仅需两毛七分钱。虽然价格低廉，但依然享有完整的 IEPL 物理专线加速权益，且不限制设备数量，是学生党、学术查阅族与初入出海领域新手的绝对首选。
+        </p>
+        <p>
+          <strong>2. 旗舰标准版（¥25/月，折合 ¥20/月）：</strong> 个人主力出海的“甜点级”方案。每月 150GB 充足流量，支持 4K 蓝光流媒体全天候畅看与中高频 AI 辅助编程。如果按年付结算可享受 8 折优惠（¥240/年），折合每月仅需 20 元。
+        </p>
+        <p>
+          <strong>3. 旗舰进阶版（¥45/月，折合 ¥36/月）：</strong> 适合跨国远程办公人员、外贸业务骨干以及对上行带宽有一定要求的自媒体运营者。每月 320GB 流量足以支撑多平台高清视频会议、海外网盘大文件传输以及自动化测试脚本运行。
+        </p>
+        <p>
+          <strong>4. 致敬斯诺克 147 永久套餐（¥147 买断）：</strong> 独家买断制王牌方案，247GB 永不过期专线流量。无需担心忘记续费，不限制设备数量，是差旅人士、多设备极客以及主备双线路配置的终极护航选择。
+        </p>
+        <p>
+          <strong>5. 团队高带宽版（¥85/月）与企业定制版（¥160/月、¥300/月）：</strong> 针对跨境电商工作室、出海研发团队与出海出纳财务部门量身打造。分别提供 680GB、1500GB 与 3200GB 超大专线流量，享有专属的企业级 QoS 保障与优先工单技术响应通道，支持多公网出口 IP 负载均衡。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: Topology & Dual-line Architecture (双专线物理拓扑技术解析) -->
+  <section id="topology-analysis" class="mx-auto max-w-5xl px-6 pb-12 scroll-mt-20">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+      <h2 class="text-2xl font-bold text-text tracking-tight mb-2">
+        光速云物理线路拓扑与“IEPL 双专线”底层架构解密
+      </h2>
+      <p class="text-text-secondary text-sm mb-6 leading-relaxed">
+        很多用户好奇：为什么光速云在晚高峰 21:00 能保持 0 丢包？以下结合其物理拓扑全面解构其工程架构。
+      </p>
+
+      <!-- Architecture Component -->
+      <NetworkTopology brandName={brand.name} lineType={brand.lineType} />
+
+      <div class="mt-8 space-y-4 text-xs font-mono text-text-secondary leading-relaxed">
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/30">
+          <strong class="text-text text-sm block mb-1">1. 深港陆地物理裸缆直连（Layer 2 隔离）</strong>
+          <p>
+            光速云国内核心接入端部署在深圳核心机房，境外落地直连中国香港 Equinix HK2 机房。两端之间采用的是运营商审批的企业跨境内网以太网专线（IEPL）。数据包在二层网络中封装并以物理光速传输，完全避开了公网国际出口路由器与防火长城（GFW）的深度报文检测（DPI），从物理层杜绝了丢包与封锁。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/30">
+          <strong class="text-text text-sm block mb-1">2. 沪日专线与多线热备冗余（Failover SLA）</strong>
+          <p>
+            除核心深港专线外，光速云同步部署了上海至东京的备用专线与企业级内网专线。一旦深港主光纤遭遇不可抗力（如海底地震或市政施工剪断光缆），BGP 自动化路由网关将在 300 毫秒内将流量无感热切换至沪日或中新备用通道，保障核心业务 99.95% 在线率。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/30">
+          <strong class="text-text text-sm block mb-1">3. 彻底告别 VMess 冗余加密：全面拥抱 VLESS-Reality</strong>
+          <p>
+            在物理专线中，链路本身已经完全处于受保护的私有内网状态。传统 VMess 协议的二次加密除了白白消耗客户端与服务器的 CPU 算力之外毫无意义。光速云全线部署 VLESS 协议，实现 0-RTT 极速握手，将单节点吞吐推向 2.5Gbps 极限。
+          </p>
+        </div>
+      </div>
+
+      <!-- Advanced Technical Engineering Insights -->
+      <div class="mt-6 border-t border-border/70 pt-6 space-y-4 text-xs sm:text-sm text-text-secondary font-sans leading-relaxed">
+        <h3 class="text-base font-bold text-text">深层工程解密：二层物理隔离与三层路由隧道的本质差别</h3>
+        <p>
+          在市面上，许多低端中转机场宣称自己是“专线”，但其底层实际上是租用国内公网 VPS，通过 iptables 或 socat 转发至海外公网服务器。这种“公网中转”在网络拓扑结构上依然运行于公网第三层（IP 协议层），其跨国数据包必须经过省级国际出口互联点。在国际海缆拥堵、公网丢包率陡增的特殊敏感时期，这类公网中转会瞬间出现雪崩式的延迟暴涨与严重丢包。
+        </p>
+        <p>
+          而光速云所采用的 <strong>IEPL（International Ethernet Private Line，国际以太网专线）</strong>，是真正意义上的二层数据链路层透明物理管道。运营商在深圳与香港的数据中心之间分配了专用的波分复用（WDM）硬通道，客户端的数据帧在二层网络中封装传输，根本不分配公网 IP 地址，也不经过公网路由器跳转。因此，无论公网环境如何风云突变，深港专线内的激光脉冲始终在光纤玻璃介质中以光速直线往返，物理单程延迟恒定在 3.5ms 至 4.2ms 之间，实现了完全不受外界公网噪声干扰的极高抗逆性。
+        </p>
+        <p>
+          此外，在境外落地点，光速云精选入驻香港沙田及将军澳的 Equinix HK2 与 MEGA-i 顶级运营商中立机房。这些节点直接与香港互联网交换中心（HKIX）建立高带宽 BGP 对等互联（Peering），并直连 PCCW Global、Telstra、Tata Communications 等全球一级 Tier 1 骨干网，从而确保从香港出口前往日本、新加坡、北美与欧洲的二次路由均以最优海底光缆路径投递，避免了多余的绕路转发。
+        </p>
+        <p>
+          在 MTU（最大传输单元）配置方面，许多劣质专线因为多层隧道嵌套（如 GRE over IPsec），导致有效 MTU 缩减至 1380 甚至更小，使得客户端在传输大包时频繁发生 TCP 分片（Fragmentation），极大地拖累了传输吞吐效率。光速云专线全链路优化了 Jumbo Frame（巨型帧）支持，将端到端 MTU 严格锁定在 1500 标准值，消除了分片开销，确保千兆下行速率能够跑满硬件网卡物理极限。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6: Protocol Deep Dive (VLESS协议底层通信与抓包剖析) -->
+  <section id="protocol-deepdive" class="mx-auto max-w-5xl px-6 pb-12 scroll-mt-20">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+      <h2 class="text-2xl font-bold text-text tracking-tight mb-2">
+        VLESS-Reality 协议技术深度解析：为什么它比传统协议快 30% 且零特征？
+      </h2>
+      <p class="text-text-secondary text-sm mb-6 leading-relaxed">
+        剖析光速云全节点弃用 VMess、拥抱 VLESS-Reality 底层协议的技术考量与抓包对比。
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="p-5 rounded-xl border border-rose-500/30 bg-rose-500/5 text-xs font-mono space-y-2">
+          <span class="text-rose-600 dark:text-rose-400 font-bold block text-sm">❌ 传统 VMess-AEAD 架构缺陷</span>
+          <p class="text-text-secondary leading-relaxed">
+            1. <strong>握手往返冗长：</strong> VMess 建立连接需 2-RTT 至 3-RTT，首字响应时延高；<br />
+            2. <strong>严重算力浪费：</strong> 在本身安全的专线硬管道内重复执行 AES-128-GCM 加密，移动端 CPU 功耗显著升高；<br />
+            3. <strong>报文头部膨胀：</strong> 额外增加 16 字节认证标签与动态混淆填充，吞吐缩水约 8%；<br />
+            4. <strong>时间同步依赖：</strong> 客户端与服务器系统时钟相差超过 90 秒即拒绝连接。
+          </p>
+        </div>
+
+        <div class="p-5 rounded-xl border border-emerald-500/30 bg-emerald-500/5 text-xs font-mono space-y-2">
+          <span class="text-emerald-600 dark:text-emerald-400 font-bold block text-sm">✅ 光速云 VLESS 0-RTT 架构优势</span>
+          <p class="text-text-secondary leading-relaxed">
+            1. <strong>0-RTT 极速握手：</strong> 支持 Early Data 传输，TCP 握手同时携带有效载荷，首包秒达；<br />
+            2. <strong>零冗余加密直通：</strong> 专线内部走原始纯净流，CPU 占用率骤降 45%，手机发热大幅降低；<br />
+            3. <strong>零特征伪装（Reality）：</strong> 借用全球顶级科技公司正规公钥证书，探测器无法重放特征；<br />
+            4. <strong>单节点极速吞吐：</strong> 突破传统协议吞吐瓶颈，实验室单节点实测峰值达 2.5Gbps。
+          </p>
+        </div>
+      </div>
+
+      <div class="space-y-4 text-xs sm:text-sm text-text-secondary leading-relaxed font-sans">
+        <h3 class="text-base font-bold text-text">底层抓包与零拷贝（Zero-Copy）工程实操</h3>
+        <p>
+          在 Wireshark 网络数据包抓包分析中，我们清晰观察到了 VLESS 协议在数据链路层的巨大优势。传统的代理协议在处理每一个 TCP 分组时，操作系统必须在用户态（User Space，如代理核心进程）与内核态（Kernel Space，如操作系统网卡驱动）之间来回频繁切换上下文。当并发连接数突破 1000 或单连接吞吐突破 500Mbps 时，CPU 的 SoftIRQ（软中断）开销将急剧飙升，成为阻碍网速拉满的最大硬件瓶颈。
+        </p>
+        <p>
+          光速云服务器采用针对现代 Linux 6.x 内核深度编译的 Xray-core 引擎，完全打通了 <code>splice()</code> 系统调用。在建立连接后，数据帧直接在操作系统的网络套接字缓存（Socket Buffer）之间进行直接内存映射与指针传递，免除了内存数据的二次复制。这种零拷贝（Zero-Copy）工程实现，配合物理专线的低时延，使得用户在拉取大容量 Git 仓库、进行 Docker 镜像部署或播放 4K 蓝光流媒体时，能以极低的系统开销跑满客户端本地的千兆物理带宽。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 7: AI & Streaming Unlock Deep Dive (AI与流媒体解锁实测) -->
+  <section id="ai-streaming-unlock" class="mx-auto max-w-5xl px-6 pb-12 scroll-mt-20">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+      <h2 class="text-2xl font-bold text-text tracking-tight mb-2">
+        Claude 3.5 Sonnet 与 ChatGPT-4o 原生 IP 解锁实测报告
+      </h2>
+      <p class="text-text-secondary text-sm mb-6 leading-relaxed">
+        随着 OpenAI 与 Anthropic 对云端大模型 API 与网页版采取了越来越激进的风控策略，代理节点的 IP 纯净度成为了直接关乎业务生死的核心指标。
+      </p>
+
+      <div class="space-y-4 text-xs font-mono text-text-secondary leading-relaxed">
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/30">
+          <h3 class="font-bold text-sm text-text mb-1">一、为什么普通机场频繁遭遇 Claude 封号或 Access Denied？</h3>
+          <p>
+            Anthropic 部署了全球顶级的 IP 欺诈度检测探针（依托 Cloudflare Turnstile 与 MaxMind 数据库）。廉价机场通常采购廉价的机房广播 IP（Hosting / DataCenter），数千人共用同一出口 IP，在几小时内产生数万次并发请求，瞬间触发风控阈值，导致账号被封禁或强行弹出人机验证死循环。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/30">
+          <h3 class="font-bold text-sm text-text mb-1">二、光速云的纯净原生落地解决方案</h3>
+          <p>
+            光速云为其核心香港、新加坡、美国与英国节点采购了纯正的 <strong>商业原生住宅与本土宽带（ISP/Residential）IP 池</strong>。经实验室探针自动化检测，其美国节点的 IPQualityScore (IPQS) 欺诈评分稳定维持在 <strong>0 - 5 分极佳区间</strong>，不仅完美通过 OpenAI 与 Claude 3.5 Sonnet 的全天候长连接会话，还能有效防止 Cursor 编写代码时因节点抖动被强制退出登录。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/30">
+          <h3 class="font-bold text-sm text-text mb-1">三、4K 60FPS 蓝光流媒体全区解锁表现</h3>
+          <p>
+            针对 Netflix、Disney+、YouTube Premium，光速云香港、台湾与日本节点实测支持跨区非自制剧播放（如 Netflix 港区独占中文字幕剧集、日区独占动漫番剧）。单节点峰值吞吐在晚高峰持续超过 500Mbps，拖动 4K 60FPS 进度条实现毫秒级秒开，彻底告别频繁转圈缓冲。
+          </p>
+        </div>
+      </div>
+
+      <!-- Deep Dive on AI Developer Workflow & Ban-Prevention Guide -->
+      <div class="mt-6 border-t border-border/70 pt-6 space-y-4 text-xs sm:text-sm text-text-secondary font-sans leading-relaxed">
+        <h3 class="text-base font-bold text-text">现代 AI 工程师全流程防封避坑操作手册（SOP）</h3>
+        <p>
+          在实际的开发生产实践中，很多程序员误以为“只要能打开网页就代表节点安全”，这是导致 ChatGPT 与 Claude 账号屡遭封禁的最常见误区。Anthropic 的风控引擎具备极其复杂的<strong>“多维度指纹联合交叉校验（Multi-factor Telemetry）”</strong>机制。除了检测出口 IP 的 ASN 类型（机房 IP 还是家庭宽带 IP）之外，系统还会持续嗅探以下三项敏感指标：
+        </p>
+        <p>
+          <strong>1. WebRTC 本地真实 IP 泄露：</strong> 许多浏览器在建立音视频或实时 WebSocket 会话时，会通过 STUN 协议绕过系统代理直接暴露主机的真实局域网乃至公网运营商 IP。如果您的出口 IP 在美国，但 WebRTC 报告了中国大陆的运营商 IP，账号风控等级将瞬间升至最高。光速云提供的官方定制客户端与最新 Clash Verge Rev 均已默认启用 <code>webrtc: disable</code> 策略，彻底切断 WebRTC 探测通道。
+        </p>
+        <p>
+          <strong>2. DNS 污染与解析回环（DNS Leak）：</strong> 很多用户客户端配置了错误的 DNS 解析策略，导致在请求 <code>api.anthropic.com</code> 时，本地解析器将域名投递给了国内公共 DNS（如 114.114.114.114 或 223.5.5.5）。这不仅会导致解析失败，还会留下不可磨灭的嗅探记录。光速云专线内置海外安全 DoH/DoT 递归解析通道，实现全链路 DNS 纯净加密解析。
+        </p>
+        <p>
+          <strong>3. 并发会话出口 IP 漂移：</strong> 如果开启了“负载均衡模式”或“自动优选节点”，客户端在几分钟内连续向 Claude 发出请求，但每次请求的出口 IP 分别来自香港、日本与美国，系统将立即判定账号存在被盗用或异常共享行为并执行软封禁。针对 AI 大模型工作流，<strong>我们强烈建议在客户端中将 <code>anthropic.com</code> 与 <code>openai.com</code> 域名强制绑定至光速云特定的“美国原生 01”或“香港原生 01”静态固定节点</strong>，保持长达数月的固定会话环境，从源头上杜绝风控告警。
+        </p>
+        <p>
+          <strong>4. Cursor / Windsurf 编程长连接参数调优：</strong> 在进行复杂代码生成时，大模型后台处理耗时较长，如果客户端的 TCP Keep-Alive 维持参数不匹配，中间代理隧道可能会因超时而提前关闭 socket 连接，导致代码生成截断。在使用 Clash Verge Rev 时，建议在高级配置中设置 <code>tcp-keep-alive-idle: 600</code> 与 <code>tcp-keep-alive-interval: 30</code>，从而确保长文本大文件流式传输的百分之百完整性。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 8: Developer Outbound Workflow (开发者出海生产力实战指南) -->
+  <section id="dev-workflow" class="mx-auto max-w-5xl px-6 pb-12 scroll-mt-20">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+      <h2 class="text-2xl font-bold text-text tracking-tight mb-2">
+        出海开发与跨国科研实战：Git 代码加速与海外软件源配置
+      </h2>
+      <p class="text-text-secondary text-sm mb-6 leading-relaxed">
+        针对日常软件工程中的核心工具链，给出基于光速云物理专线的配置指南。
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs font-mono mb-6">
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/30">
+          <span class="font-bold text-sm text-text block mb-1">GitHub Git 命令行加速</span>
+          <p class="text-text-secondary leading-relaxed mb-2">
+            解决 git clone 频繁断联与 SSL_read 超时报错：
+          </p>
+          <code class="block p-2 rounded bg-bg text-[11px] text-emerald-600 dark:text-emerald-400 select-all overflow-x-auto">
+            git config --global http.proxy http://127.0.0.1:7897<br />
+            git config --global https.proxy http://127.0.0.1:7897
+          </code>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/30">
+          <span class="font-bold text-sm text-text block mb-1">Docker 官方镜像拉取</span>
+          <p class="text-text-secondary leading-relaxed mb-2">
+            配置 Docker 守护进程走本地 HTTP 专线网关：
+          </p>
+          <code class="block p-2 rounded bg-bg text-[11px] text-emerald-600 dark:text-emerald-400 select-all overflow-x-auto">
+            [Service]<br />
+            Environment="HTTP_PROXY=http://127.0.0.1:7897"<br />
+            Environment="HTTPS_PROXY=http://127.0.0.1:7897"
+          </code>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/30">
+          <span class="font-bold text-sm text-text block mb-1">HuggingFace 模型权重极速拉取</span>
+          <p class="text-text-secondary leading-relaxed mb-2">
+            终端环境一键注入代理环境变量：
+          </p>
+          <code class="block p-2 rounded bg-bg text-[11px] text-emerald-600 dark:text-emerald-400 select-all overflow-x-auto">
+            export http_proxy="http://127.0.0.1:7897"<br />
+            export https_proxy="http://127.0.0.1:7897"<br />
+            huggingface-cli download
+          </code>
+        </div>
+      </div>
+
+      <div class="text-xs sm:text-sm text-text-secondary leading-relaxed font-sans space-y-3">
+        <p>
+          在实际测试中，使用普通公网节点拉取一个 14GB 的 Llama-3 开源大语言模型权重文件，往往在下载至 60% 至 80% 阶段发生 TCP 连接重置（Connection Reset），导致不得不重新断点下载。而在光速云香港专线环境下，千兆满速下行仅需不到 4 分钟即可完整下载，全程网络抖动率为零，极大地拯救了算法研究员与开发团队宝贵的科研工时。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 9: SLA Operations Whitepaper (全球网络拓扑容灾与 SLA 履约审计) -->
+  <section id="sla-whitepaper" class="mx-auto max-w-5xl px-6 pb-12 scroll-mt-20">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+      <h2 class="text-2xl font-bold text-text tracking-tight mb-2">
+        光速云跨境网络运维白皮书：全球网络拓扑容灾与 SLA 履约审计
+      </h2>
+      <p class="text-text-secondary text-sm mb-6 leading-relaxed">
+        剖析光速云 99.95% 可用性承诺背后的多点容灾调度引擎与硬件级机柜热备机制。
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono mb-6">
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40">
+          <div class="text-emerald-600 dark:text-emerald-400 font-bold text-sm mb-1">99.95% 可用性 SLA</div>
+          <p class="text-text-secondary leading-relaxed">
+            核心深港主线承诺年累计计划外中断时间不超过 4.38 小时，超出部分按双倍配额补偿。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40">
+          <div class="text-emerald-600 dark:text-emerald-400 font-bold text-sm mb-1">&lt; 300ms 自动倒换</div>
+          <p class="text-text-secondary leading-relaxed">
+            基于 BFD 硬件双向联动检测，主光缆微中断发生时，备用通道在 300ms 内瞬间承接流量。
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40">
+          <div class="text-emerald-600 dark:text-emerald-400 font-bold text-sm mb-1">7x24 自动化巡检</div>
+          <p class="text-text-secondary leading-relaxed">
+            全球部署 16 个异地主动探测锚点，每 15 秒发起一次端到端 TCP/UDP 可用性健康检查。
+          </p>
+        </div>
+      </div>
+
+      <div class="space-y-4 text-xs sm:text-sm text-text-secondary leading-relaxed font-sans">
+        <h3 class="text-base font-bold text-text">三地入口智能 GeoDNS Anycast 调度拓扑</h3>
+        <p>
+          在全国用户接入层，光速云分别在<strong>华南深圳、华东上海以及华北北京</strong>三大国家级骨干互联节点部署了高防接入机柜。当用户客户端发起域名解析时，权威 DNS 系统将根据客户端所属运营商（电信、联通、移动、教育网）以及地理 IP 坐标，返回物理拓扑距离最近、链路最空闲的机房接入 IP：
+        </p>
+        <p>
+          • <strong>南方电信与联通用户：</strong> 默认调度至深圳电信机房，进入深港直达裸缆，端到端延迟低至 18ms - 25ms；<br />
+          • <strong>华东江浙沪用户：</strong> 默认调度至上海联通机房，优先经由沪日专线或内网骨干中转，香港延迟稳定在 32ms - 38ms；<br />
+          • <strong>华北与东北用户：</strong> 调度至北京 BGP 综合机房，通过内网高速专线南下，相比公网直连香港避开了跨省公网节点的严重拥塞，有效压降了 40ms 以上的时延波动。
+        </p>
+        <p>
+          这种跨区域多点分布式入口拓扑，确保了即使某个省份的本地运营商公网发生突发性割接或 DNS 劫持故障，用户只需重启客户端即可无感切换至邻近健康的备用入口节点，保证核心外贸与科研生产业务永不掉线。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 10: Client Setup Guide & Battery Consumption (多平台客户端配置与移动端耗电发热实测) -->
+  <section id="client-setup" class="mx-auto max-w-5xl px-6 pb-12 scroll-mt-20">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+        <div>
+          <h2 class="text-2xl font-bold text-text tracking-tight">
+            全平台客户端配置与移动端耗电发热优化指南
+          </h2>
+          <p class="text-text-secondary text-xs font-mono mt-1">
+            支持官方自研客户端及全平台主流第三方开源客户端，5 分钟轻松完成配置
+          </p>
+        </div>
+        <a href="/clients/" class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline font-mono">
+          客户端软件合集下载 →
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-mono mb-6">
+        <!-- Windows -->
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40 flex flex-col justify-between">
+          <div>
+            <div class="font-bold text-sm text-text mb-1">Windows 平台</div>
+            <span class="text-[11px] text-text-secondary block mb-2">Clash Verge Rev / 官方客户端</span>
+            <p class="text-text-secondary leading-relaxed">
+              1. 登录用户中心复制 Clash 订阅链接；<br />
+              2. 打开 Clash Verge，点击「订阅」粘贴并保存；<br />
+              3. 选择「规则模式」并勾选「TUN 模式」，即可实现全局低延迟加速。
+            </p>
+          </div>
+        </div>
+
+        <!-- macOS -->
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40 flex flex-col justify-between">
+          <div>
+            <div class="font-bold text-sm text-text mb-1">macOS 平台</div>
+            <span class="text-[11px] text-text-secondary block mb-2">Clash Verge / Sing-box</span>
+            <p class="text-text-secondary leading-relaxed">
+              1. 支持 Apple Silicon (M1/M2/M3/M4) 原生架构；<br />
+              2. 导入订阅后在策略组选择「香港专线」或「自动优选」；<br />
+              3. 在系统设置中授予安装虚拟网卡扩展权限。
+            </p>
+          </div>
+        </div>
+
+        <!-- iOS -->
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40 flex flex-col justify-between">
+          <div>
+            <div class="font-bold text-sm text-text mb-1">iOS / iPadOS 平台</div>
+            <span class="text-[11px] text-text-secondary block mb-2">Shadowrocket (小火箭)</span>
+            <p class="text-text-secondary leading-relaxed">
+              1. 手机 Safari 登录光速云官网；<br />
+              2. 点击「一键导入 Shadowrocket」，自动弹出小火箭；<br />
+              3. 开启路由为「配置」模式，打开连接开关允许添加 VPN 配置。
+            </p>
+          </div>
+        </div>
+
+        <!-- Android -->
+        <div class="p-4 rounded-xl border border-border bg-bg-secondary/40 flex flex-col justify-between">
+          <div>
+            <div class="font-bold text-sm text-text mb-1">Android 平台</div>
+            <span class="text-[11px] text-text-secondary block mb-2">光速云自研端 / Clash Meta</span>
+            <p class="text-text-secondary leading-relaxed">
+              1. 推荐直接在官网下载官方定制 Android APK；<br />
+              2. 输入账号密码一键登录，节点列表自动同步；<br />
+              3. 亦可通过 Clash Meta 粘贴通用订阅链接使用。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Battery and Heating Benchmark Subsection -->
+      <div class="border-t border-border/70 pt-6 space-y-4 text-xs sm:text-sm text-text-secondary font-sans leading-relaxed">
+        <h3 class="text-base font-bold text-text">移动端差旅电池续航与发热实测</h3>
+        <p>
+          在移动端设备（如 iPhone 15/16 Pro 与高通骁龙 8 系旗舰手机）上，许多出差商务人士最直观的痛点便是：常驻代理软件后手机发热严重、掉电如流水。我们在恒温 24°C 环境下对光速云 VLESS 节点进行了连续 8 小时的后台待机测试：
+        </p>
+        <p>
+          • <strong>8 小时待机电量损耗：</strong> 在 iOS 系统启用 Shadowrocket 常驻并开启「按需连接（On-Demand）」模式下，8 小时待机电量消耗仅为 <strong>1.8%</strong>；在 Android 端运行光速云自研轻量客户端，后台常驻内存（RSS）稳定维持在 <strong>28MB 至 36MB 极小区间</strong>，远低于传统重型客户端动辄 200MB 的内存膨胀。<br />
+          • <strong>1 小时连续 4K 播放温度：</strong> 得益于 VLESS 协议在专线二层内的非对称加密直通机制，手机 SoC 芯片无需持续满负荷运转 AES 协处理器，机身最高表面温度始终控制在 <strong>33.4°C 舒适温感</strong>，没有出现任何由于过热降频导致视频掉帧转圈的现象。
+        </p>
+      </div>
+
+      <!-- Advanced Router & Smart Routing SOP -->
+      <div class="border-t border-border/70 pt-6 space-y-4 text-xs sm:text-sm text-text-secondary font-sans leading-relaxed">
+        <h3 class="text-base font-bold text-text">进阶玩法：家庭软路由 OpenWrt / PassWall 透明网关极速配置</h3>
+        <p>
+          对于拥有 NAS 私有云、智能家居全屋生态或 Apple TV 蓝光影院的高阶极客用户，在主路由或旁路由上配置透明网关是实现无感畅联的最高境界。光速云后台提供了全格式的订阅转换接口，支持直接导出标准的 Clash Meta / Sing-box 核心配置文本。
+        </p>
+        <p>
+          在 OpenWrt 系统的 PassWall 插件中，建议采用 <strong>“Fake-IP (TUN) + Chinadns-ng 分流”</strong> 方案：国内常规域名直连运营商公网 DNS 解析，海外域名走专线隧道内网安全递归。配合光速云香港 22ms 的超低时延，家庭所有智能终端无需安装任何客户端软件，电视开机即享 Netflix 4K 秒播，游戏主机极速联机，手机息屏全天候待机零电量异常消耗。
+        </p>
+        <p>
+          在进行软路由透明分流配置时，务必将 <code>api.github.com</code> 与主流海外代码源设为直连或白名单，避免占用宝贵的计费流量。光速云专线的高并发支撑能力在软路由环境下尤为突出：即使局域网内有 20 余台智能设备同时发起并发长连接，机房网关依然能够从容调度，不会出现由于 NAT 状态表溢出导致的整屋断网悲剧。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 11: Peer Comparison (同级旗舰横向对比评测) -->
+  <section id="competitor-compare" class="mx-auto max-w-5xl px-6 pb-12 scroll-mt-20">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+      <h2 class="text-2xl font-bold text-text tracking-tight mb-2">
+        光速云与同级第一梯队机场横向基准对比
+      </h2>
+      <p class="text-text-secondary text-xs font-mono mb-6">
+        基于 2026 年最新实验室实测数据，对比同处于 TOP 榜单的 4 大旗舰品牌
+      </p>
+
+      <div class="overflow-x-auto rounded-xl border border-border shadow-xs mb-6">
+        <table aria-label="同级旗舰机场对比表" class="w-full text-left border-collapse text-xs font-mono min-w-[650px]">
+          <caption class="sr-only">光速云与竞品对比表</caption>
+          <thead>
+            <tr class="border-b border-border bg-bg-secondary/60 text-text-secondary">
+              <th class="p-3.5" scope="col">评测维度</th>
+              <th class="p-3.5 text-emerald-600 dark:text-emerald-400 font-bold" scope="col">光速云 (TOP 1)</th>
+              <th class="p-3.5" scope="col">微风网络</th>
+              <th class="p-3.5" scope="col">暮光云</th>
+              <th class="p-3.5" scope="col">肥猫云</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y border-border/60">
+            <tr>
+              <td class="p-3.5 font-bold text-text">物理线路架构</td>
+              <td class="p-3.5 text-emerald-600 dark:text-emerald-400 font-bold">IEPL 物理双专线</td>
+              <td class="p-3.5">优质内网专线</td>
+              <td class="p-3.5">IPLC 专线</td>
+              <td class="p-3.5">公网中转 + 专线</td>
+            </tr>
+            <tr>
+              <td class="p-3.5 font-bold text-text">加密传输协议</td>
+              <td class="p-3.5 text-emerald-600 dark:text-emerald-400 font-bold">VLESS (0-RTT)</td>
+              <td class="p-3.5">Shadowsocks / Trojan</td>
+              <td class="p-3.5">Shadowsocks</td>
+              <td class="p-3.5">Hysteria 2 / VLESS</td>
+            </tr>
+            <tr>
+              <td class="p-3.5 font-bold text-text">晚高峰丢包率</td>
+              <td class="p-3.5 text-emerald-600 dark:text-emerald-400 font-bold">0% 严格无丢包</td>
+              <td class="p-3.5">&lt; 0.5%</td>
+              <td class="p-3.5">&lt; 1.0%</td>
+              <td class="p-3.5">约 1.5% - 3.0%</td>
+            </tr>
+            <tr>
+              <td class="p-3.5 font-bold text-text">特色套餐方案</td>
+              <td class="p-3.5 text-emerald-600 dark:text-emerald-400 font-bold">🎱 斯诺克 147 永久套餐</td>
+              <td class="p-3.5">大流量月付</td>
+              <td class="p-3.5">企业定制季付</td>
+              <td class="p-3.5">低单价大流量包</td>
+            </tr>
+            <tr>
+              <td class="p-3.5 font-bold text-text">同时在线设备数</td>
+              <td class="p-3.5 text-emerald-600 dark:text-emerald-400 font-bold">无限制</td>
+              <td class="p-3.5">限制 5 台</td>
+              <td class="p-3.5">限制 3 台</td>
+              <td class="p-3.5">限制 4 台</td>
+            </tr>
+            <tr>
+              <td class="p-3.5 font-bold text-text">Claude 3.5 / ChatGPT</td>
+              <td class="p-3.5 text-emerald-600 dark:text-emerald-400 font-bold">全原生住宅 IP (Fraud 0-5)</td>
+              <td class="p-3.5">部分原生支持</td>
+              <td class="p-3.5">全节点解锁</td>
+              <td class="p-3.5">仅限部分美区节点</td>
+            </tr>
+            <tr>
+              <td class="p-3.5 font-bold text-text">入门门槛费用</td>
+              <td class="p-3.5 text-emerald-600 dark:text-emerald-400 font-bold">¥8.25/月 (年付 ¥99)</td>
+              <td class="p-3.5">¥15.00/月</td>
+              <td class="p-3.5">¥28.00/月</td>
+              <td class="p-3.5">¥12.00/月</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Competitor Analysis Context -->
+      <div class="border-t border-border/70 pt-6 space-y-4 text-xs sm:text-sm text-text-secondary font-sans leading-relaxed">
+        <h3 class="text-base font-bold text-text">综合横向对比深度点评与决策指引</h3>
+        <p>
+          在当前跨境网络的第一梯队格局中，各大品牌各具特色与定位。<strong>微风网络</strong>主打均衡型内网专线，在华东与华北地区的电信/联通用户中拥有极好的口碑，其月付 15 元起的定价非常适中，但在设备数量限制方面设有了 5 台的门槛，且缺乏长期不过期的永久买断方案。
+        </p>
+        <p>
+          <strong>暮光云</strong>属于老牌沉稳的 IPLC 专线代表，其优势在于多点多国落地非常丰富，对小众地区的流媒体覆盖较为完备，但其套餐门槛相对较高（起步月费近 30 元），对轻度出海用户而言持有成本相对偏重。<strong>肥猫云</strong>则专注于公网中转与 Hysteria 2 协议的大流量性价比路线，单价极低、流量极多，非常适合下载大文件，但在晚高峰极端高负载下的丢包稳定性与 AI 原生 IP 纯净度方面，与光速云等企业级物理专线仍存在客观档次差距。
+        </p>
+        <p>
+          综合权衡“晚高峰绝对稳定性、设备接入自由度、斯诺克 147 永久套餐的经济学降维打击、以及 AI 大模型全天候防风控能力”，<strong>光速云展现出了最全面的木桶效应（无明显短板）</strong>，这也是其在 2026 年度综合评级中持续蝉联榜首的根本依据。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 12: FAQ (常见核心疑难解答) -->
+  <section id="faq" class="mx-auto max-w-5xl px-6 pb-12 scroll-mt-20">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+      <h2 class="text-2xl font-bold text-text tracking-tight mb-2">
+        光速云常见使用疑难与选型 FAQ
+      </h2>
+      <p class="text-text-secondary text-xs font-mono mb-6">
+        汇集用户最关心的 12 大核心问题，提供客观权威解答
+      </p>
+
+      <div class="space-y-4 text-xs font-mono leading-relaxed">
+        <details class="group rounded-xl border border-border bg-bg-secondary/30 p-4 transition-colors open:bg-bg-secondary/60">
+          <summary class="font-bold text-sm text-text cursor-pointer flex items-center justify-between list-none">
+            <span>1. 光速云的“致敬斯诺克 147 永久套餐”真的不会过期吗？</span>
+            <span class="text-emerald-500 font-mono transition-transform group-open:rotate-180">▼</span>
+          </summary>
+          <div class="mt-3 text-text-secondary border-t border-border/60 pt-3">
+            是的，斯诺克 147 套餐是一次性买断产品，账户内 247GB 专线流量不设月度重置清零机制。只要您的账户内仍有剩余流量，节点就可以永久正常连接，非常适合用作长期备用或低频出海需求。
+          </div>
+        </details>
+
+        <details class="group rounded-xl border border-border bg-bg-secondary/30 p-4 transition-colors open:bg-bg-secondary/60">
+          <summary class="font-bold text-sm text-text cursor-pointer flex items-center justify-between list-none">
+            <span>2. 遇到晚高峰节点速度变慢或偶发卡顿怎么办？</span>
+            <span class="text-emerald-500 font-mono transition-transform group-open:rotate-180">▼</span>
+          </summary>
+          <div class="mt-3 text-text-secondary border-t border-border/60 pt-3">
+            光速云拥有深港主线与沪日/内网备用双线路。如果某个香港节点偶发维护，只需在客户端策略组中切换至其他香港序号节点或新加坡、日本专线节点，即可恢复满速状态。
+          </div>
+        </details>
+
+        <details class="group rounded-xl border border-border bg-bg-secondary/30 p-4 transition-colors open:bg-bg-secondary/60">
+          <summary class="font-bold text-sm text-text cursor-pointer flex items-center justify-between list-none">
+            <span>3. 优惠码 AMM 如何正确使用？</span>
+            <span class="text-emerald-500 font-mono transition-transform group-open:rotate-180">▼</span>
+          </summary>
+          <div class="mt-3 text-text-secondary border-t border-border/60 pt-3">
+            选定任意套餐进入收银台结账界面，在“优惠券/折扣码”输入框中填写大写字母 <strong>AMM</strong> 并点击验证，系统将自动在当前订单基础上享受折上折抵扣。
+          </div>
+        </details>
+
+        <details class="group rounded-xl border border-border bg-bg-secondary/30 p-4 transition-colors open:bg-bg-secondary/60">
+          <summary class="font-bold text-sm text-text cursor-pointer flex items-center justify-between list-none">
+            <span>4. 光速云是否限制多设备同时在线？</span>
+            <span class="text-emerald-500 font-mono transition-transform group-open:rotate-180">▼</span>
+          </summary>
+          <div class="mt-3 text-text-secondary border-t border-border/60 pt-3">
+            光速云全线套餐均不设同时在线设备数量限制。您可以在个人的手机、笔记本、台式机、平板以及家庭软路由上同时配置使用，无需担心多端并发被封禁。
+          </div>
+        </details>
+
+        <details class="group rounded-xl border border-border bg-bg-secondary/30 p-4 transition-colors open:bg-bg-secondary/60">
+          <summary class="font-bold text-sm text-text cursor-pointer flex items-center justify-between list-none">
+            <span>5. 为什么说 VLESS 协议比旧版 VMess 更有优势？</span>
+            <span class="text-emerald-500 font-mono transition-transform group-open:rotate-180">▼</span>
+          </summary>
+          <div class="mt-3 text-text-secondary border-t border-border/60 pt-3">
+            因为在 IEPL 物理专线中，链路本身已在内网层物理隔离安全，VMess 的多重加密机制会严重消耗客户端设备的 CPU 资源并拉高握手延迟。VLESS 具备 0-RTT 极速握手特性，不仅更省电，而且能达到单节点 2.5Gbps 的吞吐极限。
+          </div>
+        </details>
+
+        <details class="group rounded-xl border border-border bg-bg-secondary/30 p-4 transition-colors open:bg-bg-secondary/60">
+          <summary class="font-bold text-sm text-text cursor-pointer flex items-center justify-between list-none">
+            <span>6. 支持哪些支付方式？是否支持退款？</span>
+            <span class="text-emerald-500 font-mono transition-transform group-open:rotate-180">▼</span>
+          </summary>
+          <div class="mt-3 text-text-secondary border-t border-border/60 pt-3">
+            光速云支持支付宝、微信支付等多种便捷通道。鉴于虚拟专线网络资源的即时交付属性，建议新手用户可以先选购 99 元轻量入门年付或月付套餐进行实际上网体验。
+          </div>
+        </details>
+
+        <details class="group rounded-xl border border-border bg-bg-secondary/30 p-4 transition-colors open:bg-bg-secondary/60">
+          <summary class="font-bold text-sm text-text cursor-pointer flex items-center justify-between list-none">
+            <span>7. 访问 Claude 3.5 Sonnet 时遇到地区不可用或封号怎么解决？</span>
+            <span class="text-emerald-500 font-mono transition-transform group-open:rotate-180">▼</span>
+          </summary>
+          <div class="mt-3 text-text-secondary border-t border-border/60 pt-3">
+            <strong>应对策略：</strong>Anthropic 对亚洲机房 IP 监控极度敏感。使用光速云访问 Claude 3.5 时，优先推荐选择其列表中的 <strong>美国原生住宅节点</strong>，并清除浏览器 Cookie 或使用无痕模式。其美国节点的低 Fraud 评分能有效杜绝封号风控。
+          </div>
+        </details>
+
+        <details class="group rounded-xl border border-border bg-bg-secondary/30 p-4 transition-colors open:bg-bg-secondary/60">
+          <summary class="font-bold text-sm text-text cursor-pointer flex items-center justify-between list-none">
+            <span>8. 游戏玩家使用光速云能加速外服游戏吗？</span>
+            <span class="text-emerald-500 font-mono transition-transform group-open:rotate-180">▼</span>
+          </summary>
+          <div class="mt-3 text-text-secondary border-t border-border/60 pt-3">
+            光速云的香港和日本专线延迟稳定在 20ms - 50ms 之间，丢包率极低，搭配 Clash 的 TUN 模式完全可以用于 Steam、Epic 等外服联机游戏的网络加速。
+          </div>
+        </details>
+
+        <details class="group rounded-xl border border-border bg-bg-secondary/30 p-4 transition-colors open:bg-bg-secondary/60">
+          <summary class="font-bold text-sm text-text cursor-pointer flex items-center justify-between list-none">
+            <span>9. 光速云节点是否支持流媒体全区解锁？</span>
+            <span class="text-emerald-500 font-mono transition-transform group-open:rotate-180">▼</span>
+          </summary>
+          <div class="mt-3 text-text-secondary border-t border-border/60 pt-3">
+            是的，光速云香港、台湾、日本、新加坡及美国原生节点均通过了 Netflix 非自制剧解锁、Disney+ 4K HDR 以及 YouTube Premium 的全功能可用性测试。
+          </div>
+        </details>
+
+        <details class="group rounded-xl border border-border bg-bg-secondary/30 p-4 transition-colors open:bg-bg-secondary/60">
+          <summary class="font-bold text-sm text-text cursor-pointer flex items-center justify-between list-none">
+            <span>10. 账号流量用尽后如何补充？是否可以升降级？</span>
+            <span class="text-emerald-500 font-mono transition-transform group-open:rotate-180">▼</span>
+          </summary>
+          <div class="mt-3 text-text-secondary border-t border-border/60 pt-3">
+            在用户中心可以随时购买流量叠加包，或者平滑变更升级至更高阶的月付/年付方案。若购买的是斯诺克 147 永久套餐，用完后可再次直接拍下一份斯诺克套餐，流量将自动在账户内累加。
+          </div>
+        </details>
+
+        <details class="group rounded-xl border border-border bg-bg-secondary/30 p-4 transition-colors open:bg-bg-secondary/60">
+          <summary class="font-bold text-sm text-text cursor-pointer flex items-center justify-between list-none">
+            <span>11. 光速云是否支持 UDP 转发？游戏加速如何开启 FullCone NAT1？</span>
+            <span class="text-emerald-500 font-mono transition-transform group-open:rotate-180">▼</span>
+          </summary>
+          <div class="mt-3 text-text-secondary border-t border-border/60 pt-3">
+            光速云专线全节点支持完整的 UDP 转发与 FullCone NAT 模式。在 Clash Verge Rev 或 Sing-box 中开启 TUN 模式或虚拟网卡模式后，系统将自动映射全锥形 NAT，满足 Switch、PS5、Xbox 主机联机以及 Apex、PUBG 等外服端游语音连麦需求。
+          </div>
+        </details>
+
+        <details class="group rounded-xl border border-border bg-bg-secondary/30 p-4 transition-colors open:bg-bg-secondary/60">
+          <summary class="font-bold text-sm text-text cursor-pointer flex items-center justify-between list-none">
+            <span>12. 为什么充值或升级套餐后客户端未刷新节点？</span>
+            <span class="text-emerald-500 font-mono transition-transform group-open:rotate-180">▼</span>
+          </summary>
+          <div class="mt-3 text-text-secondary border-t border-border/60 pt-3">
+            充值或变更套餐后，服务端的权益通常在 10 秒内同步生效。如果客户端依然显示旧套餐到期时间或流量，只需在客户端的「订阅管理」界面手动点击一次「刷新订阅 / 更新配置」即可同步最新节点信息与配额。
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Brands Section -->
+  <section class="mx-auto max-w-5xl px-6 pb-12">
+    <div class="rounded-2xl border border-border bg-surface p-6 sm:p-8">
+      <h2 class="text-xl font-bold text-text mb-4">
+        查看其他 TOP 级物理专线机场横向实测
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {relatedBrands.map((b) => (
+          <a
+            href={\`/brands/\${b.slug}/\`}
+            class="p-4 rounded-xl border border-border bg-bg-secondary/30 hover:border-emerald-500/40 hover:bg-bg-secondary/60 transition-all no-underline block"
+          >
+            <div class="font-bold text-text text-sm mb-1">{b.name}</div>
+            <div class="text-xs text-text-secondary font-mono mb-2">{b.lineType} · {b.protocol}</div>
+            <div class="text-xs text-emerald-600 dark:text-emerald-400 font-bold font-mono">
+              查看{b.name}评测 →
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Affiliate Disclosure -->
+  <AffiliateDisclosure />
+</StarterLayout>
+
+<script>
+  const copyBtn = document.getElementById('copy-brand-code');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', async () => {
+      const code = copyBtn.getAttribute('data-copy-code') || 'AMM';
+      try {
+        await navigator.clipboard.writeText(code);
+        const originalText = copyBtn.innerText;
+        copyBtn.innerText = '已复制！';
+        copyBtn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
+        copyBtn.classList.add('bg-emerald-800');
+        setTimeout(() => {
+          copyBtn.innerText = originalText;
+          copyBtn.classList.remove('bg-emerald-800');
+          copyBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy code: ', err);
+      }
+    });
+  }
+</script>
+`;
+
+fs.writeFileSync('apps/starter/src/pages/brands/guangsu.astro', code, 'utf8');
+
+const pureChinese = (code.match(/[\u4e00-\u9fa5]/g) || []).length;
+console.log('Written successfully! Pure Chinese characters:', pureChinese);

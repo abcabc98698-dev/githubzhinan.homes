@@ -3,13 +3,13 @@ export default {
   'nav.home': 'Home',
 
   // Home
-  'home.title': 'Astro v7 Blog',
-  'home.description': 'A lean blog template with MDX, Content Collections and RSS feed.',
-  'home.latest': 'Latest Posts',
+  'home.title': 'GitHub Guide Technical Blog',
+  'home.description': 'Curated GitHub workflows, Actions CI/CD automation, and modern web best practices.',
+  'home.latest': 'Latest Articles',
 
   // Blog post
   'post.by': 'by',
-  'post.back': 'Back to overview',
+  'post.back': 'Back to articles',
   'post.readTime': 'min read',
 
   // Breadcrumbs
@@ -18,7 +18,7 @@ export default {
 
   // 404
   '404.title': '404 - Page Not Found',
-  '404.text': 'This page does not exist.',
+  '404.text': 'The requested article or page does not exist.',
   '404.back': 'Back to home',
 
   // Footer

@@ -19,26 +19,16 @@ const outDir = join(__dirname, '..', 'public', 'og');
 const pages = [
   {
     file: 'home.png',
-    title: 'Astro v7 Starter',
-    description: 'A minimal, production-ready template with Astro v7, Tailwind v4 and Svelte 5.',
+    title: 'GitHub指南 (githubzhinan.homes)',
+    description: '精选高效的 GitHub 开发技巧、Actions 工作流实操与开源工程实践。',
   },
   {
-    file: 'contact.png',
-    title: 'Contact',
-    description: 'Contact form with Astro Actions and Zod validation.',
-  },
-  {
-    file: 'de/home.png',
-    title: 'Astro v7 Starter',
+    file: 'en/home.png',
+    title: 'GitHub Guide (githubzhinan.homes)',
     description:
-      'Ein minimales, produktionsreifes Template mit Astro v7, Tailwind v4 und Svelte 5.',
+      'Curated GitHub developer practices, Actions CI/CD automation, and open-source project accelerators.',
   },
-  {
-    file: 'de/contact.png',
-    title: 'Kontakt',
-    description: 'Beispiel-Kontaktformular mit Astro Actions und serverseitiger Zod-Validierung.',
-  },
-];
+  ];
 
 async function main() {
   for (const page of pages) {
@@ -46,7 +36,7 @@ async function main() {
     mkdirSync(join(outPath, '..'), { recursive: true });
 
     const png = await generateOgImage(
-      { title: page.title, description: page.description, siteName: 'Astro v7 Starter' },
+      { title: page.title, description: page.description, siteName: 'GitHub指南' },
       fontData
     );
 

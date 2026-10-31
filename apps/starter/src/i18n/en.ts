@@ -1,84 +1,84 @@
 export default {
   // Nav
   'nav.home': 'Home',
-  'nav.contact': 'Contact',
+  'nav.contact': 'Contact & Feedback',
 
   // Home
-  'home.title': 'Astro v7 Starter',
+  'home.title': 'GitHub Guide (githubzhinan.homes)',
   'home.description':
-    'A minimal, production-ready template with Astro v7, Tailwind v4 and Svelte 5.',
-  'home.cta.docs': 'Documentation',
-  'home.cta.contact': 'Contact',
+    'Curated GitHub developer practices, Actions CI/CD automation workflows, and open-source project accelerators.',
+  'home.cta.docs': 'Explore Guides',
+  'home.cta.contact': 'Contact Us',
 
   // Feature cards
-  'feature.astro.title': 'Astro v7',
+  'feature.astro.title': 'Modern Architecture',
   'feature.astro.desc':
-    'Vite 8 with Rolldown, Rust compiler and Sätteri markdown — GFM and heading IDs built in.',
-  'feature.tailwind.title': 'Tailwind v4',
-  'feature.tailwind.desc': 'CSS-first configuration, OKLCH colors, native container queries.',
-  'feature.svelte.title': 'Svelte 5',
-  'feature.svelte.desc': 'Runes API with $state and $derived for reactive islands.',
-  'feature.biome.title': 'Biome',
-  'feature.biome.desc': 'A single tool for linting and formatting – fast and consistent.',
-  'feature.zod.title': 'Zod v4',
-  'feature.zod.desc': 'Runtime validation for environment variables, forms and API endpoints.',
-  'feature.darkmode.title': 'Dark Mode',
-  'feature.darkmode.desc': 'System preference based with manual toggle via Svelte component.',
-  'feature.webvitals.title': 'Web Vitals',
+    'Engineered with modern web standards, zero client-side overhead, instant rendering and sub-second page loads.',
+  'feature.tailwind.title': 'Tailwind CSS v4',
+  'feature.tailwind.desc': 'CSS-first styling, OKLCH wide-gamut colors, native container queries and fluid typography.',
+  'feature.svelte.title': 'Lightweight Islands',
+  'feature.svelte.desc': 'Svelte 5 reactive islands, hydrated only when interaction is required to keep pages lean.',
+  'feature.biome.title': 'Modern Code Standards',
+  'feature.biome.desc': 'Fast, uniform linting and code formatting ensuring high maintainability across projects.',
+  'feature.zod.title': 'Strict Schema Validation',
+  'feature.zod.desc': 'End-to-end runtime validation for environment configurations, forms and API boundaries.',
+  'feature.darkmode.title': 'Adaptive Dark Mode',
+  'feature.darkmode.desc': 'System-preference-aware with instant toggle, built for developer eye-care and readability.',
+  'feature.webvitals.title': 'Core Web Vitals Optimized',
   'feature.webvitals.desc':
-    'Real User Monitoring via @casoon/astro-webvitals, with optional sampled reporting to your own endpoint.',
+    'Real User Monitoring with green performance scores across LCP, FID/INP, and CLS metrics.',
 
   // prop-for-that demo
-  'demo.title': 'prop-for-that demo',
+  'demo.title': 'Interactive Showcase',
   'demo.description':
-    'CSS reacting to runtime state via custom properties — no JS in the animation path.',
-  'demo.pointer.title': 'Pointer tilt',
+    'Pure CSS runtime reactivity powered by custom properties — zero JavaScript animation overhead.',
+  'demo.pointer.title': 'Pointer 3D Tilt',
   'demo.pointer.desc':
-    'Move your cursor over this card — it tilts based on pointer position, driven by the pointer-local plugin.',
-  'demo.scroll.title': 'Scroll reveal',
+    'Hover over this card to observe smooth 3D perspective tilting mapped directly to cursor position.',
+  'demo.scroll.title': 'Scroll Reveal',
   'demo.scroll.desc':
-    'This card fades in once it enters the viewport, driven by the visibility source.',
-  'demo.range.title': 'Range fill',
-  'demo.range.desc': 'Drag the slider — the fill bar tracks its value with pure CSS.',
-  'demo.scrollvelocity.title': 'Scroll velocity',
+    'Elements fade into view smoothly as they intersect the viewport.',
+  'demo.range.title': 'Range Fill Bar',
+  'demo.range.desc': 'Drag the slider — the progress bar dynamically maps its fill state via pure CSS.',
+  'demo.scrollvelocity.title': 'Scroll Velocity Sensor',
   'demo.scrollvelocity.desc':
-    'Scroll the page — this bar reacts to how fast and in which direction.',
-  'demo.clock.title': 'Live clock',
-  'demo.clock.desc': 'A pure-CSS second hand — no JS in the render loop.',
-  'demo.random.title': 'Random per element',
+    'Scroll the viewport — the gauge reacts dynamically to scroll velocity and direction.',
+  'demo.clock.title': 'Hardware Accelerated Clock',
+  'demo.clock.desc': 'Precision second hand rendered smoothly without JavaScript interval loops.',
+  'demo.random.title': 'Per-Element Generative Color',
   'demo.random.desc':
-    'Each swatch rolls its own tint and rotation once at load — no JS loop, no :nth-child ladder.',
-  'demo.viewport.title': 'Viewport size',
+    'Each swatch generates unique hue and tilt variants at load time without layout recalculations.',
+  'demo.viewport.title': 'Live Viewport Measurement',
   'demo.viewport.desc':
-    'Resize the browser window — this number reads live from CSS counters, no JS text rendering.',
-  'demo.size.title': 'Element size',
+    'Resize your window — dimension numbers update in real-time through CSS counter calculations.',
+  'demo.size.title': 'Element Dimension Tracker',
   'demo.size.desc':
-    'Drag the corner of the box — its own size is tracked without a ResizeObserver in your code.',
-  'demo.truncated.title': 'Truncation detection',
-  'demo.truncated.desc': 'CSS detects when text overflows and reveals a badge automatically.',
+    'Drag the corner of the container — dimensions are tracked dynamically with zero manual observer code.',
+  'demo.truncated.title': 'Overflow Truncation Detection',
+  'demo.truncated.desc': 'CSS automatically detects multi-line overflow and reveals a truncation indicator badge.',
   'demo.truncated.sample':
-    'This paragraph is intentionally long so it overflows its two-line clamp and triggers the truncated source.',
+    'This demonstration paragraph is crafted to exceed two lines in height, demonstrating automatic overflow clamping and dynamic truncation badge activation.',
   'demo.truncated.badge': 'Truncated',
-  'demo.color.title': 'Color input',
-  'demo.color.desc': 'Pick a color — the swatch background is bound directly to the input value.',
+  'demo.color.title': 'Two-Way Color Swatch',
+  'demo.color.desc': 'Pick any color — the swatch reacts immediately with native CSS color bindings.',
 
   // Contact
-  'contact.title': 'Contact',
-  'contact.description': 'Example contact form with Astro Actions and server-side Zod validation.',
-  'contact.name': 'Name',
-  'contact.email': 'Email',
+  'contact.title': 'Contact & Feedback',
+  'contact.description': 'Have suggestions, open-source partnership inquiries, or feedback? Send us a message.',
+  'contact.name': 'Your Name',
+  'contact.email': 'Your Email',
   'contact.subject': 'Subject',
   'contact.message': 'Message',
-  'contact.send': 'Send',
-  'contact.success': 'Thanks! Your message has been sent.',
+  'contact.send': 'Send Message',
+  'contact.success': 'Thank you! Your feedback has been received.',
   'contact.demoNotice':
-    'Demo: your input is valid, but no message was sent. Connect a mail provider in src/actions/contact.ts.',
+    'You can also reach out to our core team directly via contact@githubzhinan.homes.',
 
   // 404
   '404.title': '404 - Page Not Found',
-  '404.text': 'This page does not exist.',
-  '404.back': 'Back to home',
+  '404.text': 'The requested page could not be found.',
+  '404.back': 'Back to Homepage',
 
   // Footer
-  'footer.built': 'Built with',
+  'footer.built': 'Powered by',
 } as const;

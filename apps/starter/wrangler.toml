@@ -1,4 +1,4 @@
-name = "astro-v7-starter"
+name = "githubzhinan-homes"
 compatibility_date = "2026-09-10"
 compatibility_flags = ["nodejs_compat", "no_handle_cross_request_promise_resolution"]
 
@@ -14,5 +14,5 @@ enabled = true
 # Custom domain — uncomment and set your own domain. Without it the Worker is served
 # on its workers.dev subdomain.
 # [[routes]]
-# pattern = "example.com"
+# pattern = "githubzhinan.homes"
 # custom_domain = true
